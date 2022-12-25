@@ -23,7 +23,6 @@ function functionPositionAndInputs(funcName) {
             return [0, 1];
         case "logbase":
             return [0, 2];
-            // return [1, 2];
         default:
             return [0, 0];
     }
@@ -36,18 +35,18 @@ function functionToHTML(funcName, argOne, argTwo, argThree){
             return `|${argOne}|`;
         case "-":
         case "minus":
-            return "- " + argOne;
+            return `-${argOne}`;
         case "+":
         case "plus":
-            return "+ " + argOne;
+            return `+${argOne}`;
         case "^":
         case "pow":
             return `<sup>${argOne}</sup>`;
         case "*":
         case "times":
-            return "⋅ " + argOne;
+            return `⋅${argOne}`;
         case "sqrt":
-            return "";
+            return `<span>&radic;<span style="text-decoration:overline;font-size:75%">${argOne}</span></span>`;
         case "logbase":
             return `log<sub>${argOne}</sub>${argTwo}`;
         default:
@@ -91,7 +90,9 @@ function parseAndLink(segment){
         }
         isFunction = functionPositionAndInputs(segment.substring(currentFuncStart, index));
         if (isFunction[1] != 0){
-            tokens.push([2, segment.substring(currentGroupStart, currentFuncStart)]);
+            if (currentGroupStart != currentFuncStart){
+                tokens.push([2, segment.substring(currentGroupStart, currentFuncStart)]);
+            }
             tokens.push([0, segment.substring(currentFuncStart, index), isFunction[0], isFunction[1]]);
             currentGroupStart = -1;
         }
@@ -102,6 +103,7 @@ function parseAndLink(segment){
                 tokens.push([2, segment.substring(currentGroupStart, index)]);
                 currentGroupStart = -1;
             }
+            currentFuncStart = -1;
             continue;
         case "(":
         case "[":
@@ -163,39 +165,39 @@ function parseAndLink(segment){
                 if (tokens[index][3] == 1){
                     if (index == tokens.length - 1){
                         tokens[index] = functionToHTML(tokens[index], "¿", "", "");
-                        continue;
+                    } else {
+                        tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], "", "");
+                        tokens.splice(index + 1, 1);
                     }
-                    tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], "", "");
-                    tokens.splice(index + 1, 1);
                 } else if (tokens[index][3] == 2){
                     if (index == tokens.length - 1){
                         tokens[index] = functionToHTML(tokens[index][1], "¿", "¿", "");
-                        continue;
-                    }
-                    if (index == tokens.length - 2){
+                    } else if (index == tokens.length - 2){
                         tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], "¿", "");
                         tokens.splice(index + 1, 1);
-                        continue;
+                    } else {
+                        tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], tokens[index + 2], "");
+                        tokens.splice(index + 1, 2);
                     }
-                    tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], tokens[index + 2], "");
-                    tokens.splice(index + 1, 2);
                 } else {
                     if (index == tokens.length - 1){
                         tokens[index] = functionToHTML(tokens[index][1], "¿", "¿", "¿");
-                        continue;
-                    }
-                    if (index == tokens.length - 2){
+                    } else if (index == tokens.length - 2){
                         tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], "¿", "¿");
                         tokens.splice(index + 1, 1);
-                        continue;
-                    }
-                    if (index == tokens.length - 3){
+                    } else if (index == tokens.length - 3){
                         tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], tokens[index + 2], "¿");
                         tokens.splice(index + 1, 2);
-                        continue;
+                    } else {
+                        tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], tokens[index + 2], tokens[index + 3]);
+                        tokens.splice(index + 1, 3);
                     }
-                    tokens[index] = functionToHTML(tokens[index][1], tokens[index + 1], tokens[index + 2], tokens[index + 3]);
-                    tokens.splice(index + 1, 3);
+                }
+                if (index - 1 < 0){ continue; }
+                if ((tokens[index - 1][0] == 2) && (tokens[index - 1][1] != "")){
+                    tokens[index - 1] = groupToHTML(tokens[index - 1][1]) + tokens[index];
+                    tokens.splice(index, 1);
+                    --index;
                 }
             } else {
 
@@ -212,7 +214,7 @@ function parseAndLink(segment){
                     tokens[index] = parseAndLink(tokens[index][1].substring(1, tokens[index][1].length));
                 }
             } else {
-                if (/[([{|]/.test(tokens[index][1][tokens[index][1].length - 1])){ // Thanks ChatGPT for the regex!
+                if (/^[\)\]\}\|]+$/.test(tokens[index][1][tokens[index][1].length - 1])){ // Thanks ChatGPT for the regex!
                     tokens[index] = tokens[index][1][0] + parseAndLink(tokens[index][1].substring(1, tokens[index][1].length - 1)) + tokens[index][1][tokens[index][1].length - 1];
                 } else {
                     tokens[index] = tokens[index][1][0] + parseAndLink(tokens[index][1].substring(1, tokens[index][1].length));
@@ -226,6 +228,7 @@ function parseAndLink(segment){
     for (let index = 0; index < tokens.length; ++index){
         output += tokens[index] + " ";
     }
+    output = output.substring(0, output.length - 1);
 
     return output;
 }
