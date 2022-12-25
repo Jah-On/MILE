@@ -193,12 +193,6 @@ function parseAndLink(segment){
                         tokens.splice(index + 1, 3);
                     }
                 }
-                if (index - 1 < 0){ continue; }
-                if ((tokens[index - 1][0] == 2) && (tokens[index - 1][1] != "")){
-                    tokens[index - 1] = groupToHTML(tokens[index - 1][1]) + tokens[index];
-                    tokens.splice(index, 1);
-                    --index;
-                }
             } else {
 
             }
@@ -226,9 +220,9 @@ function parseAndLink(segment){
     }
 
     for (let index = 0; index < tokens.length; ++index){
-        output += tokens[index] + " ";
+        output += tokens[index]; // + " ";
     }
-    output = output.substring(0, output.length - 1);
+    // output = output.substring(0, output.length - 1);
 
     return output;
 }
@@ -242,7 +236,7 @@ function onEvent() {
     let outputElement = document.getElementById("output");
   
     outputElement.innerHTML = "";
-  
+
     // ChatGPT condensed implementation
     for (let index = 0; index < userInput.length; ++index) {
         if (userInput.substr(index, 3).toLowerCase() == "end") {
