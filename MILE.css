@@ -2,6 +2,10 @@ body {
     margin: 0px;
 }
 
+p {
+    margin: 0px;
+}
+
 #container {
     width: 100vw;
     height: 100vh;
@@ -13,6 +17,7 @@ body {
 #input {
     width: 48%;
     height: 97%;
+    font-size: 5vh;
     background-color: rgb(20, 20, 20);
     color: whitesmoke;
     margin: 1vh;
@@ -23,6 +28,7 @@ body {
 #output {
     width: 48%;
     height: 96.5%;
+    font-size: 5vh;
     background-color: whitesmoke;
     color: black;
     margin: 1vh;
