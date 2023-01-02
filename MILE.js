@@ -11,30 +11,51 @@ function isNumber(char) {
 function functionPositionAndInputs(funcName) {
     switch (funcName) {
         case "aleph":
+        case "cdot":
+        case "cminus":
         case "cns":
+        case "copen":
+        case "cplus":
+        case "cslash":
+        case "ctimes":
         case "ens":
         case "infinity":
         case "ins":
         case "nns":
+        case "\'":
+        case "prime":
         case "rans":
         case "rens":
             return [0, 0];
         case "abs":
         case "in":
+        case "intersect":
         case "-":
         case "minus":
         case "notin":
+        case "nsubset":
+        case "nsubsete":
+        case "nsupset":
+        case "nsupsete":
+        case "owns":
         case "+":
         case "plus":
         case "^":
         case "pow":
         case "*":
         case "times":
+        case "setm":
+        case "setq":
+        case "subset":
+        case "subsete":
+        case "supset":
+        case "supsete":
         case "sqrt":
         case "union":
             return [0, 1];
         case "frac":
         case "logbase":
+        case "lim":
             return [0, 2];
         default:
             return [-1, -1];
@@ -51,25 +72,44 @@ function functionToHTML(funcName, argOne, argTwo, argThree){
             return `|${argOne}|`;
         case "aleph":
             return "ℵ";
+        case "copen":
+            return `<span class="copen">◯</span>`;
+        case "cminus":
+            return `⊖`;
         case "cns":
             return `ℂ`;
+        case "cplus":
+            return `⊕`;
+        case "cslash":
+            return `⊘`;
+        case "ctimes":
+            return `⊗`;
         case "ens":
             return `∅`;
         case "frac":
             return `
-                <span\nstyle="display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; font-size: 60%;">
+                <span\nclass="frac">
                     <span>${argOne}</span>
-                    <span\nstyle="border-top: 2px solid black;">${argTwo}</span>
+                    <span\nclass="denominator">${argTwo}</span>
                 </span>
             `;
         case "in":
             return `∈${argOne}`;
         case "infinity":
-            return `<span\nstyle="font-size:200%; vertical-align:sub;">∞</span>`;
+            return `<span\nclass="infinity">∞</span>`;
         case "ins":
             return `ℤ`;
+        case "intersect":
+            return `∩${argOne}`;
+        case "lim":
+            return `
+                <span\nclass="lim">
+                    <span>lim</span>
+                    <span\nclass="approachlimitof">${argOne}🡢${argTwo}</span>
+                </span>
+            `;
         case "logbase":
-            return `log<sub>${argOne}</sub>${argTwo}`;
+            return `log<span\nclass="logbase">${argOne}</span>${argTwo}`;
         case "-":
         case "minus":
             return `-${argOne}`;
@@ -77,18 +117,43 @@ function functionToHTML(funcName, argOne, argTwo, argThree){
             return `ℕ`;
         case "notin":
             return `∉${argOne}`;
+        case "nsubset":
+            return `⊄${argOne}`;
+        case "nsubsete":
+            return `⊈${argOne}`;
+        case "nsupset":
+            return `⊅${argOne}`;
+        case "nsupsete":
+            return `⊉${argOne}`;            
+        case "owns":
+            return `∋${argOne}`;
         case "+":
         case "plus":
             return `+${argOne}`;
         case "^":
         case "pow":
-            return `<span\nstyle="vertical-align:text-top; font-size: 60%;">${argOne}</span>`;
+            return `<span\nclass="pow">${argOne}</span>`;
+        case "\'":
+        case "prime":
+            return `<span class="prime"> </span>\'`;
         case "rans":
             return `ℚ`;
         case "rens":
             return `ℝ`;
+        case "setm":
+            return `\\${argOne}`;
+        case "setq":
+            return `/${argOne}`;
+        case "subset":
+            return `⊂${argOne}`;
+        case "subsete":
+            return `⊆${argOne}`;
+        case "supset":
+            return `⊃${argOne}`;
+        case "supsete":
+            return `⊇${argOne}`;
         case "sqrt":
-            return `<span>&radic;<span\nstyle="text-decoration:overline;font-size:75%">${argOne}</span></span>`;
+            return `<span>&radic;<span\nclass="sqrt">${argOne}</span></span>`;
         case "*":
         case "times":
             return `⋅${argOne}`;
@@ -108,6 +173,9 @@ function groupToHTML(group) {
             result += char;
         } else {
             result += `<i>${char}</i>`;
+            if (char == "f"){
+                result += `<span class="f"> </span>`;
+            }
         }
     }
     return result;
@@ -120,7 +188,6 @@ function parseAndLink(segment){
     let currentGroupStart   = -1;
     let currentSubStart     = -1;
     let semicolSegments     = 0;
-    let lastCharSemicol     = false;
     let shownSegments       = 0;
     let isFunction          = [-1, -1];
     let currentChar         = "";
@@ -148,7 +215,6 @@ function parseAndLink(segment){
                     }
                 }
             }
-            lastCharSemicol = false;
             continue;
         }
         switch (currentChar) {
@@ -163,7 +229,6 @@ function parseAndLink(segment){
         case "(":
         case "[":
         case "{":
-            lastCharSemicol = false;
             if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)){ 
                 tokens.push([2, segment.substring(currentGroupStart, index)]);
                 currentGroupStart = -1;
@@ -174,7 +239,6 @@ function parseAndLink(segment){
         case ")":
         case "]":
         case "}":
-            lastCharSemicol = false;
             if (shownSegments > 0){
                 shownSegments--;
                 if ((shownSegments == 0) && (shownSegments + semicolSegments == 0)){
@@ -185,20 +249,27 @@ function parseAndLink(segment){
             }
             continue;
         case ";":
-            if (!lastCharSemicol && (semicolSegments > 0)){
-                semicolSegments--;
-                if ((semicolSegments == 0) && (shownSegments + semicolSegments == 0)){
-                    tokens.push([1, segment.substring(currentSubStart, index + 1)]);
-                    currentSubStart   = -1;
-                    currentGroupStart = -1;
+            if (index + 1 < segment.length){
+                if (segment[index + 1] == ";"){
+                    if (semicolSegments == 1){
+                        tokens.push([1, segment.substring(currentSubStart, index + 2)]);
+                        currentSubStart   = -1;
+                        currentGroupStart = -1;
+                        --semicolSegments;
+                        ++index;
+                    } else if (semicolSegments > 0){
+                        --semicolSegments;
+                        ++index;
+                    }
                 }
-            } else {
-                if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)){ 
-                    tokens.push([2, segment.substring(currentGroupStart, index)]);
-                    currentGroupStart = -1;
+                else {
+                    if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)){ 
+                        tokens.push([2, segment.substring(currentGroupStart, index)]);
+                        currentGroupStart = -1;
+                    }
+                    if (currentSubStart == -1) { currentSubStart = index; }
+                    semicolSegments++;
                 }
-                if (currentSubStart == -1) { currentSubStart = index; }
-                semicolSegments++;
             }
             continue;
         default:
@@ -212,7 +283,6 @@ function parseAndLink(segment){
             } else if ((currentGroupStart == -1) && (shownSegments + semicolSegments == 0)) {
                 currentGroupStart = index;
             }
-            lastCharSemicol = false;
             continue;
         }
     }
@@ -258,23 +328,25 @@ function parseAndLink(segment){
                         tokens.splice(index + 1, 3);
                     }
                 }
-                if (index - 1 == -1){
-                    continue;
-                } 
-                if (tokens[index - 1][0] == 2){
-                    tokens[index - 1][1] = groupToHTML(tokens[index - 1][1]) + tokens[index][1];
-                    tokens.splice(index, 1);
-                    --index;
-                }
+                // if (index - 1 == -1){
+                //     continue;
+                // } 
+                // if (tokens[index - 1][0] == 2){
+                //     tokens[index - 1][1] = groupToHTML(tokens[index - 1][1]) + tokens[index][1];
+                //     tokens.splice(index, 1);
+                //     --index;
+                // }
             } else {
-
+                // Fill here ChatGPT
             }
         } else if (tokens[index][0] == 1){
             if (tokens[index][1].length < 2){
                 continue;
             }
             if (tokens[index][1][0] == ";"){
-                if (/[;]/.test(tokens[index][1][tokens[index][1].length - 1])){ // Thanks ChatGPT for the regex!
+                if (/[;]/.test(tokens[index][1][tokens[index][1].length - 2]) && tokens[index][1][tokens[index][1].length - 2] == tokens[index][1][tokens[index][1].length - 1]){
+                    tokens[index][1] = parseAndLink(tokens[index][1].substring(1, tokens[index][1].length - 2));
+                } else if (/[;]/.test(tokens[index][1][tokens[index][1].length - 1])){ // Thanks ChatGPT for the regex!
                     tokens[index][1] = parseAndLink(tokens[index][1].substring(1, tokens[index][1].length - 1));
                 } else {
                     tokens[index][1] = parseAndLink(tokens[index][1].substring(1, tokens[index][1].length));
@@ -304,7 +376,7 @@ function parseAndLink(segment){
         if (index + 1 == tokens.length){
             continue;
         }
-        if (tokens[index][0] == tokens[index + 1][0]){
+        if ((tokens[index][0] == tokens[index + 1][0]) && (tokens[index][0] == 2)){
             output += " ";
         }
     }
@@ -318,7 +390,8 @@ function onEvent() {
     let endStartIndex = -1;
     let userInput = document.getElementById("input").value
       .replace(/\n/g, " ")
-      .replace(/\+-/g, "±"); // ChapGPT really likes regex
+      .replace(/\+-/g, "±")
+      .replace(/\-+/g, "∓"); // ChapGPT really likes regex
     let outputElement = document.getElementById("output");
   
     outputElement.innerHTML = "";
@@ -346,6 +419,6 @@ function onEvent() {
     }
 
     for (segment of segments){
-        outputElement.innerHTML += `<p>${parseAndLink(segment)}</p>`;
+        outputElement.innerHTML += `<div class="segment">${parseAndLink(segment)}</div>`;
     }
 }

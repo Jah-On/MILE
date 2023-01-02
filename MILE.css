@@ -2,10 +2,6 @@ body {
     margin: 0px;
 }
 
-p {
-    margin: 0px;
-}
-
 #container {
     width: 100vw;
     height: 100vh;
@@ -34,5 +30,77 @@ p {
     margin: 1vh;
     padding-top: 0.5%;
     padding-left: 0.5%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+div.segment {
+    display: inline;
+    flex-direction: row;
+}
+
+/* Group CSS */
+i {
+    /* padding-left: 4px;
+    padding-right: 8px; */
+}
+
+span.f {
+    font-size: 65%;
+}
+
+/* OP CSS */
+span.approachlimitof {
+    font-size: 60%;
+}
+
+span.copen {
+    font-size: 25%;
+    font-weight: bolder;
+    vertical-align: middle;
+}
+
+span.denominator {
+    border-top: 2px solid black;
+}
+
+span.frac {
+    display: inline-flex;
+    flex-direction: column;
     text-align: center;
+    vertical-align: middle;
+    font-size: 60%;
+}
+
+span.infinity {
+    font-size: 175%;
+    vertical-align: sub;
+}
+
+span.logbase {
+    font-size: 80%;
+    vertical-align: sub;
+}
+
+span.lim {
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 0.9;
+}
+
+span.pow {
+    vertical-align: text-top;
+    font-size: 60%;
+}
+
+span.prime {
+    font-size: 30%;
+}
+
+span.sqrt {
+    text-decoration: overline;
+    font-size: 75%;
 }
