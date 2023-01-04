@@ -24,19 +24,67 @@ function functionPositionAndInputs(functionNameString) {
         case "rens":
             return [0, 0]; // Right and 0 arguments
         case "abs":
+        case "coprod":
+        case "int":
+        case "iint":
+        case "iiint":
+        case "lim":
+        case "liminf":
+        case "limsup":
+        case "lint":
+        case "llint":
+        case "lllint":
         case "-":
         case "minus":
         case "neg":
         case "+":
         case "plus":
+        case "prod":
+        case "sum":
         case "sqrt":
             return [0, 1]; // Right and 1 arguments
+        case "coprodo":
+        case "coprodu":
         case "frac":
+        case "into":
+        case "intu":
+        case "iinto":
+        case "iintu":
+        case "iiinto":
+        case "iiintu":
+        case "limo":
+        case "limu":
+        case "liminfo":
+        case "liminfu":
+        case "limsupo":
+        case "limsupu":
+        case "linto":
+        case "lintu":
+        case "llinto":
+        case "llintu":
+        case "lllinto":
+        case "lllintu":
         case "logbase":
-        case "lim":
+        case "sumo":
+        case "sumu":
+        case "prodo":
+        case "produ":
             return [0, 2]; // Right and 2 arguments
+        case "coprodb":
+        case "intb":
+        case "iintb":
+        case "iiintb":
+        case "limb":
+        case "liminfb":
+        case "limsupb":
+        case "lintb":
+        case "llintb":
+        case "lllintb":
+        case "prodb":
+        case "sumb":
+            return [0, 3]; // Right and 3 arguments
         case "and":
-        case "approx": // Approximately
+        case "approx":
         case "cdot":
         case "cminus":
         case "cns":
@@ -130,6 +178,14 @@ function functionToHTML(funcName, argStrings){
             return `${argStrings[0]}≈${argStrings[1]}`;
         case "copen":
             return `${argStrings[0]}<span class="copen">◯</span>${argStrings[1]}`;
+        case "coprod":
+            return `<span\nclass="operator">∐</span> ${argStrings[0]}`;
+        case "coprodb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∐<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "coprodo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∐</span> ${argStrings[1]}`;
+        case "coprodu":
+            return `<span\nclass="operator">∐<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
         case "cminus":
             return `${argStrings[0]}⊖${argStrings[1]}`;
         case "cns":
@@ -183,6 +239,34 @@ function functionToHTML(funcName, argStrings){
             return `${argStrings[0]}⊷${argStrings[1]}`;
         case "ins":
             return `ℤ`;
+
+        case "int":
+            return `<span\nclass="operator">∫</span> ${argStrings[0]}`;
+        case "intb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∫<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "into":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∫</span> ${argStrings[1]}`;
+        case "intu":
+            return `<span\nclass="operator">∫<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "iint":
+            return `<span\nclass="operator">∬</span> ${argStrings[0]}`;
+        case "iintb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∬<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "iinto":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∬</span> ${argStrings[1]}`;
+        case "iintu":
+            return `<span\nclass="operator">∬<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "iiint":
+            return `<span\nclass="operator">∭</span> ${argStrings[0]}`;
+        case "iiintb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∭<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "iiinto":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∭</span> ${argStrings[1]}`;
+        case "iiintu":
+            return `<span\nclass="operator">∭<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;    
+
         case "intersect":
             return `${argStrings[0]}∩${argStrings[1]}`;
         case "lthan":
@@ -191,13 +275,61 @@ function functionToHTML(funcName, argStrings){
             return `${argStrings[0]}≤${argStrings[1]}`;
         case "leslant":
             return `${argStrings[0]}⩽${argStrings[1]}`;
+
         case "lim":
-            return `
-                <span\nclass="lim">
-                    <span>lim</span>
-                    <span\nclass="approachlimitof">${argStrings[0]}➜${argStrings[1]}</span>
-                </span>
-            `;
+            return `<span\nclass="operator">lim</span> ${argStrings[0]}`;
+        case "limb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "limo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim</span> ${argStrings[1]}`;
+        case "limu":
+            return `<span\nclass="operator">lim<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "liminf":
+            return `<span\nclass="operator">lim inf</span> ${argStrings[0]}`;
+        case "liminfb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim inf<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "liminfo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim inf</span> ${argStrings[1]}`;
+        case "liminfu":
+            return `<span\nclass="operator">lim inf<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "limsup":
+            return `<span\nclass="operator">lim sup</span> ${argStrings[0]}`;
+        case "limsupb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim sup<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "limsupo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim sup</span> ${argStrings[1]}`;
+        case "limsupu":
+            return `<span\nclass="operator">lim sup<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "lint":
+            return `<span\nclass="operator">∮</span> ${argStrings[0]}`;
+        case "lintb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∮<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "linto":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∮</span> ${argStrings[1]}`;
+        case "lintu":
+            return `<span\nclass="operator">∮<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "llint":
+            return `<span\nclass="operator">∯</span> ${argStrings[0]}`;
+        case "llintb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∯<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "llinto":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∯</span> ${argStrings[1]}`;
+        case "llintu":
+            return `<span\nclass="operator">∯<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
+        case "lllint":
+            return `<span\nclass="operator">∰</span> ${argStrings[0]}`;
+        case "lllintb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∰<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "lllinto":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∰</span> ${argStrings[1]}`;
+        case "lllintu":
+            return `<span\nclass="operator">∰<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
         case "logbase":
             return `log<span\nclass="logbase">${argStrings[0]}</span>${argStrings[1]}`;
         case "mgthan":
@@ -254,6 +386,16 @@ function functionToHTML(funcName, argStrings){
         case "\'":
         case "prime":
             return `<span class="prime"> </span>\'`;
+
+        case "prod":
+            return `<span\nclass="operator">∏</span> ${argStrings[0]}`;
+        case "prodb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∏<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "prodo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∏</span> ${argStrings[1]}`;
+        case "produ":
+            return `<span\nclass="operator">∏<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
         case "prop":
             return `${argStrings[0]}∝${argStrings[1]}`;
         case "rans":
@@ -280,6 +422,16 @@ function functionToHTML(funcName, argStrings){
             return `${argStrings[0]}≽${argStrings[1]}`;
         case "succsim":
             return `${argStrings[0]}≿${argStrings[1]}`;
+
+        case "sum":
+            return `<span\nclass="operator">∑</span> ${argStrings[0]}`;
+        case "sumb":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∑<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
+        case "sumo":
+            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∑</span> ${argStrings[1]}`;
+        case "sumu":
+            return `<span\nclass="operator">∑<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+
         case "supset":
             return `${argStrings[0]}⊃${argStrings[1]}`;
         case "supsete":

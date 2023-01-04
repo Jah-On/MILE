@@ -38,6 +38,7 @@ body {
 div.segment {
     display: inline;
     flex-direction: row;
+    margin-bottom: 10px;
 }
 
 /* Group CSS */
@@ -51,8 +52,10 @@ span.f {
 }
 
 /* OP CSS */
-span.approachlimitof {
-    font-size: 60%;
+span.and {
+    font-size: 115%;
+    font-weight: 1000;
+    vertical-align: text-top;
 }
 
 span.copen {
@@ -83,12 +86,21 @@ span.logbase {
     vertical-align: sub;
 }
 
-span.lim {
+span.operator {
     display: inline-flex;
     flex-direction: column;
+    line-height: 0.9;
     text-align: center;
     vertical-align: middle;
-    line-height: 0.9;
+}
+
+span.or {
+    font-weight: lighter;
+    vertical-align: text-top;
+}
+
+span.over {
+    font-size: 75%;
 }
 
 span.pow {
@@ -100,7 +112,16 @@ span.prime {
     font-size: 30%;
 }
 
+span.stimes {
+    font-size: 150%;
+    vertical-align: text-top;
+}
+
 span.sqrt {
     text-decoration: overline;
+    font-size: 75%;
+}
+
+span.under {
     font-size: 75%;
 }
