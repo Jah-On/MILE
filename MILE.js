@@ -162,14 +162,18 @@ function functionPositionAndInputs(functionNameString) {
 }
 
 // ChatGPT aided
+// Should return element
 // Returns string
-function functionToHTML(funcName, argStrings){
-    for (let index = 0;  index < argStrings.length; ++index){
-        argStrings[index] = argStrings[index].replaceAll(" ", "");
-    }
+function functionToHTML(funcName, argElements){
+    let outputElement = document.createElement("div");
     switch (funcName) {
         case "abs":
-            return `|${argStrings[0]}|`;
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "|";
+            outputElement.append(argElements[0]);
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "|";
+            return outputElement;
         case "aleph":
             return "ℵ";
         case "and":
@@ -450,11 +454,11 @@ function functionToHTML(funcName, argStrings){
         case "xtimes":
             return `${argStrings[0]}×${argStrings[1]}`;
         default:
-            return ``;
+            return outputElement;
     }
 }
 
-// Returns string
+// Returns element
 function processLeftFunction(functionToken, tokensRight){
     let accumulator = [];
     for (let index = 0; index < functionToken[3]; ++index){
@@ -467,7 +471,7 @@ function processLeftFunction(functionToken, tokensRight){
     return functionToHTML(functionToken[1], accumulator);
 }
 
-// Returns string
+// Returns element
 function processMiddleFunction(functionToken, tokenLeft, tokenRight){
     let accumulator = [];
     if (tokenLeft.length > 0){
@@ -483,6 +487,7 @@ function processMiddleFunction(functionToken, tokenLeft, tokenRight){
     return functionToHTML(functionToken[1], accumulator);
 }
 
+// Should return element
 // Returns string
 function processSub(inputToken){
     if (inputToken[1].length < 2){
@@ -498,27 +503,30 @@ function processSub(inputToken){
         }
     }
     if (/^[\)\]\}\|]+$/.test(inputToken[1][inputToken[1].length - 1])){ // Thanks ChatGPT for the regex!
-        return inputToken[1][0] + link(parse(inputToken[1].substring(1, inputToken[1].length - 1))) + inputToken[1][inputToken[1].length - 1];
+        return `<span\nclass="visible">${inputToken[1][0]}</span>` + link(parse(inputToken[1].substring(1, inputToken[1].length - 1))) + `<span\nclass="visible">${inputToken[1][inputToken[1].length - 1]}</span>`;
     }
-    return inputToken[1][0] + link(parse(inputToken[1].substring(1, inputToken[1].length)));
+    return `<span\nclass="visible">${inputToken[1][0]}</span>` + link(parse(inputToken[1].substring(1, inputToken[1].length)));
 }
 
 // ChatGPT aided
-// Returns string
+// Returns element
 function processGroup(inputToken) {
-    let result = "";
+    let outputElement = document.createElement("div");
     for (let i = 0; i < inputToken[1].length; i++) {
         const char = inputToken[1][i];
         if (!isAlpha(char)) {
-            result += char;
+            outputElement.innerText += char;
         } else {
-            result += `<i>${char}</i>`;
+            outputElement.append(document.createElement("i"));
+            outputElement.lastChild.innerText = char;
             if (char == "f"){
-                result += `<span class="f"> </span>`;
+                outputElement.append(document.createElement("span"));
+                outputElement.lastChild.className = char;
+                outputElement.lastChild.innerText = " ";
             }
         }
     }
-    return result;
+    return outputElement;
 }
 
 function parse(segmentString){
@@ -634,7 +642,7 @@ function parse(segmentString){
     return tokens;
 }
 
-// Returns string
+// Returns element
 function link(tokens){
     for (let index = tokens.length - 1; index >= 0; --index){
         if (tokens[index][0] == 0){
@@ -662,14 +670,15 @@ function link(tokens){
         }
     }
 
-    let output = "";
+    let outputElement = document.createElement("div");
+    outputElement.className = "segment";
     for (let index = 0; index < tokens.length; ++index){
-        output += tokens[index][1];
+        outputElement.append(tokens[index][1]);
         if (index + 1 == tokens.length){
             continue;
         }
         if ((tokens[index][0] == tokens[index + 1][0]) && (tokens[index][0] == 2)){
-            output += " ";
+            outputElement.innerText += " ";
         }
     }
 
@@ -712,7 +721,7 @@ function onEvent(inputElement) {
     }
 
     for (segment of segments){
-        outputElement.innerHTML += `<div class="segment">${link(parse(segment))}</div>`;
+        outputElement.append(link(parse(segment)));
     }
     inputElement.setAttribute("data", outputElement.innerHTML);
 }
