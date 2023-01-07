@@ -8,12 +8,24 @@
         <script src="./MILE.js"></script>
     </head>
     <body>
+        <script>window.addEventListener("beforeunload", windowLeave);</script>
+        <div id="header">
+            <form id="baseForm" method="dialog">
+                <input type="text">
+                <button>Add</button>
+                <script>document.getElementById("baseForm").addEventListener("submit", addNewInput);</script>
+            </form>
+            <input type="button" id="backToBase" value="🡸 Back" hidden>
+            <script>document.getElementById("backToBase").addEventListener("click", backToBase);</script>
+            <input type="button" id="printButton" value="Print">
+            <script>document.getElementById("printButton").addEventListener("click", printOutput);</script>
+        </div>
         <div id="container">
-            <textarea id="input" oninput="onEvent()">
-            </textarea>
-            <div id="output">
+            <div id="inputs">
+                <div id="problemList"></div>
             </div>
+            <div id="output"></div>
         </div>
     </body>
-    <script>window.onload = onEvent();</script>
+    <!-- <script>window.onload = onEvent();</script> -->
 </html>

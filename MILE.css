@@ -1,44 +1,142 @@
 body {
+    background-color: black;
+    height: calc(100vh - 20px);
     margin: 0px;
+    padding: 10px;
 }
+
+@media print {
+    #header, #inputs {
+        visibility: hidden;
+    }
+    #output {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        min-width: calc(100% - 8px);
+        height: fit-content !important;
+        overflow-y: visible;
+        margin: 0px;
+    }
+    #output * {
+        break-inside: avoid;
+    }
+    #container, body, html {
+        height: fit-content !important;
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+    }
+}
+
+/* HEADER START */
+#header {
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 25px;
+}
+
+#baseForm {
+    width: fit-content;
+}
+
+#printButton {
+    margin-left: auto;
+}
+/* HEADER END */
 
 #container {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgb(40, 40, 40);
     display: flex;
-    flex-direction: row;
+    width: 100%;
+    height: calc(100% - 30px);
 }
 
-#input {
-    width: 48%;
-    height: 97%;
-    font-size: 5vh;
+#problemList {
+    font-size: 32px;
+    margin-left: 10px;
+    background-color: rgb(20, 20, 20);
+    overflow-y: auto;
+    width: calc(100% - 10px);
+}
+
+div.problemListRow {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+input.problemName {
+    width: 40%;
+}
+
+button.editProblem {
+    margin: auto;
+    vertical-align: baseline;
+}
+
+textarea.input {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    font-size: 28px;
     background-color: rgb(20, 20, 20);
     color: whitesmoke;
-    margin: 1vh;
-    border: 0px;
+    margin: 0px;
     resize: none;
 }
 
+#inputs {
+    width: calc(50% - 10px);
+    height: calc(100% - 2px);
+    font-size: 28px;
+    background-color: rgb(20, 20, 20);
+    overflow-y: scroll;
+}
+
 #output {
-    width: 48%;
-    height: 96.5%;
-    font-size: 5vh;
+    width: calc(50% - 10px);
+    height: calc(100% - 12px);
+    font-size: 28px;
     background-color: whitesmoke;
     color: black;
-    margin: 1vh;
-    padding-top: 0.5%;
-    padding-left: 0.5%;
     align-items: center;
+    display: block;
+    margin-left: auto;
+    padding: 5px;
+    overflow-y: scroll;
+}
+
+div.baseOutput {
     display: flex;
-    flex-direction: column;
+    width: calc(100% - 4px);
+    margin-bottom: 10px;
+    border: 2px solid black;
+}
+
+span.baseOutputLabel {
+    position: relative;
+    top: 0px;
+    left: 5px;
+    z-index: 2;
+    display: block;
+}
+
+div.baseOutputContents {
+    display: block;
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.segment {
-    display: inline;
-    flex-direction: row;
+    display: block;
     margin-bottom: 10px;
+    break-inside:avoid;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
 }
 
 /* Group CSS */
