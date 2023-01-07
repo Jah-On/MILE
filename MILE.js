@@ -225,8 +225,9 @@ function functionToHTML(funcName, argStrings){
                     <span\nclass="denominator">${argStrings[1]}</span>
                 </span>
             `;
+        case ">":
         case "gthan":
-            return `${argStrings[0]}>${argStrings[1]}`;
+            return `${argStrings[0]}&gt;${argStrings[1]}`;
         case "gethan":
             return `${argStrings[0]}≥${argStrings[1]}`;
         case "geslant":
@@ -269,8 +270,9 @@ function functionToHTML(funcName, argStrings){
 
         case "intersect":
             return `${argStrings[0]}∩${argStrings[1]}`;
+        case "<":
         case "lthan":
-            return `${argStrings[0]}<${argStrings[1]}`;
+            return `${argStrings[0]}&lt;${argStrings[1]}`;
         case "lethan":
             return `${argStrings[0]}≤${argStrings[1]}`;
         case "leslant":
