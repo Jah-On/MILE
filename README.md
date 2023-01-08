@@ -124,7 +124,7 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | origof | ![origof](images/origof.png) |
 | ortho | ![ortho](images/ortho.png) |
 | parallel | ![parallel](images/parallel.png) |
-| ^ | ![^](images/^.png) |
+| ^ | ![\^](images/^.png) |
 | pow | ![pow](images/pow.png) |
 | prec | ![prec](images/prec.png) |
 | preceq | ![preceq](images/preceq.png) |
