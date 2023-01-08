@@ -86,7 +86,7 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | ctimes | ![ctimes](images/ctimes.png) |
 | def | ![def](images/def.png) |
 | div | ![div](images/div.png) |
-| | | ![|](images/|.png) |
+| \| | ![\|](images/\|.png) |
 | divides | ![divides](images/divides.png) |
 | dlarrow | ![dlarrow](images/dlarrow.png) |
 | dlrarrow | ![dlrarrow](images/dlrarrow.png) |
