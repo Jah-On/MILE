@@ -176,6 +176,8 @@ function functionToHTML(funcName, argStrings){
             return `${argStrings[0]}<span class="and">^</span>${argStrings[1]}`;
         case "approx":
             return `${argStrings[0]}≈${argStrings[1]}`;
+        case "cdot":
+            return `${argStrings[0]}⊙${argStrings[1]}`;
         case "copen":
             return `${argStrings[0]}<span class="copen">◯</span>${argStrings[1]}`;
         case "coprod":
