@@ -98,7 +98,7 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | gthan | ![gthan](images/gthan.png) |
 | gethan | ![gethan](images/gethan.png) |
 | geslant | ![geslant](images/geslant.png) |
-| / | ![/](images//.png) |
+| / | ![\/](images/slant.png) |
 | imgof | ![imgof](images/imgof.png) |
 | in | ![in](images/in.png) |
 | intersect | ![intersect](images/intersect.png) |
