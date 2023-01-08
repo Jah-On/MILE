@@ -6,6 +6,8 @@ Still work in progress!
 
 # Documentation
 
+Invisible groupings are done with semicolons (;) and two semicolons **with no spaces** (;;) ends the group.
+
 | Key word or symbol | Output |
 | :----------------: | :----: |
 | ens | ![ens](images/ens.png) |
