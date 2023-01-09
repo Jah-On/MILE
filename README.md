@@ -5,6 +5,10 @@ Still work in progress!
 
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
+# Examples
+![image](https://user-images.githubusercontent.com/58399643/211419499-25be9364-6099-4faf-8659-ca2b4de97db6.png)
+
+
 # Documentation
 
 Invisible groupings are done with semicolons (;) and two semicolons **with no spaces** (;;) ends the group.
