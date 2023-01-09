@@ -47,10 +47,6 @@ span {
     width: fit-content;
 }
 
-#backToBase {
-    visibility: collapse;
-}
-
 #printButton {
     margin-left: auto;
 }

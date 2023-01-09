@@ -186,8 +186,7 @@ function functionPositionAndInputs(functionNameString) {
 }
 
 // ChatGPT aided
-// Should return element
-// Returns string
+// Returns element
 function functionToHTML(funcName, argElements){
     funcName = funcName.replace("^", "pow")
                        .replace("'", "prime")
@@ -828,9 +827,9 @@ function deleteInput(event){
 }
 
 function editInput(event){
-    document.getElementById("baseForm").style.visibility = "collapse";
+    document.getElementById("baseForm").hidden = true;
     document.getElementById("problemList").hidden = true;
-    document.getElementById("backToBase").style.visibility = "visible";
+    document.getElementById("backToBase").hidden = false;
     document.getElementById("backToBase").setAttribute("data", event.srcElement.getAttribute("data"));
     document.getElementById(event.srcElement.getAttribute("data")).hidden = false;
     document.getElementById(event.srcElement.getAttribute("data")).focus();
@@ -838,9 +837,9 @@ function editInput(event){
 }
 
 function backToBase(event){
-    document.getElementById("baseForm").style.visibility = "visible";
-    document.getElementById("problemList").style.visibility = "visible";
-    document.getElementById("backToBase").style.visibility = "collapse";
+    document.getElementById("baseForm").hidden = false;
+    document.getElementById("problemList").hidden = false;
+    document.getElementById("backToBase").hidden = true;
     document.getElementById(event.srcElement.getAttribute("data")).hidden = true;
     updateBaseOutput();
 }
