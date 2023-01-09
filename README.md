@@ -3,6 +3,7 @@ Editor for the Math Indicative Language (MIL)
 
 Still work in progress!
 
+Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
 # Documentation
 
