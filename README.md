@@ -7,6 +7,7 @@ Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.c
 
 # Examples
 ![image](https://user-images.githubusercontent.com/58399643/211419499-25be9364-6099-4faf-8659-ca2b4de97db6.png)
+![image](https://user-images.githubusercontent.com/58399643/211420477-b271dd8a-d4e7-422d-87c8-1b6257ca8ec7.png)
 
 
 # Documentation
