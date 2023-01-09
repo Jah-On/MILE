@@ -1,3 +1,29 @@
+const functionToChar = {"aleph":"ℵ", "and":"^", "approx":"≈", "cdot":"⊙", 
+                        "copen":"◯", "coprod":"∐", "cminus":"⊖", "cns":"ℂ", 
+                        "cplus":"⊕", "cslash":"⊘", "ctimes":"⊗", "def":"≝", 
+                        "/":"/", "div":"÷", "|":"∣", "divides":"∣", 
+                        "dlarrow":"⇐", "dlrarrow":"⇔", "drarrow":"⇒", 
+                        "=":"=", "equals":"=", "equiv":"≡", "ens":"∅", 
+                        ">":">", "gthan":">", "gethan":"≥", "geslant":"⩾", 
+                        "in":"∈", "infinity":"∞", "imgof":"⊷", "ins":"ℤ", 
+                        "int":"∫", "iint":"∬", "iiint":"∭", "intersect":"∩", 
+                        "<":"<", "lthan":"<", "lethan":"≤", "leslant":"⩽", 
+                        "lim":"lim", "liminf":"lim inf", "limsup":"lim sup", 
+                        "lint":"∮", "llint":"∯", "lllint":"∰", "mgthan":"≫", 
+                        "-":"—", "minus":"—", "mlthan":"≪", "ndivides":"∤", 
+                        "neg":"¬", "nns":"ℕ", "noteq":"≠", "notin":"∉", 
+                        "nprec":"⊀", "nsucc":"⊁", "nsubset":"⊄", 
+                        "nsubsete":"⊈", "nsupset":"⊅", "nsupsete":"⊉", 
+                        "owns":"∋", "or":"∨", "origof":"⊶", "ortho":"⟂", 
+                        "parallel":"∥", "+":"+", "plus":"+", "prec":"≺", 
+                        "preceq":"≼", "precsim":"≾", "\'":"'", "prime":"'",
+                        "prod":"∏", "prop":"∝", "rans":"ℚ", "rens":"ℝ", 
+                        "setm":"\\", "setq":"/", "sim":"∼", "simeq":"≃", 
+                        "stimes":"*", "subset":"⊂", "subsete":"⊆", "succ":"≻", 
+                        "succeq":"≽", "succsim":"≿", "sum":"∑", "supset":"⊃", 
+                        "supsete":"⊇", "*":"⋅", "times":"⋅", "toward":"➜", 
+                        "union":"∪", "xtimes":"×"};
+
 // ChatGPT implementation
 // Returns boolean
 function isAlpha(char) {
@@ -114,9 +140,7 @@ function functionPositionAndInputs(functionNameString) {
         case "lthan":
         case "lethan":
         case "leslant":
-        case ">>":
         case "mgthan":
-        case "<<":
         case "mlthan":
         case "ndivides":
         case "notin":
@@ -162,333 +186,308 @@ function functionPositionAndInputs(functionNameString) {
 }
 
 // ChatGPT aided
+// Should return element
 // Returns string
-function functionToHTML(funcName, argStrings){
-    for (let index = 0;  index < argStrings.length; ++index){
-        argStrings[index] = argStrings[index].replaceAll(" ", "");
-    }
+function functionToHTML(funcName, argElements){
+    funcName = funcName.replace("^", "pow")
+                       .replace("'", "prime")
+                       .replace("-", "minus")
+                       .replace("+", "plus")
+                       .replace("|", "divides")
+                       .replace("=", "equals")
+                       .replace(">", "gthan")
+                       .replace("<", "lthan")
+                       .replace("*", "times")
+    let ID = "";
+    let outputElement = document.createElement("span");
     switch (funcName) {
         case "abs":
-            return `|${argStrings[0]}|`;
-        case "aleph":
-            return "ℵ";
-        case "and":
-            return `${argStrings[0]}<span class="and">^</span>${argStrings[1]}`;
-        case "approx":
-            return `${argStrings[0]}≈${argStrings[1]}`;
-        case "cdot":
-            return `${argStrings[0]}⊙${argStrings[1]}`;
-        case "copen":
-            return `${argStrings[0]}<span class="copen">◯</span>${argStrings[1]}`;
-        case "coprod":
-            return `<span\nclass="operator">∐</span> ${argStrings[0]}`;
-        case "coprodb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∐<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "coprodo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∐</span> ${argStrings[1]}`;
-        case "coprodu":
-            return `<span\nclass="operator">∐<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-        case "cminus":
-            return `${argStrings[0]}⊖${argStrings[1]}`;
-        case "cns":
-            return `${argStrings[0]}ℂ${argStrings[1]}`;
-        case "cplus":
-            return `${argStrings[0]}⊕${argStrings[1]}`;
-        case "cslash":
-            return `${argStrings[0]}⊘${argStrings[1]}`;
-        case "ctimes":
-            return `${argStrings[0]}⊗${argStrings[1]}`;
-        case "def":
-            return `${argStrings[0]}≝${argStrings[1]}`;        
-        case "/":
-            return `${argStrings[0]}/${argStrings[1]}`;
-        case "div":
-            return `${argStrings[0]}÷${argStrings[1]}`;
-        case "|":
-        case "divides": 
-            return `${argStrings[0]}∣${argStrings[1]}`;
-        case "dlarrow": 
-            return `${argStrings[0]}⇐${argStrings[1]}`;
-        case "dlrarrow": 
-            return `${argStrings[0]}⇔${argStrings[1]}`;
-        case "drarrow": 
-            return `${argStrings[0]}⇒${argStrings[1]}`;
-        case "=":
-        case "equals": 
-            return `${argStrings[0]}=${argStrings[1]}`;
-        case "equiv": 
-            return `${argStrings[0]}≡${argStrings[1]}`;
-        case "ens":
-            return `∅`;
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "|";
+            outputElement.append(argElements[0]);
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "|";
+            return outputElement;
+
         case "frac":
-            return `
-                <span\nclass="frac">
-                    <span>${argStrings[0]}</span>
-                    <span\nclass="denominator">${argStrings[1]}</span>
-                </span>
-            `;
-        case ">":
-        case "gthan":
-            return `${argStrings[0]}&gt;${argStrings[1]}`;
-        case "gethan":
-            return `${argStrings[0]}≥${argStrings[1]}`;
-        case "geslant":
-            return `${argStrings[0]}⩾${argStrings[1]}`;
-        case "in":
-            return `${argStrings[0]}∈${argStrings[1]}`;
-        case "infinity":
-            return `<span\nclass="infinity">∞</span>`;
-        case "imgof":
-            return `${argStrings[0]}⊷${argStrings[1]}`;
-        case "ins":
-            return `ℤ`;
-
-        case "int":
-            return `<span\nclass="operator">∫</span> ${argStrings[0]}`;
-        case "intb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∫<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "into":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∫</span> ${argStrings[1]}`;
-        case "intu":
-            return `<span\nclass="operator">∫<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "iint":
-            return `<span\nclass="operator">∬</span> ${argStrings[0]}`;
-        case "iintb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∬<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "iinto":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∬</span> ${argStrings[1]}`;
-        case "iintu":
-            return `<span\nclass="operator">∬<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "iiint":
-            return `<span\nclass="operator">∭</span> ${argStrings[0]}`;
-        case "iiintb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∭<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "iiinto":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∭</span> ${argStrings[1]}`;
-        case "iiintu":
-            return `<span\nclass="operator">∭<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;    
-
-        case "intersect":
-            return `${argStrings[0]}∩${argStrings[1]}`;
-        case "<":
-        case "lthan":
-            return `${argStrings[0]}&lt;${argStrings[1]}`;
-        case "lethan":
-            return `${argStrings[0]}≤${argStrings[1]}`;
-        case "leslant":
-            return `${argStrings[0]}⩽${argStrings[1]}`;
-
-        case "lim":
-            return `<span\nclass="operator">lim</span> ${argStrings[0]}`;
-        case "limb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "limo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim</span> ${argStrings[1]}`;
-        case "limu":
-            return `<span\nclass="operator">lim<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "liminf":
-            return `<span\nclass="operator">lim inf</span> ${argStrings[0]}`;
-        case "liminfb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim inf<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "liminfo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim inf</span> ${argStrings[1]}`;
-        case "liminfu":
-            return `<span\nclass="operator">lim inf<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "limsup":
-            return `<span\nclass="operator">lim sup</span> ${argStrings[0]}`;
-        case "limsupb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim sup<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "limsupo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>lim sup</span> ${argStrings[1]}`;
-        case "limsupu":
-            return `<span\nclass="operator">lim sup<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "lint":
-            return `<span\nclass="operator">∮</span> ${argStrings[0]}`;
-        case "lintb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∮<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "linto":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∮</span> ${argStrings[1]}`;
-        case "lintu":
-            return `<span\nclass="operator">∮<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "llint":
-            return `<span\nclass="operator">∯</span> ${argStrings[0]}`;
-        case "llintb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∯<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "llinto":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∯</span> ${argStrings[1]}`;
-        case "llintu":
-            return `<span\nclass="operator">∯<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "lllint":
-            return `<span\nclass="operator">∰</span> ${argStrings[0]}`;
-        case "lllintb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∰<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "lllinto":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∰</span> ${argStrings[1]}`;
-        case "lllintu":
-            return `<span\nclass="operator">∰<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = "frac";
+            outputElement.lastChild.append(document.createElement("span"));
+            outputElement.lastChild.lastChild.append(argElements[0]);
+            outputElement.lastChild.append(document.createElement("span"));
+            outputElement.lastChild.lastChild.className = "denominator";
+            outputElement.lastChild.lastChild.append(argElements[1]);
+            return outputElement;    
 
         case "logbase":
-            return `log<span\nclass="logbase">${argStrings[0]}</span>${argStrings[1]}`;
-        case "mgthan":
-            return `${argStrings[0]}≫${argStrings[1]}`;
-        case "-":
-        case "minus":
-            return `-${argStrings[0]}`;
-        case "mlthan":
-            return `${argStrings[0]}≪${argStrings[1]}`;
-        case "ndivides":
-            return `${argStrings[0]}∤${argStrings[1]}`;
-        case "neg":
-            return `¬${argStrings[0]}`;
-        case "nns":
-            return `ℕ`;
-        case "noteq":
-            return `${argStrings[0]}≠${argStrings[1]}`;
-        case "notin":
-            return `${argStrings[0]}∉${argStrings[1]}`;
-        case "nprec":
-            return `${argStrings[0]}⊀${argStrings[1]}`;
-        case "nsucc":
-            return `${argStrings[0]}⊁${argStrings[1]}`;
-        case "nsubset":
-            return `${argStrings[0]}⊄${argStrings[1]}`;
-        case "nsubsete":
-            return `${argStrings[0]}⊈${argStrings[1]}`;
-        case "nsupset":
-            return `${argStrings[0]}⊅${argStrings[1]}`;
-        case "nsupsete":
-            return `${argStrings[0]}⊉${argStrings[1]}`;            
-        case "owns":
-            return `${argStrings[0]}∋${argStrings[1]}`;
-        case "or":
-            return `${argStrings[0]}<span class="or">∨</span>${argStrings[1]}`;
-        case "origof":
-            return `${argStrings[0]}⊶${argStrings[1]}`;
-        case "ortho":
-            return `${argStrings[0]}⟂${argStrings[1]}`;
-        case "parallel":
-            return `${argStrings[0]}∥${argStrings[1]}`;
-        case "+":
-        case "plus":
-            return `+${argStrings[0]}`;
-        case "^":
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "log";
+            outputElement.append(argElements[0]);
+            outputElement.lastChild.className = funcName;
+            outputElement.append(argElements[1]);
+            return outputElement;
+    
         case "pow":
-            return `${argStrings[0]}<span\nclass="pow">${argStrings[1]}</span>`;
-        case "prec":
-            return `${argStrings[0]}≺${argStrings[1]}`;
-        case "preceq":
-            return `${argStrings[0]}≼${argStrings[1]}`;
-        case "precsim":
-            return `${argStrings[0]}≾${argStrings[1]}`;
-        case "\'":
-        case "prime":
-            return `<span class="prime"> </span>\'`;
+            outputElement.append(argElements[0]);
+            outputElement.append(argElements[1]);
+            outputElement.lastChild.className = funcName;
+            return outputElement;
 
-        case "prod":
-            return `<span\nclass="operator">∏</span> ${argStrings[0]}`;
-        case "prodb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∏<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "prodo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∏</span> ${argStrings[1]}`;
-        case "produ":
-            return `<span\nclass="operator">∏<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "prop":
-            return `${argStrings[0]}∝${argStrings[1]}`;
-        case "rans":
-            return `ℚ`;
-        case "rens":
-            return `ℝ`;
-        case "setm":
-            return `${argStrings[0]}\\${argStrings[1]}`;
-        case "setq":
-            return `${argStrings[0]}/${argStrings[1]}`;
-        case "sim":
-            return `${argStrings[0]}∼${argStrings[1]}`;
-        case "simeq":
-            return `${argStrings[0]}≃${argStrings[1]}`;
-        case "stimes":
-            return `${argStrings[0]}<span class="stimes">*</span>${argStrings[1]}`;
-        case "subset":
-            return `${argStrings[0]}⊂${argStrings[1]}`;
-        case "subsete":
-            return `${argStrings[0]}⊆${argStrings[1]}`;
-        case "succ":
-            return `${argStrings[0]}≻${argStrings[1]}`;
-        case "succeq":
-            return `${argStrings[0]}≽${argStrings[1]}`;
-        case "succsim":
-            return `${argStrings[0]}≿${argStrings[1]}`;
-
-        case "sum":
-            return `<span\nclass="operator">∑</span> ${argStrings[0]}`;
-        case "sumb":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∑<span\nclass="under">${argStrings[1]}</span></span> ${argStrings[2]}`;
-        case "sumo":
-            return `<span\nclass="operator"><span\nclass="over">${argStrings[0]}</span>∑</span> ${argStrings[1]}`;
-        case "sumu":
-            return `<span\nclass="operator">∑<span\nclass="under">${argStrings[0]}</span></span> ${argStrings[1]}`;
-
-        case "supset":
-            return `${argStrings[0]}⊃${argStrings[1]}`;
-        case "supsete":
-            return `${argStrings[0]}⊇${argStrings[1]}`;
         case "sqrt":
-            return `<span>&radic;<span\nclass="sqrt">${argStrings[0]}</span></span>`;
-        case "*":
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.innerText = "√";
+            outputElement.append(argElements[0]);
+            outputElement.lastChild.className = funcName;
+            return outputElement;
+
+        case "aleph":
+        case "ens":
+        case "infinity":
+        case "ins":
+        case "nns":
+        case "prime":
+        case "rans":
+        case "rens":
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = funcName;
+            outputElement.lastChild.innerText = functionToChar[funcName];
+            return outputElement;
+
+        case "minus":
+        case "neg":
+        case "plus":
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = funcName;
+            outputElement.lastChild.innerText = functionToChar[funcName];
+            outputElement.append(argElements[0]);
+            return outputElement;
+
+        case "and":
+        case "approx":
+        case "cdot":
+        case "copen":
+        case "cminus":
+        case "cns":
+        case "cplus":
+        case "cslash":
+        case "ctimes":
+        case "def":
+        case "/":
+        case "div":
+        case "divides": 
+        case "dlarrow": 
+        case "dlrarrow": 
+        case "drarrow": 
+        case "equals": 
+        case "equiv": 
+        case "gthan":
+        case "gethan":
+        case "geslant":
+        case "in":
+        case "imgof":
+        case "intersect":
+        case "lthan":
+        case "lethan":
+        case "leslant":
+        case "mgthan":
+        case "mlthan":
+        case "ndivides":
+        case "noteq":
+        case "notin":
+        case "nprec":
+        case "nsucc":
+        case "nsubset":
+        case "nsubsete":
+        case "nsupset":
+        case "nsupsete":
+        case "owns":
+        case "or":
+        case "origof":
+        case "ortho":
+        case "parallel":
+        case "prec":
+        case "preceq":
+        case "precsim":
+        case "prop":
+        case "setm":
+        case "setq":
+        case "sim":
+        case "simeq":
+        case "stimes":
+        case "subset":
+        case "subsete":
+        case "succ":
+        case "succeq":
+        case "succsim":
+        case "supset":
+        case "supsete":
         case "times":
-            return `${argStrings[0]}⋅${argStrings[1]}`;
         case "toward":
-            return `${argStrings[0]}➜${argStrings[1]}`;
         case "union":
-            return `${argStrings[0]}∪${argStrings[1]}`;
         case "xtimes":
-            return `${argStrings[0]}×${argStrings[1]}`;
+            outputElement.append(argElements[0]);
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = funcName;
+            outputElement.lastChild.innerText = functionToChar[funcName];
+            outputElement.append(argElements[1]);
+            return outputElement;
+        
+        case "coprod":
+        case "int":
+        case "iint":
+        case "iiint":
+        case "lim":
+        case "liminf":
+        case "limsup":
+        case "lint":
+        case "llint":
+        case "lllint":
+        case "prod":
+        case "sum":
+            ID = generateRand16();
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.ID = ID;
+            outputElement.lastChild.className = funcName;
+            outputElement.lastChild.innerText = functionToChar[funcName];
+            outputElement.append(argElements[0]);
+            outputElement.lastChild.className = "operationInput";
+            outputElement.lastChild.setAttribute("data", ID);
+            return outputElement;
+
+        case "coprodo":
+        case "into":
+        case "iinto":
+        case "iiinto":
+        case "limo":
+        case "liminfo":
+        case "limsupo":
+        case "linto":
+        case "llinto":
+        case "lllinto":
+        case "prodo":
+        case "sumo":
+            ID = generateRand16();
+
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = "operator";
+
+            outputElement.lastChild.append(argElements[0]);
+            outputElement.lastChild.lastChild.className = "over";
+
+            outputElement.lastChild.append(document.createElement("span"));
+            outputElement.lastChild.lastChild.id = ID;
+            outputElement.lastChild.lastChild.className = funcName.substr(0, funcName.length - 1);
+            outputElement.lastChild.lastChild.innerText = functionToChar[funcName.substr(0, funcName.length - 1)];
+
+            outputElement.append(argElements[1]);
+            outputElement.lastChild.className = "operationInput";
+            outputElement.lastChild.setAttribute("data", ID);
+            return outputElement;
+
+        case "coprodu":
+        case "intu":
+        case "iintu":
+        case "iiintu":
+        case "limu":
+        case "liminfu":
+        case "limsupu":
+        case "lintu":
+        case "llintu":
+        case "lllintu":
+        case "produ":
+        case "sumu":
+            ID = generateRand16();
+
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = "operator";
+
+            outputElement.lastChild.append(document.createElement("span"));
+            outputElement.lastChild.lastChild.id = ID;
+            outputElement.lastChild.lastChild.className = funcName.substr(0, funcName.length - 1);
+            outputElement.lastChild.lastChild.innerText = functionToChar[funcName.substr(0, funcName.length - 1)];
+
+            outputElement.lastChild.append(argElements[0]);
+            outputElement.lastChild.lastChild.className = "under";
+
+            outputElement.append(argElements[1]);
+            outputElement.lastChild.className = "operationInput";
+            outputElement.lastChild.setAttribute("data", ID);
+            return outputElement;
+
+        case "coprodb":
+        case "intb":
+        case "iintb":
+        case "iiintb":
+        case "limb":
+        case "liminfb":
+        case "limsupb":
+        case "lintb":
+        case "llintb":
+        case "lllintb":
+        case "prodb":
+        case "sumb":
+            ID = generateRand16();
+
+            outputElement.append(document.createElement("span"));
+            outputElement.lastChild.className = "operator";
+
+            outputElement.lastChild.append(argElements[0]);
+            outputElement.lastChild.lastChild.className = "over";
+
+            outputElement.lastChild.append(document.createElement("span"));
+            outputElement.lastChild.lastChild.id = ID;
+            outputElement.lastChild.lastChild.className = funcName.substr(0, funcName.length - 1);
+            outputElement.lastChild.lastChild.innerText = functionToChar[funcName.substr(0, funcName.length - 1)];
+
+            outputElement.lastChild.append(argElements[1]);
+            outputElement.lastChild.lastChild.className = "under";
+
+            outputElement.append(argElements[2]);
+            outputElement.lastChild.className = "operationInput";
+            outputElement.lastChild.setAttribute("data", ID);
+            return outputElement;
+
         default:
-            return ``;
+            return outputElement;
     }
 }
 
-// Returns string
+// Returns element
 function processLeftFunction(functionToken, tokensRight){
     let accumulator = [];
     for (let index = 0; index < functionToken[3]; ++index){
         if (index < tokensRight.length){
             accumulator.push(tokensRight[index][1]);
         } else {
-            accumulator.push("¿");
+            accumulator.push(document.createElement("span"));
+            accumulator[accumulator.length - 1].innerText = "¿";
         }
     }
     return functionToHTML(functionToken[1], accumulator);
 }
 
-// Returns string
+// Returns element
 function processMiddleFunction(functionToken, tokenLeft, tokenRight){
     let accumulator = [];
     if (tokenLeft.length > 0){
         accumulator.push(link(parse(tokenLeft[0][1])));
     } else {
-        accumulator.push("¿");
+        accumulator.push(document.createElement("span"));
+        accumulator[accumulator.length - 1].innerText = "¿";
     }
     if (tokenRight.length > 0){
         accumulator.push(tokenRight[0][1]);
     } else {
-        accumulator.push("¿");
+        accumulator.push(document.createElement("span"));
+        accumulator[accumulator.length - 1].innerText = "¿";
     }
     return functionToHTML(functionToken[1], accumulator);
 }
 
-// Returns string
+// Returns element
 function processSub(inputToken){
     if (inputToken[1].length < 2){
-        return inputstring;
+        return processGroup(inputToken);
     }
     if (inputToken[1][0] == ";"){
         if (/[;]/.test(inputToken[1][inputToken[1].length - 2]) && inputToken[1][inputToken[1].length - 2] == inputToken[1][inputToken[1].length - 1]){
@@ -499,28 +498,42 @@ function processSub(inputToken){
             return link(parse(inputToken[1].substring(1, inputToken[1].length)));
         }
     }
-    if (/^[\)\]\}\|]+$/.test(inputToken[1][inputToken[1].length - 1])){ // Thanks ChatGPT for the regex!
-        return inputToken[1][0] + link(parse(inputToken[1].substring(1, inputToken[1].length - 1))) + inputToken[1][inputToken[1].length - 1];
+    let endsWithVisible = /^[\)\]\}\|]+$/.test(inputToken[1][inputToken[1].length - 1]); // Thanks ChatGPT for the regex!
+    let outputElement = document.createElement("span");
+
+    outputElement.append(document.createElement("span"));
+    outputElement.lastChild.className = "visibleFront";
+    outputElement.lastChild.innerText = inputToken[1][0];
+
+    outputElement.append(link(parse(inputToken[1].substring(1, inputToken[1].length - Number(endsWithVisible)))));
+
+    if (endsWithVisible){
+        outputElement.append(document.createElement("span"));
+        outputElement.lastChild.className = "visibleBack";
+        outputElement.lastChild.innerText = inputToken[1][inputToken[1].length - 1];
     }
-    return inputToken[1][0] + link(parse(inputToken[1].substring(1, inputToken[1].length)));
+    return outputElement;
 }
 
 // ChatGPT aided
-// Returns string
+// Returns element
 function processGroup(inputToken) {
-    let result = "";
+    let outputElement = document.createElement("span");
     for (let i = 0; i < inputToken[1].length; i++) {
         const char = inputToken[1][i];
         if (!isAlpha(char)) {
-            result += char;
+            outputElement.innerText += char;
         } else {
-            result += `<i>${char}</i>`;
+            outputElement.append(document.createElement("i"));
+            outputElement.lastChild.innerText = char;
             if (char == "f"){
-                result += `<span class="f"> </span>`;
+                outputElement.append(document.createElement("span"));
+                outputElement.lastChild.className = char;
+                outputElement.lastChild.innerHTML = "&nbsp;";
             }
         }
     }
-    return result;
+    return outputElement;
 }
 
 function parse(segmentString){
@@ -636,7 +649,7 @@ function parse(segmentString){
     return tokens;
 }
 
-// Returns string
+// Returns element
 function link(tokens){
     for (let index = tokens.length - 1; index >= 0; --index){
         if (tokens[index][0] == 0){
@@ -646,7 +659,9 @@ function link(tokens){
             } else {
                 tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 2));
                 tokens.splice(index + 1, 1);
-                tokens.splice(index - 1, 1);
+                if (index != 0){
+                    tokens.splice(index - 1, 1);
+                }
                 --index;
             }
         } else if (tokens[index][0] == 1){
@@ -664,18 +679,18 @@ function link(tokens){
         }
     }
 
-    let output = "";
+    let outputElement = document.createElement("span");
     for (let index = 0; index < tokens.length; ++index){
-        output += tokens[index][1];
+        outputElement.append(tokens[index][1]);
         if (index + 1 == tokens.length){
             continue;
         }
         if ((tokens[index][0] == tokens[index + 1][0]) && (tokens[index][0] == 2)){
-            output += " ";
+            outputElement.innerText += " ";
         }
     }
 
-    return output;
+    return outputElement;
 }
 
 
@@ -714,14 +729,37 @@ function onEvent(inputElement) {
     }
 
     for (segment of segments){
-        outputElement.innerHTML += `<div class="segment">${link(parse(segment))}</div>`;
+        outputElement.append(link(parse(segment)));
+        outputElement.lastChild.className = "segment";
     }
+    // console.log(document.getElementsByClassName("operationInput")[0].clientHeight);
+
+    let visibleFronts = document.getElementsByClassName("visibleFront");
+    for (let index = 0; index < visibleFronts.length; ++index) {
+        visibleFronts[index].style.transform = `scaleY(${visibleFronts[index].nextSibling.clientHeight / visibleFronts[index].clientHeight}`;
+    };
+
+    let visibleBacks = document.getElementsByClassName("visibleBack");
+    for (let index = 0; index < visibleBacks.length; ++index) {
+        visibleBacks[index].style.transform = `scaleY(${visibleBacks[index].previousSibling.clientHeight / visibleBacks[index].clientHeight}`;
+    };
+
     inputElement.setAttribute("data", outputElement.innerHTML);
+}
+
+function generateRand16(){
+    let returnString = "";
+    for (let index = 0; index < 16; ++index){
+        returnString = returnString + String.fromCharCode(
+            Math.random() * 10 + 48
+        );
+    }
+    return returnString;
 }
 
 function generateID(IDString){
     if (IDString.length == 0){
-        return [String(Math.trunc(Math.random() * 1000000000)), false];
+        return [generateRand16(), false];
     }
     if (document.getElementById(IDString) == null){
         return [IDString, true];
@@ -790,9 +828,9 @@ function deleteInput(event){
 }
 
 function editInput(event){
-    document.getElementById("baseForm").hidden = true;
+    document.getElementById("baseForm").style.visibility = "collapse";
     document.getElementById("problemList").hidden = true;
-    document.getElementById("backToBase").hidden = false;
+    document.getElementById("backToBase").style.visibility = "visible";
     document.getElementById("backToBase").setAttribute("data", event.srcElement.getAttribute("data"));
     document.getElementById(event.srcElement.getAttribute("data")).hidden = false;
     document.getElementById(event.srcElement.getAttribute("data")).focus();
@@ -800,9 +838,9 @@ function editInput(event){
 }
 
 function backToBase(event){
-    document.getElementById("baseForm").hidden = false;
-    document.getElementById("problemList").hidden = false;
-    document.getElementById("backToBase").hidden = true;
+    document.getElementById("baseForm").style.visibility = "visible";
+    document.getElementById("problemList").style.visibility = "visible";
+    document.getElementById("backToBase").style.visibility = "collapse";
     document.getElementById(event.srcElement.getAttribute("data")).hidden = true;
     updateBaseOutput();
 }
