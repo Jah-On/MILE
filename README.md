@@ -112,9 +112,7 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | lthan | ![lthan](images/lthan.png) |
 | lethan | ![lethan](images/lethan.png) |
 | leslant | ![leslant](images/leslant.png) |
-| >> | ![>>](images/>>.png) |
 | mgthan | ![mgthan](images/mgthan.png) |
-| << | ![<<](images/<<.png) |
 | mlthan | ![mlthan](images/mlthan.png) |
 | ndivides | ![ndivides](images/ndivides.png) |
 | notin | ![notin](images/notin.png) |
