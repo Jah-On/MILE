@@ -1,7 +1,7 @@
 # MILE
 Editor for the Math Indicative Language (MIL)
 
-Still work in progress!
+![image](https://user-images.githubusercontent.com/58399643/211420728-ef2eb444-57ad-427e-a1ee-0a3da5f861e0.png)
 
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
