@@ -5,10 +5,18 @@ Editor for the Math Indicative Language (MIL)
 
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
+# What is MIL?
+
+MIL stands for Math Indicative Language and allows for more efficient math display typing compared to LaTeX or LibreOffice's Formula Object language. MIL is also more freely typed. 
+
+The two main ways that MIL is more efficient is firstly by using semicolons as invisible groupings compared to curly brackets in LibreOffice's FOL. Semicolons are more centrally located and do not require modifier keys. Secondly, all character math operations (i.e. +  - *) have shortened word equivalents. This means that no modifier key needs to be pressed besides for visible grouping to achieve the same output.
+
+# Why did I make this?
+I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessable across devices/operating systems.
+
 # Examples
 ![image](https://user-images.githubusercontent.com/58399643/211419499-25be9364-6099-4faf-8659-ca2b4de97db6.png)
 ![image](https://user-images.githubusercontent.com/58399643/211420477-b271dd8a-d4e7-422d-87c8-1b6257ca8ec7.png)
-
 
 # Documentation
 
@@ -151,3 +159,6 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | toward | ![toward](images/toward.png) |
 | union | ![union](images/union.png) |
 | xtimes | ![xtimes](images/xtimes.png) |
+
+# How can you help?
+Please **kindly** report any bugs or provide format/operation/function suggestions! I am eager to hear form those with more advanced knowledge in math!
