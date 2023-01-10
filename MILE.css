@@ -223,7 +223,7 @@ span.over {
 }
 
 span.pow {
-    vertical-align:top;
+    vertical-align:super;
     font-size: 70%;
 }
 
