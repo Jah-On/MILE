@@ -1,7 +1,7 @@
 # MILE
 Editor for the Math Indicative Language (MIL)
 
-![image](https://user-images.githubusercontent.com/58399643/211420728-ef2eb444-57ad-427e-a1ee-0a3da5f861e0.png)
+![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
 
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
@@ -15,8 +15,8 @@ The two main ways that MIL is more efficient is firstly by using semicolons as i
 I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessable across devices/operating systems.
 
 # Examples
-![image](https://user-images.githubusercontent.com/58399643/211419499-25be9364-6099-4faf-8659-ca2b4de97db6.png)
-![image](https://user-images.githubusercontent.com/58399643/211420477-b271dd8a-d4e7-422d-87c8-1b6257ca8ec7.png)
+![image](https://user-images.githubusercontent.com/58399643/211452137-4fe79896-bcad-4342-8134-4dc66675f4fa.png)
+![image](https://user-images.githubusercontent.com/58399643/211452179-2d95a7bc-b5bf-4864-b011-cff5f6f22a15.png)
 
 # Documentation
 
