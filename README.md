@@ -5,6 +5,11 @@ Editor for the Math Indicative Language (MIL)
 
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
 
+Currently, the only out of the box way to use this program is through the above link. I plan on making a single HTML file that can be download and run in the browser of your preference. I am waiting for feedback first before creating that file. 
+
+# How do I save my work?
+Hit CTRL + S and name the HTML/ZIP file appropriately. If you use the link above, it will likely download a zip file or bundled HTML file. Extract if neeeded and open the HTML file in the browser. I cannot guarantee this way will work. I advise waiting for the AIO version if you need to save the MIL code. 
+
 # What is MIL?
 
 MIL stands for Math Indicative Language and allows for more efficient math display typing compared to LaTeX or LibreOffice's Formula Object language. MIL is also more freely typed. 
