@@ -1,9 +1,9 @@
 # MILE
 Editor for the Math Indicative Language (MIL)
 
-![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
-
 Try it out [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html)!
+
+![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
 
 Currently, the only out of the box way to use this program is through the above link. I plan on making a single HTML file that can be download and run in the browser of your preference. I am waiting for feedback first before creating that file. 
 
