@@ -698,9 +698,9 @@ function onEvent(inputElement) {
     let segments = [];
     let endStartIndex = -1;
     let userInput = inputElement.value
-        .replace("\n", " ")
-        .replace("+-", "±")
-        .replace("-+", "∓");
+        .replaceAll("\n", " ")
+        .replaceAll("+-", "±")
+        .replaceAll("-+", "∓");
     let outputElement = document.getElementById("output");
   
     outputElement.innerHTML = "";
