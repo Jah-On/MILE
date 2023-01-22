@@ -665,14 +665,6 @@ function link(tokens){
             }
         } else if (tokens[index][0] == 1){
             tokens[index][1] = processSub(tokens[index]);
-            if (index - 1 == -1){
-                continue;
-            } 
-            if (tokens[index - 1][0] == 2){
-                tokens[index - 1][1] = processGroup(tokens[index - 1]) + tokens[index][1];
-                tokens.splice(index, 1);
-                --index;
-            }
         } else {
             tokens[index][1] = processGroup(tokens[index]);
         }
