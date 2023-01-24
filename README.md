@@ -27,14 +27,15 @@ I have Cerebral Palsy which makes writing math, especially for prolonged periods
 
 Invisible groupings are done with semicolons (;) and two semicolons **with no spaces** (;;) ends the group.
 
+
 | Key word or symbol | Output |
 | :----------------: | :----: |
 | ens | ![ens](images/ens.png) |
 | infinity | ![infinity](images/infinity.png) |
 | ins | ![ins](images/ins.png) |
 | nns | ![nns](images/nns.png) |
-| ' | !['](images/'.png) |
-| prime | ![prime](images/prime.png) |
+| ' | $\prime$ |
+| prime | $\prime$ |
 | rans | ![rans](images/rans.png) |
 | rens | ![rens](images/rens.png) |
 | abs | ![abs](images/abs.png) |
@@ -48,11 +49,11 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | lint | ![lint](images/lint.png) |
 | llint | ![llint](images/llint.png) |
 | lllint | ![lllint](images/lllint.png) |
-| - | ![-](images/-.png) |
-| minus | ![minus](images/minus.png) |
-| neg | ![neg](images/neg.png) |
-| + | ![+](images/+.png) |
-| plus | ![plus](images/plus.png) |
+| - | $-x$ |
+| minus | $-x$ |
+| neg | $\neg x$ |
+| + | $+x$ |
+| plus | $+x$ |
 | prod | ![prod](images/prod.png) |
 | sum | ![sum](images/sum.png) |
 | sqrt | ![sqrt](images/sqrt.png) |
@@ -104,24 +105,24 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | cslash | ![cslash](images/cslash.png) |
 | ctimes | ![ctimes](images/ctimes.png) |
 | def | ![def](images/def.png) |
-| div | ![div](images/div.png) |
-| \| | ![\|](images/\|.png) |
+| div | $x \div y$ |
+| \| | $x \vert y$ |
 | divides | ![divides](images/divides.png) |
 | dlarrow | ![dlarrow](images/dlarrow.png) |
 | dlrarrow | ![dlrarrow](images/dlrarrow.png) |
 | drarrow | ![drarrow](images/drarrow.png) |
-| = | ![=](images/=.png) |
+| = | $x = y$ |
 | equals | ![equals](images/equals.png) |
 | equiv | ![equiv](images/equiv.png) |
-| > | ![>](images/>.png) |
-| gthan | ![gthan](images/gthan.png) |
-| gethan | ![gethan](images/gethan.png) |
+| > | $x \gt y$ |
+| gthan | $x \gt y$ |
+| gethan | $x \geq y$ |
 | geslant | ![geslant](images/geslant.png) |
-| / | ![\/](images/slant.png) |
+| / | $x / y$ |
 | imgof | ![imgof](images/imgof.png) |
-| in | ![in](images/in.png) |
+| in | $x \in y$ |
 | intersect | ![intersect](images/intersect.png) |
-| < | ![<](images/<.png) |
+| < | $x \lt y$ |
 | lthan | ![lthan](images/lthan.png) |
 | lethan | ![lethan](images/lethan.png) |
 | leslant | ![leslant](images/leslant.png) |
@@ -141,8 +142,8 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | origof | ![origof](images/origof.png) |
 | ortho | ![ortho](images/ortho.png) |
 | parallel | ![parallel](images/parallel.png) |
-| ^ | ![\^](images/^.png) |
-| pow | ![pow](images/pow.png) |
+| ^ | $x^y$ |
+| pow | $x^y$ |
 | prec | ![prec](images/prec.png) |
 | preceq | ![preceq](images/preceq.png) |
 | precsim | ![precsim](images/precsim.png) |
@@ -154,16 +155,17 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 | stimes | ![stimes](images/stimes.png) |
 | subset | ![subset](images/subset.png) |
 | subsete | ![subsete](images/subsete.png) |
-| succ | ![succ](images/succ.png) |
-| succeq | ![succeq](images/succeq.png) |
-| succsim | ![succsim](images/succsim.png) |
-| supset | ![supset](images/supset.png) |
-| supsete | ![supsete](images/supsete.png) |
-| * | ![*](images/*.png) |
-| times | ![times](images/times.png) |
-| toward | ![toward](images/toward.png) |
-| union | ![union](images/union.png) |
-| xtimes | ![xtimes](images/xtimes.png) |
+| succ | $x \succ y$ |
+| succeq | $x \succeq y$ |
+| succsim | $x \succsim y$ |
+| supset | $x \supset y$ |
+| supsete | $x \supseteq y$ |
+| * | $x \cdot y$ |
+| times | $x \cdot y$ |
+| toward | $x \to y$ |
+| union | $x \cup y$ |
+| xtimes | $x \times y$ |
+
 
 # How can you help?
 Please **kindly** report any bugs or provide format/operation/function suggestions! I am eager to hear form those with more advanced knowledge in math!
