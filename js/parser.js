@@ -1,6 +1,6 @@
 import {singleChar, leftOne, leftOneChar, leftTwo, operators, 
-        middleTwo, middleTwoChar} from "./constants.js"
-import {isAlpha} from "./helper.js"
+        middleTwo, middleTwoChar} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/constants.js"
+import {isAlpha} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
 
 // Return 2 wide integer array
 function functionPositionAndInputs(functionNameString) {

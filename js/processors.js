@@ -1,7 +1,7 @@
-import { MLNameSpace } from "./constants.js";
-import {isAlpha, isNumber} from "./helper.js"
-import {functionToHTML, link} from "./htmlGen.js"
-import {parse} from "./parser.js"
+import { MLNameSpace } from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/constants.js";
+import {isAlpha, isNumber} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
+import {functionToHTML, link} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/htmlGen.js"
+import {parse} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/parser.js"
 
 // Returns element
 export function processLeftFunction(functionToken, tokensRight){

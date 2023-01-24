@@ -1,6 +1,6 @@
-import {isAlpha} from "./helper.js"
-import {link} from "./htmlGen.js"
-import {parse} from "./parser.js"
+import {isAlpha} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
+import {link} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/htmlGen.js"
+import {parse} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/parser.js"
 
 export function onEvent(inputElement) {
     let segments = [];

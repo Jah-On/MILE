@@ -1,5 +1,5 @@
-import {onEvent} from "./events.js"
-import {generateID} from "./helper.js"
+import {onEvent} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/events.js"
+import {generateID} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
 
 export function updateName(event){
     let newID = generateID(event.srcElement.value);

@@ -1,8 +1,8 @@
 import {singleChar, leftOneChar, operators, 
-        middleTwoChar, MLNameSpace} from "./constants.js"
-import {generateRand16} from "./helper.js"
+        middleTwoChar, MLNameSpace} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/constants.js"
+import {generateRand16} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
 import {processGroup, processLeftFunction, processMiddleFunction, processSub
-        } from "./processors.js" 
+        } from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/processors.js" 
 
 // ChatGPT aided
 // Returns element

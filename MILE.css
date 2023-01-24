@@ -7,8 +7,8 @@ body {
 
 span {
     display: inline-block;
-    line-height: 0.9;
-    /* margin-top: 0.5px; */
+    line-height: 0.8;
+    vertical-align: middle;
 }
 
 @media print {
@@ -136,7 +136,7 @@ div.baseOutputContents {
     margin-right: auto;
 }
 
-span.segment {
+math.segment {
     display: block;
     margin-bottom: 10px;
     break-inside:avoid;
@@ -146,102 +146,7 @@ span.segment {
 }
 
 /* Group CSS */
-i {
-    /* padding-left: 4px;
-    padding-right: 8px; */
-}
-
-span.f {
-    display: inline-block;
-    font-size: 65%;
-}
 
 /* Sub Segment CSS */
-span.visibleFront, span.visibleBack {
-    line-height: 0.9;
-}
 
 /* OP CSS */
-span.and {
-    font-size: 115%;
-    font-weight: 1000;
-    vertical-align: text-top;
-}
-
-span.copen {
-    font-size: 25%;
-    font-weight: bolder;
-    vertical-align: middle;
-}
-
-span.denominator {
-    border-top: 2px solid black;
-}
-
-span.frac {
-    display: inline-flex;
-    flex-direction: column;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 0.9;
-}
-
-span.infinity {
-    font-size: 175%;
-    vertical-align: sub;
-    line-height: 0.0;
-}
-
-span.logbase {
-    font-size: 80%;
-    vertical-align: sub;
-}
-
-span.minus {
-    margin-right: 2px;
-}
-
-span.operator {
-    display: inline-flex;
-    flex-direction: column;
-    text-align: center;
-    vertical-align: middle;
-}
-
-span.operationInput {
-}
-
-span.or {
-    font-weight: lighter;
-    vertical-align: text-top;
-}
-
-span.over {
-    font-size: 75%;
-    line-height: 0;
-    margin-top: 5px;
-}
-
-span.pow {
-    vertical-align:super;
-    font-size: 70%;
-}
-
-span.prime {
-    margin-left: 2px;
-}
-
-span.stimes {
-    font-size: 150%;
-    vertical-align: text-top;
-}
-
-span.sqrt {
-    font-size:0.92em;
-    border-top: black solid 0.1rem;  
-}
-
-span.under {
-    font-size: 75%;
-    line-height: 0.6;
-}
