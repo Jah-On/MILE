@@ -10,6 +10,7 @@
     "deploy": "vite build --base=/MILE/ && node utils/publish.js"
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",
     "vite-plugin-singlefile": "^0.13.2"
