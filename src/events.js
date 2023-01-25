@@ -1,6 +1,6 @@
-import {isAlpha} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
-import {link} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/htmlGen.js"
-import {parse} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/parser.js"
+import { isAlpha } from "./helper.js"
+import { link } from "./htmlGen.js"
+import { parse } from "./parser.js"
 
 export function onEvent(inputElement) {
     let segments = [];
@@ -10,19 +10,18 @@ export function onEvent(inputElement) {
         .replaceAll("+-", "±")
         .replaceAll("-+", "∓");
     let outputElement = document.getElementById("output");
-  
+
     outputElement.innerHTML = "";
 
     // ChatGPT condensed implementation
     for (let index = 0; index < userInput.length; ++index) {
         if (userInput.substr(index, 3).toLowerCase() == "end") {
             endStartIndex = index;
-        } else if 
-        (   endStartIndex != -1 &&
+        } else if
+            (endStartIndex != -1 &&
             !isAlpha(userInput[index]) &&
-            (index - endStartIndex) % 4 == 3 
-        ) 
-        {
+            (index - endStartIndex) % 4 == 3
+        ) {
             segments.push(userInput.substring(0, endStartIndex));
             userInput = userInput.substring(index, userInput.length);
             endStartIndex = -1;
@@ -35,7 +34,7 @@ export function onEvent(inputElement) {
         segments.push(userInput);
     }
 
-    for (let index = 0; index < segments.length; ++index){
+    for (let index = 0; index < segments.length; ++index) {
         outputElement.append(link(parse(segments[index])));
         outputElement.lastChild.className = "segment";
     }
@@ -54,11 +53,11 @@ export function onEvent(inputElement) {
     inputElement.setAttribute("data", outputElement.innerHTML);
 }
 
-export function printOutput(){
+export function printOutput() {
     window.print();
 }
 
-export function windowLeave(event){
+export function windowLeave(event) {
     event.preventDefault();
     return "";
 }

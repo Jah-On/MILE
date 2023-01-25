@@ -173,3 +173,10 @@ Invisible groupings are done with semicolons (;) and two semicolons **with no sp
 # How can you help?
 
 Please **kindly** report any bugs or provide format/operation/function suggestions! I am eager to hear form those with more advanced knowledge in math!
+
+# Developer info
+
+1. Make sure that Node.js and a package manager such as `npm` is installed
+2. `npm install` to install the packages once
+3. `npm run dev` to run it in development mode
+4. `npm run build` to get a all-in-one, portable HTML file
