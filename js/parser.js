@@ -3,7 +3,7 @@ import {singleChar, leftOne, leftOneChar, leftTwo, operators,
 import {isAlpha} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
 
 // Return 2 wide integer array
-function functionPositionAndInputs(functionNameString) {
+export function functionPositionAndInputs(functionNameString) {
     if (singleChar.hasOwnProperty(functionNameString)){
         return [0, 0]; // Right and 0 arguments
     }
