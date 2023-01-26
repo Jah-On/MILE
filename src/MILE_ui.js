@@ -1,7 +1,7 @@
-import {onEvent} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/events.js"
-import {generateID} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
+import { onEvent } from "./events.js"
+import { generateID } from "./helper.js"
 
-export function updateName(event){
+export function updateName(event) {
     let newID = generateID(event.srcElement.value);
     document.getElementById(event.srcElement.getAttribute("data")).setAttribute("showID", String(newID[1]));
     document.getElementById(event.srcElement.getAttribute("data")).id = newID[0];
@@ -11,27 +11,27 @@ export function updateName(event){
     updateBaseOutput();
 }
 
-export function moveInputUp(event){
+export function moveInputUp(event) {
     let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
     let previousElement = event.srcElement.parentNode.previousSibling;
-    if (previousElement){
+    if (previousElement) {
         event.srcElement.parentNode.parentNode.insertBefore(event.srcElement.parentNode, previousElement);
         inputElement.parentNode.insertBefore(inputElement, inputElement.previousSibling);
     }
     updateBaseOutput();
 }
 
-export function moveInputDown(event){
+export function moveInputDown(event) {
     let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
     let nextElement = event.srcElement.parentNode.nextSibling;
-    if (nextElement){
+    if (nextElement) {
         event.srcElement.parentNode.parentNode.insertBefore(nextElement, event.srcElement.parentNode);
         inputElement.parentNode.insertBefore(inputElement.nextSibling, inputElement);
     }
     updateBaseOutput();
 }
 
-export function copyInput(event){
+export function copyInput(event) {
     let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
     let newID = generateID(event.srcElement.getAttribute("data"));
     inputElement.insertAdjacentElement("afterend", newInputElement(newID[0], newID[1]));
@@ -43,13 +43,13 @@ export function copyInput(event){
     updateBaseOutput();
 }
 
-export function deleteInput(event){
+export function deleteInput(event) {
     event.srcElement.parentNode.remove();
     document.getElementById(event.srcElement.getAttribute("data")).remove();
     updateBaseOutput();
 }
 
-export function editInput(event){
+export function editInput(event) {
     document.getElementById("baseForm").hidden = true;
     document.getElementById("problemList").hidden = true;
     document.getElementById("backToBase").hidden = false;
@@ -59,7 +59,7 @@ export function editInput(event){
     document.getElementById("output").innerHTML = document.getElementById(event.srcElement.getAttribute("data")).getAttribute("data");
 }
 
-export function backToBase(event){
+export function backToBase(event) {
     document.getElementById("baseForm").hidden = false;
     document.getElementById("problemList").hidden = false;
     document.getElementById("backToBase").hidden = true;
@@ -67,24 +67,24 @@ export function backToBase(event){
     updateBaseOutput();
 }
 
-export function newInputElement(id, showID){
+export function newInputElement(id, showID) {
     let newInput = document.createElement("textarea");
     newInput.className = "input";
     newInput.id = id;
-    newInput.addEventListener("input", function(){onEvent(this);});
+    newInput.addEventListener("input", function () { onEvent(this); });
     newInput.setAttribute("data", "");
     newInput.setAttribute("showID", String(showID));
     newInput.hidden = true;
     return newInput;
 }
 
-export function newProblemTableRow(inputID, visibleID){
+export function newProblemTableRow(inputID, visibleID) {
     let rowDiv = document.createElement("div");
     rowDiv.className = "problemListRow"
     let nameInput = document.createElement("input");
     nameInput.type = "text";
     nameInput.className = "problemName";
-    if (visibleID){
+    if (visibleID) {
         nameInput.value = inputID;
     }
     nameInput.setAttribute("data", inputID);
@@ -120,7 +120,7 @@ export function newProblemTableRow(inputID, visibleID){
     return rowDiv;
 }
 
-export function addNewInput(){
+export function addNewInput() {
     let problemNameInput = document.getElementById("baseForm").children[0];
     let problemList = document.getElementById("problemList");
     let ID = generateID(problemNameInput.value);
@@ -131,15 +131,15 @@ export function addNewInput(){
     updateBaseOutput();
 }
 
-export function updateBaseOutput(){
+export function updateBaseOutput() {
     let outputElement = document.getElementById("output");
     outputElement.innerHTML = "";
     const inputElements = document.getElementsByClassName("input");
-    for (let index = 0; index < inputElements.length; ++index){
+    for (let index = 0; index < inputElements.length; ++index) {
         let problem = document.createElement("div");
         problem.className = "baseOutput";
         let label = document.createElement("span");
-        if (inputElements[index].getAttribute("showID") == "true"){
+        if (inputElements[index].getAttribute("showID") == "true") {
             label.innerText = inputElements[index].id + ".";
         }
         label.className = "baseOutputLabel";
@@ -148,7 +148,7 @@ export function updateBaseOutput(){
         contents.className = "baseOutputContents";
         problem.append(label, contents);
         outputElement.append(problem);
-        if (index == inputElements.length - 1){
+        if (index == inputElements.length - 1) {
             contents.scrollIntoView();
         }
     }

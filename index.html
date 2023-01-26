@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://stackoverflow.com/a/68051929/3492994 -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg width='32' height='32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Layer_1'%3E%3Ctitle%3ELayer 1%3C/title%3E%3Ctext xml:space='preserve' text-anchor='start' font-family='Noto Sans JP' font-size='24' id='svg_1' y='25' x='5' stroke-width='0' stroke='%23000' fill='%23000000'%3EM%3C/text%3E%3C/g%3E%3C/svg%3E"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MILE</title>
+    <!-- <link rel="stylesheet" href="https://raw.githubusercontent.com/Jah-On/MILE/main/MILE.css">
+        <script src="https://raw.githubusercontent.com/Jah-On/MILE/main/MILE.js"></script> -->
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="header">
+      <form id="baseForm" method="dialog">
+        <input type="text" placeholder="Problem name or number" />
+        <button>Add</button>
+      </form>
+      <input type="button" id="backToBase" value="🡸 Back" hidden />
+      <input type="button" id="printButton" value="Print" />
+    </div>
+    <div id="container">
+      <div id="inputs">
+        <div id="problemList"></div>
+      </div>
+      <div id="output"></div>
+    </div>
+    <script type="module" src="./src/constants.js"></script>
+    <script type="module" src="./src/events.js"></script>
+    <script type="module" src="./src/helper.js"></script>
+    <script type="module" src="./src/htmlGen.js"></script>
+    <script type="module" src="./src/MILE_ui.js"></script>
+    <script type="module" src="./src/parser.js"></script>
+    <script type="module" src="./src/processors.js"></script>
+    <script type="module" src="./src/MILE.js"></script>
+  </body>
+  <!-- <script>window.onload = onEvent();</script> -->
+</html>
