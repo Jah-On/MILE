@@ -38,7 +38,7 @@ span {
   }
 }
 
-/* HEADER START */
+/* HEADER START /
 #header {
   display: flex;
   margin-bottom: 10px;
@@ -53,7 +53,7 @@ span {
 #printButton {
   margin-left: auto;
 }
-/* HEADER END */
+/ HEADER END */
 
 #container {
   display: flex;
@@ -78,7 +78,6 @@ div.problemListRow {
 input.problemName {
   width: 40%;
 }
-
 button.editProblem {
   margin: auto;
   vertical-align: baseline;
@@ -130,7 +129,7 @@ span.baseOutputLabel {
 }
 
 div.baseOutputContents {
-  display: block;
+  display: grid;
   position: relative;
   top: 0px;
   z-index: 1;
@@ -146,8 +145,75 @@ math.segment {
   width: fit-content;
 }
 
-/* Group CSS */
+/* Group CSS /
 
-/* Sub Segment CSS */
+/ Sub Segment CSS /
 
-/* OP CSS */
+/ OP CSS */
+textarea.input {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  font-size: 28px;
+  background-color: rgb(20, 20, 20);
+  color: whitesmoke;
+  margin: 0px;
+  resize: none;
+}
+
+#inputs {
+  width: calc(50% - 10px);
+  height: calc(100% - 2px);
+  font-size: 28px;
+  background-color: rgb(20, 20, 20);
+  overflow-y: scroll;
+}
+
+#output {
+  width: calc(50% - 10px);
+  height: calc(100% - 12px);
+  font-size: 28px;
+  background-color: whitesmoke;
+  color: black;
+  align-items: center;
+  display: grid;
+  padding: 5px;
+  overflow-y: scroll;
+}
+
+div.baseOutput {
+  display: flex;
+  width: calc(100% - 4px);
+  margin-bottom: 10px;
+  border: 2px solid black;
+}
+
+span.baseOutputLabel {
+  position: relative;
+  top: 0px;
+  left: 5px;
+  z-index: 2;
+  display: block;
+}
+
+div.baseOutputContents {
+  display: grid;
+  position: relative;
+  top: 0px;
+  z-index: 1;
+  align-items: center;
+  text-align: center;
+}
+
+math.segment {
+  margin-bottom: 10px;
+  break-inside: avoid;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+
+/* Group CSS /
+
+/ Sub Segment CSS /
+
+/ OP CSS */
