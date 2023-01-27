@@ -46,12 +46,13 @@ export function parse(segmentString) {
   let currentSubStart = -1;
   let semicolSegments = 0;
   let shownSegments = 0;
+  let inString = false;
   let isFunction = [-1, -1];
   let currentChar = "";
 
   for (let index = 0; index < segmentString.length; ++index) {
     currentChar = segmentString[index];
-    if (isAlpha(currentChar) && (shownSegments + semicolSegments == 0)) {
+    if (isAlpha(currentChar) && (shownSegments + semicolSegments == 0) && !inString) {
       if (currentGroupStart == -1) { currentGroupStart = index; }
       if (currentFuncStart == -1) {
         currentFuncStart = index;
@@ -77,7 +78,7 @@ export function parse(segmentString) {
     switch (currentChar) {
 
       case " ":
-        if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)) {
+        if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0) && !inString) {
           tokens.push([2, segmentString.substring(currentGroupStart, index)]);
           currentGroupStart = -1;
         }
@@ -86,7 +87,7 @@ export function parse(segmentString) {
       case "(":
       case "[":
       case "{":
-        if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)) {
+        if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0) && !inString) {
           tokens.push([2, segmentString.substring(currentGroupStart, index)]);
           currentGroupStart = -1;
         }
@@ -120,7 +121,7 @@ export function parse(segmentString) {
             }
           }
           else {
-            if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0)) {
+            if ((currentGroupStart != -1) && (shownSegments + semicolSegments == 0) && !inString) {
               tokens.push([2, segmentString.substring(currentGroupStart, index)]);
               currentGroupStart = -1;
             }
@@ -129,15 +130,23 @@ export function parse(segmentString) {
           }
         }
         continue;
+      case "\"":
+        if (currentGroupStart == -1){ currentGroupStart = index;}
+        if (inString){
+          tokens.push([3, segmentString.substring(currentGroupStart + 1, index)]);
+          currentGroupStart = -1;
+        }
+        inString = !inString;
+        continue;
       default:
         isFunction = functionPositionAndInputs(currentChar);
-        if ((isFunction[1] != -1) && (shownSegments + semicolSegments == 0)) {
+        if ((isFunction[1] != -1) && (shownSegments + semicolSegments == 0) && !inString) {
           if (currentGroupStart != -1) {
             tokens.push([2, segmentString.substring(currentGroupStart, index)]);
           }
           currentGroupStart = -1;
           tokens.push([0, segmentString.substring(index, index + 1), isFunction[0], isFunction[1]]);
-        } else if ((currentGroupStart == -1) && (shownSegments + semicolSegments == 0)) {
+        } else if ((currentGroupStart == -1) && (shownSegments + semicolSegments == 0) && !inString) {
           currentGroupStart = index;
         }
         continue;
@@ -145,8 +154,10 @@ export function parse(segmentString) {
   }
   if (currentSubStart != -1) {
     tokens.push([1, segmentString.substring(currentSubStart, segmentString.length)]);
-  } else if (currentGroupStart != -1) {
+  } else if ((currentGroupStart != -1) && !inString) {
     tokens.push([2, segmentString.substring(currentGroupStart, segmentString.length)]);
+  } else if (inString){
+    tokens.push([3, segmentString.substring(currentGroupStart + 1, segmentString.length)]);
   }
 
   return tokens;

@@ -4,7 +4,8 @@ import {
 } from "./constants.js"
 import { generateRand16 } from "./helper.js"
 import {
-    processGroup, processLeftFunction, processMiddleFunction, processSub
+    processGroup, processLeftFunction, processMiddleFunction, processSub,
+    processText
 } from "./processors.js"
 
 // ChatGPT aided
@@ -46,6 +47,12 @@ export function functionToHTML(funcName, argElements) {
     }
     if (funcName == "pow") {
         outputElement.append(document.createElementNS(MLNameSpace, "msup"));
+        outputElement.lastChild.append(argElements[0]);
+        outputElement.lastChild.append(argElements[1]);
+        return outputElement;
+    }
+    if (funcName == "sub") {
+        outputElement.append(document.createElementNS(MLNameSpace, "msub"));
         outputElement.lastChild.append(argElements[0]);
         outputElement.lastChild.append(argElements[1]);
         return outputElement;
@@ -144,8 +151,10 @@ export function link(tokens) {
             }
         } else if (tokens[index][0] == 1) {
             tokens[index][1] = processSub(tokens[index]);
-        } else {
+        } else if (tokens[index][0] == 2) {
             tokens[index][1] = processGroup(tokens[index]);
+        } else {
+            tokens[index][1] = processText(tokens[index]);
         }
     }
 

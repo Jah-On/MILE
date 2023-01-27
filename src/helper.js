@@ -37,3 +37,11 @@ export function generateID(IDString){
     }
     return [newID, true];
 }
+
+export function exportToJSON(){
+    
+}
+
+export function importFromJSON(){
+
+}

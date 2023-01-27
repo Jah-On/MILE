@@ -82,3 +82,24 @@ export function processGroup(inputToken) {
     }
     return outputElement;
 }
+
+export function processText(inputToken) {
+    let outputElement = document.createElementNS(MLNameSpace, "mtext");
+    outputElement.innerHTML = inputToken[1].replaceAll(" ", "&nbsp;");
+    // outputElement.append(document.createTextNode(inputToken[1].replaceAll(" ", "&nbsp;")));
+    // let outputElement = document.createElementNS(MLNameSpace, "mrow");
+    // let lastNonSpace = -1;
+    // for (let i = 0; i < inputToken[1].length; i++) {
+    //     if (inputToken[1][i] == " "){
+    //         outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
+    //         outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(lastNonSpace, i)));
+    //         outputElement.append(document.createElementNS(MLNameSpace, "mspace"));
+    //         outputElement.lastChild.setAttribute("width", "16px");
+    //         lastNonSpace = -1;
+    //     } else if (lastNonSpace == -1) {
+    //         lastNonSpace = i;
+    //     }
+    // }
+    // if (lastNonSpace == -1)
+    return outputElement;
+}

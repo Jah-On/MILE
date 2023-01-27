@@ -3,6 +3,7 @@ import { link } from "./htmlGen.js"
 import { parse } from "./parser.js"
 
 export function onEvent(inputElement) {
+    inputElement.setAttribute("value", inputElement.value);
     let segments = [];
     let endStartIndex = -1;
     let userInput = inputElement.value
@@ -51,6 +52,20 @@ export function onEvent(inputElement) {
     }
 
     inputElement.setAttribute("data", outputElement.innerHTML);
+}
+
+export function pageSave(event) {
+    if ((event.keyCode == 83) && event.ctrlKey){
+        event.preventDefault();
+        let downloadLink = document.createElement("a");
+        downloadLink.download = "MILE_AIO.html";
+        let blobby = new Blob([document.documentElement.innerHTML], {type:"text/html"});
+        let downloadURL = window.URL.createObjectURL(blobby);
+        downloadLink.href = downloadURL;
+        downloadLink.click();
+        return;
+    }
+    
 }
 
 export function printOutput() {

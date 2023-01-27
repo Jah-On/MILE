@@ -1,7 +1,7 @@
 export const singleChar    = {
-    "aleph":"ℵ", "cns":"ℂ", "ens":"∅", "infinity":"∞", 
-    "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", 
-    "rans":"ℚ", "rens":"ℝ"
+    "aleph":"ℵ", "cns":"ℂ", "delta":"Δ", "ens":"∅", 
+    "infinity":"∞", "ins":"ℤ", "nns":"ℕ", "\'":"'", 
+    "prime":"'", "rans":"ℚ", "rens":"ℝ"
 };
 export const leftOne       = {
     "abs":"", "sqrt":""
@@ -19,7 +19,7 @@ export const leftTwo       = {
     "frac":"", "logbase":""
 };
 export const middleTwo     = {
-    "^":"", "pow":""
+    "^":"", "pow":"", "sub":""
 };
 export const middleTwoChar = {
     "and":"⋀", "approx":"≈", "cdot":"⊙", "copen":"◯", 
