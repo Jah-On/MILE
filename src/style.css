@@ -1,3 +1,4 @@
+
 body {
   background-color: black;
   height: calc(100vh - 20px);
@@ -38,7 +39,7 @@ span {
   }
 }
 
-/* HEADER START /
+/* HEADER START */
 #header {
   display: flex;
   margin-bottom: 10px;
@@ -53,7 +54,7 @@ span {
 #printButton {
   margin-left: auto;
 }
-/ HEADER END */
+/* HEADER END */
 
 #container {
   display: flex;
@@ -217,3 +218,4 @@ math.segment {
 / Sub Segment CSS /
 
 / OP CSS */
+
