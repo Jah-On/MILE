@@ -1,7 +1,7 @@
 export const singleChar    = {
     "aleph":"ℵ", "bot":"⊥", "cns":"ℂ", "delta":"Δ", 
-    "ens":"∅", "forall":"∀", "infinity":"∞", "ins":"ℤ", 
-    "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
+    "ens":"∅", "exists":"∃", "forall":"∀", "infinity":"∞",
+    "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
     "rens":"ℝ", "top":"⊤"
 };
 export const leftOne       = {
