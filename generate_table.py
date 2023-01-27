@@ -17,7 +17,7 @@ left_tri_arg = ["coprodb", "intb", "iintb", "iiintb", "limb", "liminfb", "limsup
 midl_two_arg = ["and", "approx", "cdot", "cminus", "cns", "copen", "cplus", "cslash", "ctimes", "def", "div", "|", "divides", "dlarrow", "dlrarrow", "drarrow", "=", "equals", "equiv", ">", "gthan", "gethan", "geslant", "/", "imgof", "in", "intersect", "<", "lthan", "lethan", "leslant", ">>", "mgthan", "<<", "mlthan", "ndivides", "notin", "noteq", "nprec", "nsubset", "nsubsete", "nsucc", "nsupset", "nsupsete", "owns", "or", "origof", "ortho", "parallel", "^", "pow", "prec", "preceq", "precsim", "prop", "setm", "setq", "sim", "simeq", "stimes", "subset", "subsete", "succ", "succeq", "succsim", "supset", "supsete", "*", "times", "toward", "union", "xtimes"]
 
 driver = webdriver.Firefox()
-driver.get("https://htmlpreview.github.io/?https://raw.githubusercontent.com/Jah-On/MILE/main/index.html")
+driver.get("https://jah-on.github.io/MILE/")
 
 time.sleep(3)
 

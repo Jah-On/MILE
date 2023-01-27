@@ -1,8 +1,8 @@
 import {
   singleChar, leftOne, leftOneChar, leftTwo, operators,
   middleTwo, middleTwoChar
-} from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/constants.js"
-import { isAlpha } from "https://raw.githubusercontent.com/Jah-On/MILE/main/js/helper.js"
+} from "./constants.js"
+import { isAlpha } from "./helper.js"
 
 // Return 2 wide integer array
 export function functionPositionAndInputs(functionNameString) {
@@ -131,8 +131,8 @@ export function parse(segmentString) {
         }
         continue;
       case "\"":
-        if (currentGroupStart == -1){ currentGroupStart = index;}
-        if (inString){
+        if (currentGroupStart == -1) { currentGroupStart = index; }
+        if (inString) {
           tokens.push([3, segmentString.substring(currentGroupStart + 1, index)]);
           currentGroupStart = -1;
         }
@@ -156,7 +156,7 @@ export function parse(segmentString) {
     tokens.push([1, segmentString.substring(currentSubStart, segmentString.length)]);
   } else if ((currentGroupStart != -1) && !inString) {
     tokens.push([2, segmentString.substring(currentGroupStart, segmentString.length)]);
-  } else if (inString){
+  } else if (inString) {
     tokens.push([3, segmentString.substring(currentGroupStart + 1, segmentString.length)]);
   }
 
