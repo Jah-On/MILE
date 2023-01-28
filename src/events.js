@@ -1,3 +1,4 @@
+import { MLNameSpace } from "./constants.js";
 import { isAlpha } from "./helper.js"
 import { link } from "./htmlGen.js"
 import { parse } from "./parser.js"
