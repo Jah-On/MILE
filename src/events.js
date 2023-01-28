@@ -36,19 +36,9 @@ export function onEvent(inputElement) {
     }
 
     for (let index = 0; index < segments.length; ++index) {
-        outputElement.append(link(parse(segments[index])));
+        outputElement.append(document.createElementNS(MLNameSpace, "math"));
         outputElement.lastChild.className = "segment";
-    }
-    // console.log(document.getElementsByClassName("operationInput")[0].clientHeight);
-
-    let visibleFronts = document.getElementsByClassName("visibleFront");
-    for (let index = 0; index < visibleFronts.length; ++index) {
-        visibleFronts[index].style.transform = `scaleY(${visibleFronts[index].nextSibling.clientHeight / visibleFronts[index].clientHeight}`;
-    }
-
-    let visibleBacks = document.getElementsByClassName("visibleBack");
-    for (let index = 0; index < visibleBacks.length; ++index) {
-        visibleBacks[index].style.transform = `scaleY(${visibleBacks[index].previousSibling.clientHeight / visibleBacks[index].clientHeight}`;
+        outputElement.lastChild.append(link(parse(segments[index])));
     }
 
     inputElement.setAttribute("data", outputElement.innerHTML);
