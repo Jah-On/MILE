@@ -161,12 +161,6 @@ export function link(tokens) {
     let outputElement = document.createElementNS(MLNameSpace, "mrow")
     for (let index = 0; index < tokens.length; ++index) {
         outputElement.append(tokens[index][1]);
-        if (index + 1 == tokens.length) {
-            continue;
-        }
-        if ((tokens[index][0] == tokens[index + 1][0]) && (tokens[index][0] == 2)) {
-            outputElement.innerText += " ";
-        }
     }
 
     return outputElement;
