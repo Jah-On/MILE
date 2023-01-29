@@ -77,12 +77,13 @@ export function processGroup(inputToken) {
         } else if (isNumber(char)) {
             outputElement.append(document.createElementNS(MLNameSpace, "mn"));
         } else {
+            accumulator += char;
             if (isUTF_8(char)){
-                accumulator += char;
                 continue;
             }
             outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-            outputElement.lastChild.innerText = accumulator;
+            outputElement.lastChild.textContent = accumulator;
+            accumulator = "";
             continue;
         }
         outputElement.lastChild.append(document.createTextNode(char));
