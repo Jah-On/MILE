@@ -1,8 +1,7 @@
 import {
     singleChar, leftOneChar, operators,
-    middleTwoChar, MLNameSpace
+    middlePlusOneChar, MLNameSpace
 } from "./constants.js"
-import { generateRand16 } from "./helper.js"
 import {
     processGroup, processLeftFunction, processMiddleFunction, processSub,
     processText
@@ -33,8 +32,7 @@ export function functionToHTML(funcName, argElements) {
     }
     if (funcName == "frac") {
         outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
-        outputElement.lastChild.append(argElements[0]);
-        outputElement.lastChild.append(argElements[1]);
+        outputElement.lastChild.append(argElements[0], argElements[1]);
         return outputElement;
     }
     if (funcName == "logbase") {
@@ -45,16 +43,24 @@ export function functionToHTML(funcName, argElements) {
         outputElement.append(argElements[1]);
         return outputElement;
     }
+    if (funcName == "over") {
+        outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
+        outputElement.lastChild.append(argElements[0], argElements[1]);
+        return outputElement;
+    }
     if (funcName == "pow") {
         outputElement.append(document.createElementNS(MLNameSpace, "msup"));
-        outputElement.lastChild.append(argElements[0]);
-        outputElement.lastChild.append(argElements[1]);
+        outputElement.lastChild.append(argElements[0], argElements[1]);
         return outputElement;
     }
     if (funcName == "sub") {
         outputElement.append(document.createElementNS(MLNameSpace, "msub"));
-        outputElement.lastChild.append(argElements[0]);
-        outputElement.lastChild.append(argElements[1]);
+        outputElement.lastChild.append(argElements[0], argElements[1]);
+        return outputElement;
+    }
+    if (funcName == "supsub") {
+        outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
+        outputElement.lastChild.append(argElements[0], argElements[2], argElements[1]);
         return outputElement;
     }
     if (funcName == "sqrt") {
@@ -123,10 +129,10 @@ export function functionToHTML(funcName, argElements) {
             return outputElement;
         }
     }
-    if (middleTwoChar.hasOwnProperty(funcName)) {
+    if (middlePlusOneChar.hasOwnProperty(funcName)) {
         outputElement.append(argElements[0]);
         outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode(middleTwoChar[funcName]));
+        outputElement.lastChild.append(document.createTextNode(middlePlusOneChar[funcName]));
         outputElement.append(argElements[1]);
         return outputElement;
     }
@@ -142,7 +148,7 @@ export function link(tokens) {
                 tokens[index][1] = processLeftFunction(tokens[index], tokens.slice(index + 1, index + 1 + tokens[index][3]))
                 tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
             } else {
-                tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 2));
+                tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 1 + tokens[index][3]));
                 tokens.splice(index + 1, 1);
                 if (index != 0) {
                     tokens.splice(index - 1, 1);

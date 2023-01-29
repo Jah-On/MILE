@@ -1,6 +1,6 @@
 import {
   singleChar, leftOne, leftOneChar, leftTwo, operators,
-  middleTwo, middleTwoChar
+  middlePlusOne, middlePlusOneChar, middlePlusTwo
 } from "./constants.js"
 import { isAlpha } from "./helper.js"
 
@@ -31,10 +31,15 @@ export function functionPositionAndInputs(functionNameString) {
     }
   }
   if (
-    middleTwo.hasOwnProperty(functionNameString) ||
-    middleTwoChar.hasOwnProperty(functionNameString)
+    middlePlusOne.hasOwnProperty(functionNameString) ||
+    middlePlusOneChar.hasOwnProperty(functionNameString)
   ) {
-    return [1, 2]; // Middle and 2 arguments
+    return [1, 1]; // Middle and 1 argument right
+  }
+  if (
+    middlePlusTwo.hasOwnProperty(functionNameString)
+  ) {
+    return [1, 2]; // Middle and 2 arguments right
   }
   return [-1, -1];
 }

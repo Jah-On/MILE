@@ -18,7 +18,7 @@ export function processLeftFunction(functionToken, tokensRight) {
 }
 
 // Returns element
-export function processMiddleFunction(functionToken, tokenLeft, tokenRight) {
+export function processMiddleFunction(functionToken, tokenLeft, tokensRight) {
     let accumulator = [];
     if (tokenLeft.length > 0) {
         accumulator.push(link(parse(tokenLeft[0][1])));
@@ -26,11 +26,13 @@ export function processMiddleFunction(functionToken, tokenLeft, tokenRight) {
         accumulator.push(document.createElementNS(MLNameSpace, "mtext"));
         accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
     }
-    if (tokenRight.length > 0) {
-        accumulator.push(tokenRight[0][1]);
-    } else {
-        accumulator.push(document.createElementNS(MLNameSpace, "mtext"));
-        accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
+    for (let index = 0; index < tokensRight; ++index) {
+        if (index < tokensRight.length) {
+            accumulator.push(tokensRight[index][1]);
+        } else {
+            accumulator.push(document.createElementNS(MLNameSpace, "mtext"));
+            accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
+        }
     }
     return functionToHTML(functionToken[1], accumulator);
 }

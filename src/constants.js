@@ -19,10 +19,10 @@ export const operators     = {
 export const leftTwo       = {
     "frac":"", "logbase":""
 };
-export const middleTwo     = {
-    "^":"", "pow":"", "sub":""
+export const middlePlusOne     = {
+    "over":"", "^":"", "pow":"", "sub":""
 };
-export const middleTwoChar = {
+export const middlePlusOneChar = {
     "and":"⋀", "approx":"≈", "cdot":"⊙", "copen":"◯", 
     "cminus":"⊖", "cplus":"⊕", "cslash":"⊘", "ctimes":"⊗", 
     "def":"≝", "/":"/", "div":"÷", "|":"∣", "divides":"∣", 
@@ -41,5 +41,8 @@ export const middleTwoChar = {
     "supset":"⊃", "supsete":"⊇", "*":"⋅", "times":"⋅", 
     "toward":"➜", "union":"∪", "xtimes":"×"
 };
+export const middlePlusTwo = {
+    "supsub":""
+}
 
 export const MLNameSpace = "http://www.w3.org/1998/Math/MathML"
