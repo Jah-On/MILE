@@ -82,7 +82,7 @@ export function processGroup(inputToken) {
                 continue;
             }
             outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-            outputElement.lastChild.textContent = accumulator;
+            outputElement.lastChild.textContent = String.fromCodePoint(accumulator);
             accumulator = "";
             continue;
         }
