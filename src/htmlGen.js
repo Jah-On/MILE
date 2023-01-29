@@ -60,7 +60,9 @@ export function functionToHTML(funcName, argElements) {
     }
     if (funcName == "supsub") {
         outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
-        outputElement.lastChild.append(argElements[0], argElements[2], argElements[1]);
+        outputElement.lastChild.append(argElements[0]);
+        outputElement.lastChild.append(argElements[2]);
+        outputElement.lastChild.append(argElements[1]);
         return outputElement;
     }
     if (funcName == "sqrt") {
