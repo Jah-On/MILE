@@ -1,5 +1,5 @@
 import { MLNameSpace } from "./constants.js";
-import { isAlpha, isNumber } from "./helper.js"
+import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
 import { parse } from "./parser.js"
 
@@ -69,6 +69,7 @@ export function processSub(inputToken) {
 // Returns element
 export function processGroup(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
+    let accumulator = "";
     for (let i = 0; i < inputToken[1].length; i++) {
         const char = inputToken[1][i];
         if (isAlpha(char)) {
@@ -76,7 +77,13 @@ export function processGroup(inputToken) {
         } else if (isNumber(char)) {
             outputElement.append(document.createElementNS(MLNameSpace, "mn"));
         } else {
+            if (isUTF_8(char)){
+                accumulator += char;
+                continue;
+            }
             outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
+            outputElement.lastChild.append(document.createTextNode(accumulator));
+            continue;
         }
         outputElement.lastChild.append(document.createTextNode(char));
     }

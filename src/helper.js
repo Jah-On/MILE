@@ -10,6 +10,10 @@ export function isNumber(char) {
     return /^[0-9]+$/.test(char);
 }
 
+export function isUTF_8(char) {
+    return (char.charCodeAt(0) > 127);
+}
+
 export function generateRand16(){
     let returnString = "";
     for (let index = 0; index < 16; ++index){
