@@ -27,6 +27,7 @@ export function processMiddleFunction(functionToken, tokenLeft, tokensRight) {
         accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
     }
     for (let index = 0; index < functionToken[3]; ++index) {
+        console.log(tokensRight[index][1]);
         if (index < tokensRight.length) {
             accumulator.push(tokensRight[index][1]);
         } else {
