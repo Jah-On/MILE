@@ -93,7 +93,7 @@ export function processGroup(inputToken) {
     }
     if (startUTF_8 != -1) {
         outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-        outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, index)));
+        outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, inputToken[1].length)));
     }
     return outputElement;
 }
