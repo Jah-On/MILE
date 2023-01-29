@@ -151,7 +151,7 @@ export function link(tokens) {
                 tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
             } else {
                 tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 1 + tokens[index][3]));
-                tokens.splice(index + 1, 1);
+                tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
                 if (index != 0) {
                     tokens.splice(index - 1, 1);
                 }
