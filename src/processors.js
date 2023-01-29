@@ -69,24 +69,31 @@ export function processSub(inputToken) {
 // Returns element
 export function processGroup(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
-    let accumulator = "";
-    for (let i = 0; i < inputToken[1].length; i++) {
-        const char = inputToken[1][i];
+    let startUTF_8 = -1;
+    for (let index = 0; index < inputToken[1].length; index++) {
+        const char = inputToken[1][index];
         if (isAlpha(char)) {
             outputElement.append(document.createElementNS(MLNameSpace, "mi"));
         } else if (isNumber(char)) {
             outputElement.append(document.createElementNS(MLNameSpace, "mn"));
+        } else if (isUTF_8(char)) {
+            if (startUTF_8 == -1) {
+                startUTF_8 = index;
+            }
+            continue;
         } else {
-            accumulator += char;
-            if (isUTF_8(char)){
-                continue;
+            if (startUTF_8 != -1) {
+                outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
+                outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, index)));
+                startUTF_8 = -1;
             }
             outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-            outputElement.lastChild.append(document.createTextNode(accumulator));
-            accumulator = "";
-            continue;
         }
         outputElement.lastChild.append(document.createTextNode(char));
+    }
+    if (startUTF_8 != -1) {
+        outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
+        outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, index)));
     }
     return outputElement;
 }
