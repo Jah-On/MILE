@@ -2,7 +2,7 @@ export const singleChar    = {
     "aleph":"ℵ", "bot":"⊥", "cns":"ℂ", "delta":"Δ", 
     "ens":"∅", "exists":"∃", "forall":"∀", "infinity":"∞",
     "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
-    "rens":"ℝ", "top":"⊤"
+    "rens":"ℝ", "theta":"θ", "top":"⊤"
 };
 export const leftOne       = {
     "abs":"", "sqrt":""
