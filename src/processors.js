@@ -1,7 +1,7 @@
 import { MLNameSpace } from "./constants.js";
 import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
-import { parse } from "./parser.js"
+import { preProccess } from "./parser.js"
 
 // Returns element
 export function processLeftFunction(functionToken, tokensRight) {
@@ -21,7 +21,7 @@ export function processLeftFunction(functionToken, tokensRight) {
 export function processMiddleFunction(functionToken, tokenLeft, tokensRight) {
     let accumulator = [];
     if (tokenLeft.length > 0) {
-        accumulator.push(link(parse(tokenLeft[0][1])));
+        accumulator.push(preProccess(tokenLeft[0][1])[0]);
     } else {
         accumulator.push(document.createElementNS(MLNameSpace, "mtext"));
         accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
@@ -43,12 +43,12 @@ export function processSub(inputToken) {
         return processGroup(inputToken);
     }
     if (inputToken[1][0] == ";") {
-        if (/[;]/.test(inputToken[1][inputToken[1].length - 2]) && inputToken[1][inputToken[1].length - 2] == inputToken[1][inputToken[1].length - 1]) {
-            return link(parse(inputToken[1].substring(1, inputToken[1].length - 2)));
-        } else if (/[;]/.test(inputToken[1][inputToken[1].length - 1])) { // Thanks ChatGPT for the regex!
-            return link(parse(inputToken[1].substring(1, inputToken[1].length - 1)));
+        if (/;/.test(inputToken[1][inputToken[1].length - 2]) && inputToken[1][inputToken[1].length - 2] == inputToken[1][inputToken[1].length - 1]) {
+            return preProccess(inputToken[1].substring(1, inputToken[1].length - 2))[0];
+        } else if (/;/.test(inputToken[1][inputToken[1].length - 1])) { // Thanks ChatGPT for the regex!
+            return preProccess(inputToken[1].substring(1, inputToken[1].length - 1))[0];
         } else {
-            return link(parse(inputToken[1].substring(1, inputToken[1].length)));
+            return preProccess(inputToken[1].substring(1, inputToken[1].length))[0];
         }
     }
     let endsWithVisible = /^[\)\]\}\|]+$/.test(inputToken[1][inputToken[1].length - 1]); // Thanks ChatGPT for the regex!
@@ -58,7 +58,7 @@ export function processSub(inputToken) {
     outputElement.append(document.createElementNS(MLNameSpace, "mo"));
     outputElement.lastChild.append(document.createTextNode(inputToken[1][0]));
 
-    outputElement.append(link(parse(inputToken[1].substring(1, inputToken[1].length - Number(endsWithVisible)))));
+    outputElement.append(preProccess(inputToken[1].substring(1, inputToken[1].length - Number(endsWithVisible)))[0]);
 
     if (endsWithVisible) {
         outputElement.append(document.createElementNS(MLNameSpace, "mo"));
@@ -102,6 +102,8 @@ export function processGroup(inputToken) {
 
 export function processText(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mtext");
-    outputElement.innerHTML = inputToken[1].replaceAll(" ", "&nbsp;");
+    outputElement.innerHTML = inputToken[1]
+                                .replaceAll(" ", "&nbsp;")
+                                .replaceAll("\"", "");
     return outputElement;
 }

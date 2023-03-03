@@ -1,4 +1,4 @@
-import { onEvent } from "./events.js"
+import { inputElementTyping } from "./events.js"
 import { generateID } from "./helper.js"
 
 export function updateName(event) {
@@ -52,6 +52,8 @@ export function deleteInput(event) {
 export function editInput(event) {
     document.getElementById("baseForm").hidden = true;
     document.getElementById("problemList").hidden = true;
+    document.getElementById("importButton").hidden = true;
+    document.getElementById("exportButton").hidden = true;
     document.getElementById("backToBase").hidden = false;
     document.getElementById("backToBase").setAttribute("data", event.srcElement.getAttribute("data"));
     document.getElementById(event.srcElement.getAttribute("data")).hidden = false;
@@ -62,6 +64,8 @@ export function editInput(event) {
 export function backToBase(event) {
     document.getElementById("baseForm").hidden = false;
     document.getElementById("problemList").hidden = false;
+    document.getElementById("importButton").hidden = false;
+    document.getElementById("exportButton").hidden = false;
     document.getElementById("backToBase").hidden = true;
     document.getElementById(event.srcElement.getAttribute("data")).hidden = true;
     updateBaseOutput();
@@ -71,7 +75,7 @@ export function newInputElement(id, showID) {
     let newInput = document.createElement("textarea");
     newInput.className = "input";
     newInput.id = id;
-    newInput.addEventListener("input", function () { onEvent(this); });
+    newInput.addEventListener("input", inputElementTyping);
     newInput.setAttribute("data", "");
     newInput.setAttribute("showID", String(showID));
     newInput.hidden = true;
@@ -120,15 +124,21 @@ export function newProblemTableRow(inputID, visibleID) {
     return rowDiv;
 }
 
-export function addNewInput() {
+export function addNewInput(tupleStringID) {
     let problemNameInput = document.getElementById("baseForm").children[0];
-    let problemList = document.getElementById("problemList");
     let ID = generateID(problemNameInput.value);
-    document.getElementById("inputs").append(newInputElement(ID[0], ID[1]));
+    if (tupleStringID[1] != undefined){
+        ID[0] = tupleStringID[0];
+        ID[1] = Boolean(tupleStringID[1]);
+    }
+    let problemList = document.getElementById("problemList");
+    let newInput = newInputElement(ID[0], ID[1]);
+    document.getElementById("inputs").append(newInput);
     problemList.append(newProblemTableRow(ID[0], ID[1]));
     problemNameInput.value = "";
     problemList.lastChild.scrollIntoView();
     updateBaseOutput();
+    return newInput;
 }
 
 export function updateBaseOutput() {

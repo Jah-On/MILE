@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <!-- https://stackoverflow.com/a/68051929/3492994 -->
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg width='32' height='32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Layer_1'%3E%3Ctitle%3ELayer 1%3C/title%3E%3Ctext xml:space='preserve' text-anchor='start' font-family='Noto Sans JP' font-size='24' id='svg_1' y='25' x='5' stroke-width='0' stroke='%23000' fill='%23000000'%3EM%3C/text%3E%3C/g%3E%3C/svg%3E"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      href="data:image/svg+xml,%3Csvg width='32' height='32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Layer_1'%3E%3Ctitle%3ELayer 1%3C/title%3E%3Ctext xml:space='preserve' text-anchor='start' font-family='Noto Sans JP' font-size='24' id='svg_1' y='25' x='5' stroke-width='0' stroke='%23000' fill='%23000000'%3EM%3C/text%3E%3C/g%3E%3C/svg%3E">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MILE</title>
-    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
     <div id="header">
       <form id="baseForm" method="dialog">
-        <input type="text" placeholder="Problem name or number" />
-        <button>Add</button>
+        <input type="text" placeholder="Problem name or number">
+        <button type="submit">Add</button>
       </form>
-      <input type="button" id="backToBase" value="🡸 Back" hidden />
-      <input type="button" id="printButton" value="Print" />
+      <button type="button" id="importButton">Import</button>
+      <button type="button" id="exportButton">Export</button>
+      <button type="button" id="backToBase" hidden>🡸 Back</button>
+      <button type="button" id="printButton">Print</button>
     </div>
     <div id="container">
       <div id="inputs">

@@ -164,9 +164,9 @@ export function link(tokens) {
         }
     }
 
-    let outputElement = document.createElementNS(MLNameSpace, "mrow")
-    for (let index = 0; index < tokens.length; ++index) {
-        outputElement.append(tokens[index][1]);
+    let outputElement = document.createElementNS(MLNameSpace, "mrow");
+    for (const token of tokens) {
+        outputElement.append(token[1]);
     }
 
     return outputElement;

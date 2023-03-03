@@ -46,8 +46,21 @@ span {
   height: 25px;
 }
 
+#header * {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 1%;
+}
+
 #baseForm {
+  display: flex;
   width: fit-content;
+  height: inherit !important;
+}
+
+#baseForm * {
+  height: auto;
+  margin-right: 1%;
 }
 
 #printButton {

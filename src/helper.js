@@ -1,3 +1,7 @@
+import { MLNameSpace } from "./constants.js"
+import { addNewInput, updateBaseOutput } from "./MILE_ui.js"
+import { preProccess } from "./parser.js"
+
 // ChatGPT implementation
 // Returns boolean
 export function isAlpha(char) {
@@ -43,9 +47,39 @@ export function generateID(IDString){
 }
 
 export function exportToJSON(){
-    
+    let outputData = [];
+    for (const inputElement of document.getElementsByClassName("input")){
+        outputData.push(
+            {
+                id:        inputElement.id,
+                visibleID: inputElement.getAttribute("showID"),
+                src:       inputElement.value
+            }
+        );
+    }
+    return JSON.stringify(outputData);
 }
 
-export function importFromJSON(){
+export function importFromJSON(event){
+    let decodedJSON = JSON.parse(event.srcElement.result);
+    for (const importedInput of decodedJSON){
+        let newInput = addNewInput(importedInput.id, importedInput.visibleiD);
+        newInput.value = importedInput.src;
+        for (const element of preProccess(importedInput.src)) {
+            let mathElement = document.createElementNS(MLNameSpace, "math");
+            mathElement.className = "segment";
+            mathElement.append(element)
+            newInput.setAttribute("data", newInput.getAttribute("data") + mathElement.outerHTML);
+        }
+    }
+    updateBaseOutput();
+}
 
+export function localDownloader(stringName, stringData, stringMIME) {
+    let downloadLink = document.createElement("a");
+    downloadLink.download = stringName;
+    let blobby = new Blob([stringData], {type:stringMIME});
+    let downloadURL = window.URL.createObjectURL(blobby);
+    downloadLink.href = downloadURL;
+    downloadLink.click();
 }
