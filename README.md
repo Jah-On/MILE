@@ -2,7 +2,6 @@
 
 Editor for the Math Indicative Language (MIL)
 
-(Temporarily Not Working)
 Try it out [here](https://jah-on.github.io/MILE/)!
 
 ![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
