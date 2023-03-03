@@ -107,6 +107,16 @@ export function parse(stringRow, listStringLiterals) {
             }
             continue;
         }
+        if (/\0/.test(stringRow[index])){
+            numberLast = false;
+            if (groupCount[0] + groupCount[1]){
+                stringRow = stringRow.replace(/\0/, listStringLiterals.shift());
+            } else {
+                tokens.push([3, listStringLiterals.shift()]);
+                stringRow = stringRow.replace(/\0/, "");
+            }
+            continue;
+        }
         if (groupCount[0] + groupCount[1]){ continue; }
         if (isNumber(stringRow[index])) {
             if ((start != -1) && !numberLast){
@@ -136,10 +146,6 @@ export function parse(stringRow, listStringLiterals) {
             continue;
         }
         numberLast = false;
-        if (/\0/.test(stringRow[index])){
-            tokens.push([3, listStringLiterals.shift()]);
-            continue;
-        }
         if (/ /.test(stringRow[index])){
             if (start != -1){
                 isFunction = functionData(stringRow.substring(start, index));
@@ -176,7 +182,7 @@ export function parse(stringRow, listStringLiterals) {
             tokens.push([2, stringRow.substring(start)]);
         }
     }
-    
+
     return tokens;
 }
 
@@ -187,6 +193,7 @@ export function preProccess(stringMILCode){
         stringLiterals.push(stringsRemoved.match(/"(?:[^"\\]|\\.)*("|$)/)[0]);
         stringsRemoved = stringsRemoved.replace(/"(?:[^"\\]|\\.)*("|$)/, String.fromCharCode(0));
     }
+    
     stringsRemoved = stringsRemoved
                     .replaceAll("\n", " ")
                     .replaceAll("+-", "±")
@@ -204,9 +211,9 @@ export function preProccess(stringMILCode){
     let sliceStart = 0;
     let sliceEnd   = 0;
     for (const segment of segments) {
-        sliceEnd += (segment.match(/\0/) || []).length;
+        sliceEnd += (segment.match(/\0/g) || []).length;
         returnElements.push(link(parse(segment, stringLiterals.slice(sliceStart, sliceEnd))));
-        sliceStart += (segment.match(/\0/) || []).length;
+        sliceStart += (segment.match(/\0/g) || []).length;
     }
 
     return returnElements;
