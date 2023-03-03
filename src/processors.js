@@ -102,8 +102,8 @@ export function processGroup(inputToken) {
 
 export function processText(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mtext");
-    outputElement.innerHTML = inputToken[1]
+    outputElement.append(document.createTextNode(inputToken[1]
                                 .replaceAll(" ", "&nbsp;")
-                                .replaceAll("\"", "");
+                                .replaceAll("\"", "")));
     return outputElement;
 }
