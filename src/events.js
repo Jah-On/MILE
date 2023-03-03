@@ -19,6 +19,9 @@ export function inputElementTyping(event) {
 export function pageSave(event) {
     if ((event.keyCode == 83) && event.ctrlKey){
         event.preventDefault();
+        for (const inputElement of document.getElementsByClassName("input")) {
+            inputElement.setAttribute("src", inputElement.value);
+        }
         localDownloader(
             document.getElementById("documentName").getAttribute("name") + ".html",
             document.documentElement.outerHTML,

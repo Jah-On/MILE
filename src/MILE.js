@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
   document.getElementById("importButton").addEventListener("click", importMIL);
   document.getElementById("exportButton").addEventListener("click", exportMIL);
   for (const problemRow of document.getElementsByClassName("problemListRow")) {
+    problemRow.children[0].value = problemRow.children[0].getAttribute("data");
     problemRow.children[0].addEventListener("input", updateName);
     problemRow.children[1].addEventListener("click", moveInputUp);
     problemRow.children[2].addEventListener("click", moveInputDown);
@@ -23,7 +24,7 @@ window.addEventListener("load", () => {
   }
   for (const inputElement of document.getElementsByClassName("input")) {
     inputElement.addEventListener("input", inputElementTyping);
-    inputElement.value = existingInputs[index].getAttribute("value");
+    inputElement.value = inputElement.getAttribute("src");
   }
   let documentName = prompt("Enter in a project name:", "MILE_Project");
   let documentNameElement = document.createElement("div");

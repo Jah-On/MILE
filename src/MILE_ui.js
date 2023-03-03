@@ -50,7 +50,9 @@ export function deleteInput(event) {
 }
 
 export function editInput(event) {
-    document.getElementById("baseForm").hidden = true;
+    for (let child of document.getElementById("baseForm")){
+        child.hidden = true;
+    }
     document.getElementById("problemList").hidden = true;
     document.getElementById("importButton").hidden = true;
     document.getElementById("exportButton").hidden = true;
@@ -62,7 +64,9 @@ export function editInput(event) {
 }
 
 export function backToBase(event) {
-    document.getElementById("baseForm").hidden = false;
+    for (let child of document.getElementById("baseForm")){
+        child.hidden = false;
+    }
     document.getElementById("problemList").hidden = false;
     document.getElementById("importButton").hidden = false;
     document.getElementById("exportButton").hidden = false;
