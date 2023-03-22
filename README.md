@@ -6,11 +6,11 @@ Try it out [here](https://jah-on.github.io/MILE/)!
 
 ![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
 
-Currently, the only out of the box way to use this program is through the above link. I plan on making a single HTML file that can be download and run in the browser of your preference. I am waiting for feedback first before creating that file.
+Currently, the only out of the box way to use this program is through the above link. The all in one (AIO) generation system does not work properly in GitHub at the moment. 
 
 # How do I save my work?
 
-Hit CTRL + S and name the HTML/ZIP file appropriately. If you use the link above, it will likely download a zip file or bundled HTML file. Extract if neeeded and open the HTML file in the browser. I cannot guarantee this way will work. I advise waiting for the AIO version if you need to save the MIL code.
+Use the export button on the main page to save a MIL file. Alternatively, you can download the all in one HTML file by pressing CTRL + S. Note that the all in one file is still buggy between browsers and needs improvement. 
 
 # What is MIL?
 
@@ -28,6 +28,8 @@ I have Cerebral Palsy which makes writing math, especially for prolonged periods
 ![image](https://user-images.githubusercontent.com/58399643/211452179-2d95a7bc-b5bf-4864-b011-cff5f6f22a15.png)
 
 # Documentation
+
+Out of date but still compatible! In the time being, look at constants.js for a complete list. 
 
 Invisible groupings are done with semicolons (;) and two semicolons **with no spaces** (;;) ends the group.
 
