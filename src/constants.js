@@ -1,14 +1,25 @@
+// Type constants
+export const NUMBER = 0;
+export const VARIABLE = 1;
+export const FUNCTION = 2;
+export const GROUP = 3;
+export const STRING = 4;
+
 export const singleChar    = {
     "aleph":"ℵ", "bot":"⊥", "cns":"ℂ", "delta":"Δ", 
     "ens":"∅", "exists":"∃", "forall":"∀", "infinity":"∞",
     "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
-    "rens":"ℝ", "theta":"θ", "top":"⊤"
+    "rens":"ℝ", "theta":"θ", "top":"⊤", "upsilon":"υ",
+    "varepsilon":"ε", "varphi":"φ", "varpi":"π", "varrho":"ρ",
+    "varsigma":"ς", "vartheta":"θ", "wp":"℘", "zeta":"ζ"
 };
 export const leftOne       = {
     "abs":"", "sqrt":""
 };
 export const leftOneChar   = {
-    "-":"−", "minus":"−", "neg":"¬", "+":"+", "plus":"+"
+    "-":"−", "minus":"−", "neg":"¬", "+":"+", "plus":"+",
+    "sine":"sin", "cosine":"cos", "tangent":"tan",
+    "cotangent":"cot", "secant":"sec", "cosecant":"csc"
 };
 export const operators     = {
     "coprod":"∐", "int":"∫", "iint":"∬", "iiint":"∭", 
