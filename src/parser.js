@@ -1,4 +1,5 @@
 import {
+NUMBER, VARIABLE, FUNCTION, CONSTANT, GROUP, STRING, 
 singleChar, leftOne, leftOneChar, leftTwo, operators,
 middlePlusOne, middlePlusOneChar, middlePlusTwo, MLNameSpace
 } from "./constants.js"
@@ -45,14 +46,14 @@ export function functionData(functionNameString) {
     return [-1, -1];
 }
 
+// function hello_world
+
 export function parse(stringRow, listStringLiterals) {
     let tokens = [];
-    
+
     let isFunction = [0, 0];
     let groupCount = [0, 0];
-    let semicolonLast = false;
-    let numberLast = false;
-    let start = -1;
+    let createToken = true;
     for (let index = 0; index < stringRow.length; ++index) {
         if (/;/.test(stringRow[index]) && !groupCount[1]){
             numberLast = false;
@@ -108,79 +109,54 @@ export function parse(stringRow, listStringLiterals) {
             continue;
         }
         if (/\0/.test(stringRow[index])){
-            numberLast = false;
             if (groupCount[0] + groupCount[1]){
                 stringRow = stringRow.replace(/\0/, listStringLiterals.shift());
             } else {
-                tokens.push([3, listStringLiterals.shift()]);
+                tokens.push([STRING, listStringLiterals.shift()]);
                 stringRow = stringRow.replace(/\0/, "");
             }
             continue;
         }
         if (groupCount[0] + groupCount[1]){ continue; }
-        if (isNumber(stringRow[index])) {
-            if ((start != -1) && !numberLast){
-                isFunction = functionData(stringRow.substring(start, index));
-                if (isFunction[1] != -1) {
-                    tokens.push([0, stringRow.substring(start, index), isFunction[0], isFunction[1]]);
-                } else {
-                    tokens.push([2, stringRow.substring(start, index)]);
-                }
-                start = -1;
-            }
-            if (start == -1){
-                start = index;
-            }
-            numberLast = true;
-            continue;
-        }
         if (isAlpha(stringRow[index])) {
-            if (numberLast) {
-                tokens.push([2, stringRow.substring(start, index)]);
-                numberLast = false;
-                start = -1;
+            if (createToken){
+                tokens.push([VARIABLE, stringRow[index]]);
+                continue;
             }
-            if (start == -1){
-                start = index;
+            if (tokens[tokens.length - 1][0] != VARIABLE){
+                tokens.push([VARIABLE, stringRow[index]]);
+                continue;
+            }
+            tokens[tokens.length - 1][1] += stringRow[index];
+            isFunction = functionData(tokens[tokens.length - 1][1]);
+            if (isFunction[1] != -1) {
+                tokens.push([FUNCTION, stringRow[index], isFunction[0], isFunction[1]]);
             }
             continue;
         }
-        numberLast = false;
-        if (/ /.test(stringRow[index])){
-            if (start != -1){
-                isFunction = functionData(stringRow.substring(start, index));
-                if (isFunction[1] != -1) {
-                    tokens.push([0, stringRow.substring(start, index), isFunction[0], isFunction[1]]);
-                } else {
-                    tokens.push([2, stringRow.substring(start, index)]);
-                }
-                start = -1;
+        if (/\./.test(stringRow[index]) || isNumber(stringRow[index])) {
+            if (createToken){
+                tokens.push([NUMBER, stringRow[index]]);
+                continue;
             }
+            if (tokens[tokens.length - 1][0] != NUMBER){
+                tokens.push([NUMBER, stringRow[index]]);
+                continue;
+            }
+            tokens[tokens.length - 1][1] += stringRow[index];
+            continue;
+        }
+        if (/ /.test(stringRow[index])){
+            createToken = true;
             continue;
         }
         isFunction = functionData(stringRow[index]);
         if (isFunction[1] != -1) {
-            if (start != -1) {
-                isFunction = functionData(stringRow.substring(start, index));
-                if (isFunction[1] != -1) {
-                    tokens.push([0, stringRow.substring(start, index), isFunction[0], isFunction[1]]);
-                } else {
-                    tokens.push([2, stringRow.substring(start, index)]);
-                }
-                start = -1;
-            }
-            tokens.push([0, stringRow[index], isFunction[0], isFunction[1]]);
+            tokens.push([FUNCTION, stringRow[index], isFunction[0], isFunction[1]]);
         }
     }
     if (groupCount[0] + groupCount[1]){
         tokens.push([1, stringRow.substring(start)]);
-    } else if (start != -1){
-        isFunction = functionData(stringRow.substring(start));
-        if (isFunction[1] != -1) {
-            tokens.push([0, stringRow.substring(start), isFunction[0], isFunction[1]]);
-        } else {
-            tokens.push([2, stringRow.substring(start)]);
-        }
     }
 
     return tokens;

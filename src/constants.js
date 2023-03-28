@@ -10,8 +10,10 @@ export const singleChar    = {
     "ens":"∅", "exists":"∃", "forall":"∀", "infinity":"∞",
     "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
     "rens":"ℝ", "theta":"θ", "top":"⊤", "upsilon":"υ",
-    "varepsilon":"ε", "varphi":"φ", "varpi":"π", "varrho":"ρ",
-    "varsigma":"ς", "vartheta":"θ", "wp":"℘", "zeta":"ζ"
+    "varphi":"φ", "varpi":"π", "varrho":"ρ",
+    "varsigma":"ς", "vartheta":"θ", "wp":"℘", "zeta":"ζ", 
+    "alpha":"α", "beta":"β", "gamma":"γ", "delta":"δ",
+    "epsilon":"ε", "eta":"η"
 };
 export const leftOne       = {
     "abs":"", "sqrt":""
