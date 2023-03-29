@@ -1,9 +1,11 @@
 // Type constants
-export const NUMBER = 0;
-export const VARIABLE = 1;
-export const FUNCTION = 2;
-export const GROUP = 3;
-export const STRING = 4;
+export const NUMBER      = 0;
+export const VARIABLE    = 1;
+export const SYMBOL      = 2;
+export const FUNCTION    = 3;
+export const GROUP_START = 4;
+export const GROUP_END   = 5;
+export const STRING      = 6;
 
 export const singleChar    = {
     "aleph":"ℵ", "bot":"⊥", "cns":"ℂ", "delta":"Δ", 
@@ -13,7 +15,7 @@ export const singleChar    = {
     "varphi":"φ", "varpi":"π", "varrho":"ρ",
     "varsigma":"ς", "vartheta":"θ", "wp":"℘", "zeta":"ζ", 
     "alpha":"α", "beta":"β", "gamma":"γ", "delta":"δ",
-    "epsilon":"ε", "eta":"η"
+    "epsilon":"ε", "eta":"η", "pi":"π"
 };
 export const leftOne       = {
     "abs":"", "sqrt":""

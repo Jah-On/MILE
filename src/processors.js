@@ -1,9 +1,9 @@
-import { MLNameSpace } from "./constants.js";
+import {NUMBER, VARIABLE, SYMBOL, FUNCTION, GROUP_START, 
+        GROUP_END, STRING, singleChar, MLNameSpace } from "./constants.js";
 import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
 import { preProccess } from "./parser.js"
 
-// Returns element
 export function processLeftFunction(functionToken, tokensRight) {
     let accumulator = [];
     for (let index = 0; index < functionToken[3]; ++index) {
@@ -17,11 +17,10 @@ export function processLeftFunction(functionToken, tokensRight) {
     return functionToHTML(functionToken[1], accumulator);
 }
 
-// Returns element
 export function processMiddleFunction(functionToken, tokenLeft, tokensRight) {
     let accumulator = [];
     if (tokenLeft.length > 0) {
-        accumulator.push(preProccess(tokenLeft[0][1])[0]);
+        accumulator.push(tokenLeft[0][1]);
     } else {
         accumulator.push(document.createElementNS(MLNameSpace, "mtext"));
         accumulator[accumulator.length - 1].append(document.createTextNode("¿"));
@@ -37,72 +36,85 @@ export function processMiddleFunction(functionToken, tokenLeft, tokensRight) {
     return functionToHTML(functionToken[1], accumulator);
 }
 
-// Returns element
-export function processSub(inputToken) {
-    if (inputToken[1].length < 2) {
-        return processGroup(inputToken);
-    }
-    if (inputToken[1][0] == ";") {
-        if (/;/.test(inputToken[1][inputToken[1].length - 2]) && inputToken[1][inputToken[1].length - 2] == inputToken[1][inputToken[1].length - 1]) {
-            return preProccess(inputToken[1].substring(1, inputToken[1].length - 2))[0];
-        } else if (/;/.test(inputToken[1][inputToken[1].length - 1])) { // Thanks ChatGPT for the regex!
-            return preProccess(inputToken[1].substring(1, inputToken[1].length - 1))[0];
-        } else {
-            return preProccess(inputToken[1].substring(1, inputToken[1].length))[0];
-        }
-    }
-    let endsWithVisible = /^[\)\]\}\|]+$/.test(inputToken[1][inputToken[1].length - 1]); // Thanks ChatGPT for the regex!
+export function processNumber(inputToken) {
+    let outputElement = document.createElementNS(MLNameSpace, "mn");
+    outputElement.append(document.createTextNode(inputToken[1]));
+    return outputElement;
+}
 
+export function processSymbol(inputToken) {
+    let outputElement = document.createElementNS(MLNameSpace, "mtext");
+    outputElement.append(document.createTextNode(singleChar[inputToken[1]]));
+    return outputElement;
+}
+
+export function processGroup(inputTokens) {
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
 
-    outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-    outputElement.lastChild.append(document.createTextNode(inputToken[1][0]));
+    if (inputTokens[0][1] != ";") {
+        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
+        outputElement.lastChild.append(document.createTextNode(inputTokens[0][1]));
+    }
 
-    outputElement.append(preProccess(inputToken[1].substring(1, inputToken[1].length - Number(endsWithVisible)))[0]);
+    let endsWithVisible = /^[\)\]\}\|]+$/.test(inputTokens[inputTokens.length - 1][1]); // Thanks ChatGPT for the regex!
+    outputElement.append(link(inputTokens.slice(1, inputTokens.length - 1)));
 
     if (endsWithVisible) {
         outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode(inputToken[1][inputToken[1].length - 1]));
+        outputElement.lastChild.append(document.createTextNode(inputTokens[inputTokens.length - 1][1]));
     }
     return outputElement;
 }
 
-// ChatGPT aided
-// Returns element
-export function processGroup(inputToken) {
-    let outputElement = document.createElementNS(MLNameSpace, "mrow");
-    let startUTF_8 = -1;
-    for (let index = 0; index < inputToken[1].length; index++) {
-        const char = inputToken[1][index];
-        if (isAlpha(char)) {
-            outputElement.append(document.createElementNS(MLNameSpace, "mi"));
-        } else if (isNumber(char)) {
-            outputElement.append(document.createElementNS(MLNameSpace, "mn"));
-        } else if (isUTF_8(char)) {
-            if (startUTF_8 == -1) {
-                startUTF_8 = index;
-            }
-            continue;
-        } else {
-            if (startUTF_8 != -1) {
-                outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-                outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, index)));
-                startUTF_8 = -1;
-            }
-            outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-        }
-        outputElement.lastChild.append(document.createTextNode(char));
-    }
-    if (startUTF_8 != -1) {
-        outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-        outputElement.lastChild.append(document.createTextNode(inputToken[1].substring(startUTF_8, inputToken[1].length)));
-    }
+export function processVariable(inputToken) {
+    let outputElement = document.createElementNS(MLNameSpace, "mi");
+    outputElement.append(document.createTextNode(inputToken[1]));
     return outputElement;
 }
 
-export function processText(inputToken) {
+export function processString(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mtext");
-    outputElement.append(document.createTextNode(inputToken[1]
-                                .replaceAll("\"", "")));
+    outputElement.append(document.createTextNode(inputToken[1]));
     return outputElement;
+}
+
+export function processor(inputTokens) {
+    for (let index = 0; index < inputTokens.length; ++index) {
+        let type = inputTokens[index][0];
+        switch (type) {
+            case NUMBER:
+                inputTokens[index][1] = processNumber(inputTokens[index]);
+                break;
+            case VARIABLE:
+                inputTokens[index][1] = processVariable(inputTokens[index]);
+                break;
+            case SYMBOL:
+                inputTokens[index][1] = processSymbol(inputTokens[index]);
+                break;
+            case STRING:
+                inputTokens[index][1] = processString(inputTokens[index]);
+                break;
+            default:
+                break;
+        }
+    }
+    let groupOpenIndexes = [];
+    for (let index = 0; index < inputTokens.length; ++index) {
+        let type = inputTokens[index][0];
+        switch (type) {
+            case GROUP_START:
+                groupOpenIndexes.push(index);
+                break;
+            case GROUP_END:
+                let groupStartIndex = groupOpenIndexes.pop();
+                inputTokens[groupStartIndex][1] = processGroup(inputTokens.slice(groupStartIndex, index + 1));
+                inputTokens.splice(groupStartIndex + 1, index - groupStartIndex);
+                index = groupStartIndex;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return inputTokens;
 }

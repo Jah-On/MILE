@@ -1,10 +1,8 @@
-import {
-    singleChar, leftOneChar, operators,
+import {FUNCTION, singleChar, leftOneChar, operators,
     middlePlusOneChar, MLNameSpace
 } from "./constants.js"
 import {
-    processGroup, processLeftFunction, processMiddleFunction, processSub,
-    processText
+    processLeftFunction, processMiddleFunction
 } from "./processors.js"
 
 // ChatGPT aided
@@ -66,11 +64,6 @@ export function functionToHTML(funcName, argElements) {
     if (funcName == "sqrt") {
         outputElement.append(document.createElementNS(MLNameSpace, "msqrt"));
         outputElement.lastChild.append(argElements[0]);
-        return outputElement;
-    }
-    if (singleChar.hasOwnProperty(funcName)) {
-        outputElement.append(document.createElementNS(MLNameSpace, "mtext"));
-        outputElement.lastChild.append(document.createTextNode(singleChar[funcName]));
         return outputElement;
     }
     if (leftOneChar.hasOwnProperty(funcName)) {
@@ -143,24 +136,23 @@ export function functionToHTML(funcName, argElements) {
 // Returns element
 export function link(tokens) {
     for (let index = tokens.length - 1; index >= 0; --index) {
-        if (tokens[index][0] == 0) {
-            if (tokens[index][2] == 0) {
-                tokens[index][1] = processLeftFunction(tokens[index], tokens.slice(index + 1, index + 1 + tokens[index][3]))
-                tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
-            } else {
-                tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 1 + tokens[index][3]));
-                tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
-                if (index != 0) {
-                    tokens.splice(index - 1, 1);
+        let type = tokens[index][0];
+        switch (type) {
+            case FUNCTION:
+                if (tokens[index][2] == 0) {
+                    tokens[index][1] = processLeftFunction(tokens[index], tokens.slice(index + 1, index + 1 + tokens[index][3]))
+                    tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
+                } else {
+                    tokens[index][1] = processMiddleFunction(tokens[index], tokens.slice(index - 1, index), tokens.slice(index + 1, index + 1 + tokens[index][3]));
+                    tokens.splice(index + 1, Math.min(tokens.length - index, tokens[index][3]));
+                    if (index != 0) {
+                        tokens.splice(index - 1, 1);
+                    }
+                    --index;
                 }
-                --index;
-            }
-        } else if (tokens[index][0] == 1) {
-            tokens[index][1] = processSub(tokens[index]);
-        } else if (tokens[index][0] == 2) {
-            tokens[index][1] = processGroup(tokens[index]);
-        } else {
-            tokens[index][1] = processText(tokens[index]);
+                break;
+            default:
+                break;
         }
     }
 

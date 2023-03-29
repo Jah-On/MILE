@@ -1,10 +1,12 @@
 import {
-NUMBER, VARIABLE, FUNCTION, CONSTANT, GROUP, STRING, 
-singleChar, leftOne, leftOneChar, leftTwo, operators,
-middlePlusOne, middlePlusOneChar, middlePlusTwo, MLNameSpace
+NUMBER, VARIABLE, SYMBOL, FUNCTION, GROUP_START, GROUP_END, 
+STRING, singleChar, leftOne, leftOneChar, 
+leftTwo, operators, middlePlusOne, middlePlusOneChar, 
+middlePlusTwo, MLNameSpace
 } from "./constants.js"
 import { isAlpha, isNumber } from "./helper.js"
 import { link } from "./htmlGen.js";
+import { processor } from "./processors.js";
 
 // Return 2 wide integer array
 export function functionData(functionNameString) {
@@ -46,117 +48,129 @@ export function functionData(functionNameString) {
     return [-1, -1];
 }
 
-// function hello_world
-
-export function parse(stringRow, listStringLiterals) {
+export function parse(stringRow, stringLiterals) {
     let tokens = [];
 
-    let isFunction = [0, 0];
-    let groupCount = [0, 0];
-    let createToken = true;
+    let createToken   = true;
+    let isFunction    = [0, 0];
+    let groupItems    = [];
+    let lastSemicolon = false;
     for (let index = 0; index < stringRow.length; ++index) {
-        if (/;/.test(stringRow[index]) && !groupCount[1]){
-            numberLast = false;
-            if ((groupCount[0] != 0) && (semicolonLast)){
-                groupCount[0] -= 2;
-            }
-            if ((groupCount[0] == 0) && (semicolonLast)){
-                semicolonLast = false;
-                tokens.push([1, stringRow.substring(start, index + 1)]);
-                start = -1;
-                continue;
-            }
-            if ((start != -1) && (groupCount[0] == 0)){
-                isFunction = functionData(stringRow.substring(start, index));
-                if (isFunction[1] != -1) {
-                    tokens.push([0, stringRow.substring(start, index), isFunction[0], isFunction[1]]);
-                } else {
-                    tokens.push([2, stringRow.substring(start, index)]);
-                }
-                start = -1;
-            }
-            ++groupCount[0];
-            semicolonLast = true;
-            if (start == -1){
-                start = index;
-            }
-            continue;
-        }
-        semicolonLast = false;
-        if (/[([{]/.test(stringRow[index]) && !groupCount[0]){
-            if ((start != -1) && (groupCount[1] == 0)){
-                isFunction = functionData(stringRow.substring(start, index));
-                if (isFunction[1] != -1) {
-                    tokens.push([0, stringRow.substring(start, index), isFunction[0], isFunction[1]]);
-                } else {
-                    tokens.push([2, stringRow.substring(start, index)]);
-                }
-                start = -1;
-            }
-            ++groupCount[1];
-            if (start == -1){
-                start = index;
-            }
-            continue;
-        }
-        if (/[)\]}]/.test(stringRow[index]) && !groupCount[0]){
-            numberLast = false;
-            --groupCount[1];
-            if (groupCount[1] == 0){
-                tokens.push([1, stringRow.substring(start, index + 1)]);
-                start = -1;
-            }
-            continue;
-        }
-        if (/\0/.test(stringRow[index])){
-            if (groupCount[0] + groupCount[1]){
-                stringRow = stringRow.replace(/\0/, listStringLiterals.shift());
+        if (stringRow[index] == ";"){
+            if (!lastSemicolon){
+                tokens.push([GROUP_START, ";", 0, 0]);
+                groupItems.push(tokens.length);
+                lastSemicolon = true;
             } else {
-                tokens.push([STRING, listStringLiterals.shift()]);
-                stringRow = stringRow.replace(/\0/, "");
+                if (tokens.length > 0 && tokens[tokens.length - 2][0] == VARIABLE) {
+                    isFunction = functionData(tokens[tokens.length - 2][1]);
+                    if (isFunction[0] != -1) {
+                        if (isFunction[1] == 0) {
+                            tokens[tokens.length - 2][0] = SYMBOL;
+                        } else {
+                            tokens[tokens.length - 2][0] = FUNCTION;
+                        }
+                        tokens[tokens.length - 2][2] = isFunction[0];
+                        tokens[tokens.length - 2][3] = isFunction[1];
+                    }
+                }
+                groupItems.pop();
+                tokens[tokens.length - 1][0] = GROUP_END;
+                tokens[tokens.length - 1][1] = ";;";
+                tokens[tokens.length - 1][2] = tokens.length - groupItems.pop() - 1;
+                lastSemicolon = false;
             }
             continue;
         }
-        if (groupCount[0] + groupCount[1]){ continue; }
+        lastSemicolon = false;
+        if (/\)|\]|\}/.test(stringRow[index])){
+            if (tokens.length > 0 && tokens[tokens.length - 1][0] == VARIABLE) {
+                isFunction = functionData(tokens[tokens.length - 1][1]);
+                if (isFunction[0] != -1) {
+                    if (isFunction[1] == 0) {
+                        tokens[tokens.length - 1][0] = SYMBOL;
+                    } else {
+                        tokens[tokens.length - 1][0] = FUNCTION;
+                    }
+                    tokens[tokens.length - 1][2] = isFunction[0];
+                    tokens[tokens.length - 1][3] = isFunction[1];
+                }
+            }
+            tokens.push([GROUP_END, stringRow[index], tokens.length - groupItems.pop(), 0]);
+            continue;
+        }
+        if (/\(|\[|\{/.test(stringRow[index])){
+            tokens.push([GROUP_START, stringRow[index], 0, 0]);
+            groupItems.push(tokens.length);
+            continue;
+        }
         if (isAlpha(stringRow[index])) {
-            if (createToken){
-                tokens.push([VARIABLE, stringRow[index]]);
-                continue;
-            }
-            if (tokens[tokens.length - 1][0] != VARIABLE){
-                tokens.push([VARIABLE, stringRow[index]]);
-                continue;
+            if (createToken) {
+                tokens.push([VARIABLE, "", 0, 0]);
+                createToken = false;
+            } else if (tokens[tokens.length - 1][0] != VARIABLE) {
+                tokens.push([VARIABLE, "", 0, 0]);
             }
             tokens[tokens.length - 1][1] += stringRow[index];
+            continue;
+        }
+        if (tokens.length > 0 && tokens[tokens.length - 1][0] == VARIABLE) {
             isFunction = functionData(tokens[tokens.length - 1][1]);
-            if (isFunction[1] != -1) {
-                tokens.push([FUNCTION, stringRow[index], isFunction[0], isFunction[1]]);
+            if (isFunction[0] != -1) {
+                if (isFunction[1] == 0) {
+                    tokens[tokens.length - 1][0] = SYMBOL;
+                } else {
+                    tokens[tokens.length - 1][0] = FUNCTION;
+                }
+                tokens[tokens.length - 1][2] = isFunction[0];
+                tokens[tokens.length - 1][3] = isFunction[1];
             }
-            continue;
         }
-        if (/\./.test(stringRow[index]) || isNumber(stringRow[index])) {
-            if (createToken){
-                tokens.push([NUMBER, stringRow[index]]);
-                continue;
-            }
-            if (tokens[tokens.length - 1][0] != NUMBER){
-                tokens.push([NUMBER, stringRow[index]]);
-                continue;
+        if (isNumber(stringRow[index]) || stringRow[index] == ".") {
+            if (createToken) {
+                tokens.push([NUMBER, "", 0, 0]);
+                createToken = false;
+            } else if (tokens[tokens.length - 1][0] != NUMBER) {
+                tokens.push([NUMBER, "", 0, 0]);
             }
             tokens[tokens.length - 1][1] += stringRow[index];
             continue;
         }
-        if (/ /.test(stringRow[index])){
+        if (/\0/.test(stringRow[index])) {
+            tokens.push([STRING, stringLiterals.shift(), 0, 0]);
+            createToken = true;
+            continue;
+        }
+        if (/ /.test(stringRow[index])) {
             createToken = true;
             continue;
         }
         isFunction = functionData(stringRow[index]);
-        if (isFunction[1] != -1) {
+        if (isFunction[0] != -1) {
             tokens.push([FUNCTION, stringRow[index], isFunction[0], isFunction[1]]);
+            createToken = true;
+            continue;
+        } else {
+            tokens.push([STRING, stringRow[index], 0, 0]);
+            createToken = true;
+            continue;
         }
     }
-    if (groupCount[0] + groupCount[1]){
-        tokens.push([1, stringRow.substring(start)]);
+    if (tokens.length > 0 && tokens[tokens.length - 1][0] == VARIABLE) {
+        isFunction = functionData(tokens[tokens.length - 1][1]);
+        if (isFunction[0] != -1) {
+            if (isFunction[1] == 0) {
+                tokens[tokens.length - 1][0] = SYMBOL;
+            } else {
+                tokens[tokens.length - 1][0] = FUNCTION;
+            }
+            tokens[tokens.length - 1][2] = isFunction[0];
+            tokens[tokens.length - 1][3] = isFunction[1];
+        }
+    }
+
+    for (const groupItem of groupItems) {
+        tokens.push([GROUP_END, "", tokens.length - groupItem, 0]);
     }
 
     return tokens;
@@ -166,7 +180,7 @@ export function preProccess(stringMILCode){
     let stringLiterals = [];
     let stringsRemoved = stringMILCode;
     while (stringsRemoved.search(/"(?:[^"\\]|\\.)*("|$)/) != -1){
-        stringLiterals.push(stringsRemoved.match(/"(?:[^"\\]|\\.)*("|$)/)[0]);
+        stringLiterals.push(stringsRemoved.match(/"(?:[^"\\]|\\.)*("|$)/)[0].replace(/"/g, ""));
         stringsRemoved = stringsRemoved.replace(/"(?:[^"\\]|\\.)*("|$)/, String.fromCharCode(0));
     }
     
@@ -188,7 +202,7 @@ export function preProccess(stringMILCode){
     let sliceEnd   = 0;
     for (const segment of segments) {
         sliceEnd += (segment.match(/\0/g) || []).length;
-        returnElements.push(link(parse(segment, stringLiterals.slice(sliceStart, sliceEnd))));
+        returnElements.push(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
         sliceStart += (segment.match(/\0/g) || []).length;
     }
 
