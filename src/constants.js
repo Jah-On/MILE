@@ -32,7 +32,7 @@ export const operators     = {
     "sum":"∑"
 };
 export const leftTwo       = {
-    "frac":"", "logbase":""
+    "frac":"", "logbase":"", "evalint":""
 };
 export const middlePlusOne     = {
     "over":"", "^":"", "pow":"", "sub":""

@@ -28,6 +28,14 @@ export function functionToHTML(funcName, argElements) {
         outputElement.lastChild.append(document.createTextNode("|"));
         return outputElement;
     }
+    if (funcName == "evalint") {
+        outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
+        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
+        outputElement.lastChild.lastChild.setAttribute("largeop", "true");
+        outputElement.lastChild.lastChild.append(document.createTextNode("|"));
+        outputElement.lastChild.append(argElements[1], argElements[0]);
+        return outputElement;
+    }
     if (funcName == "frac") {
         outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
         outputElement.lastChild.append(argElements[0], argElements[1]);

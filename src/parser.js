@@ -4,7 +4,7 @@ STRING, singleChar, leftOne, leftOneChar,
 leftTwo, operators, middlePlusOne, middlePlusOneChar, 
 middlePlusTwo, MLNameSpace
 } from "./constants.js"
-import { isAlpha, isNumber } from "./helper.js"
+import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { link } from "./htmlGen.js";
 import { processor } from "./processors.js";
 
@@ -132,6 +132,16 @@ export function parse(stringRow, stringLiterals) {
                 createToken = false;
             } else if (tokens[tokens.length - 1][0] != NUMBER) {
                 tokens.push([NUMBER, "", 0, 0]);
+            }
+            tokens[tokens.length - 1][1] += stringRow[index];
+            continue;
+        }
+        if (isUTF_8(stringRow[index])) {
+            if (createToken) {
+                tokens.push([STRING, "", 0, 0]);
+                createToken = false;
+            } else if (tokens[tokens.length - 1][0] != STRING) {
+                tokens.push([STRING, "", 0, 0]);
             }
             tokens[tokens.length - 1][1] += stringRow[index];
             continue;
