@@ -74,6 +74,13 @@ export function functionToHTML(funcName, argElements) {
         outputElement.lastChild.append(argElements[0]);
         return outputElement;
     }
+    if (funcName == "vhat") {
+        outputElement.append(document.createElementNS(MLNameSpace, "mover"));
+        outputElement.lastChild.append(argElements[0]);
+        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
+        outputElement.lastChild.lastChild.innerHTML = "&#8407;";
+        return outputElement;
+    }
     if (leftOneChar.hasOwnProperty(funcName)) {
         outputElement.append(document.createElementNS(MLNameSpace, "mo"));
         outputElement.lastChild.append(document.createTextNode(leftOneChar[funcName]));

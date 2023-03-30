@@ -18,7 +18,7 @@ export const singleChar    = {
     "epsilon":"ε", "eta":"η", "pi":"π"
 };
 export const leftOne       = {
-    "abs":"", "sqrt":""
+    "abs":"", "sqrt":"", "vhat":""
 };
 export const leftOneChar   = {
     "-":"−", "minus":"−", "neg":"¬", "+":"+", "plus":"+",

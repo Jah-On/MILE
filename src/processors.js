@@ -75,6 +75,7 @@ export function processVariable(inputToken) {
 export function processString(inputToken) {
     let outputElement = document.createElementNS(MLNameSpace, "mtext");
     outputElement.append(document.createTextNode(inputToken[1]));
+    outputElement.innerHTML = outputElement.innerHTML.replaceAll(" ", "&nbsp;");
     return outputElement;
 }
 
