@@ -1,4 +1,3 @@
-
 body {
   background-color: black;
   height: calc(100vh - 20px);
@@ -115,13 +114,12 @@ textarea.input {
 #output {
   background-color: whitesmoke;
   color: black;
-  display: block;
+  display: grid;
   font-size: 28px;
   height: calc(100% - 12px);
-  overflow-y: scroll;
   padding: 5px;
+  overflow-y: scroll;
   position: relative;
-  text-align: center;
   width: calc(50% - 10px);
 }
 
@@ -147,5 +145,7 @@ span.baseOutputLabel {
 }
 
 math.segment {
+  margin-left: auto;
+  margin-right: auto;
   page-break-inside: avoid !important;
 }
