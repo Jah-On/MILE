@@ -1,3 +1,4 @@
+
 body {
   background-color: black;
   height: calc(100vh - 20px);
@@ -17,16 +18,13 @@ span {
     visibility: hidden;
   }
   #output {
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
     min-width: calc(100% - 8px);
     height: fit-content !important;
-    overflow-y: visible;
+    overflow-y: auto;
     margin: 0px;
-  }
-  #output * {
-    break-inside: avoid;
   }
   #container,
   body,
@@ -115,120 +113,38 @@ textarea.input {
 }
 
 #output {
-  width: calc(50% - 10px);
-  height: calc(100% - 12px);
-  font-size: 28px;
   background-color: whitesmoke;
   color: black;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  font-size: 28px;
+  height: calc(100% - 12px);
   padding: 5px;
+  position: relative;
   overflow-y: scroll;
+  width: calc(50% - 10px);
 }
 
 div.baseOutput {
-  display: flex;
-  width: calc(100% - 4px);
-  margin-bottom: 10px;
-  border: 2px solid black;
-}
-
-span.baseOutputLabel {
-  position: relative;
-  top: 0px;
-  left: 5px;
-  z-index: 2;
+  border: black solid 2px;
   display: block;
+  position: relative;
+  margin-bottom: 10px;
+  width: calc(100% - 4px);
 }
-
+  
 div.baseOutputContents {
   display: grid;
   position: relative;
-  top: 0px;
-  z-index: 1;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-math.segment {
-  margin-bottom: 10px;
-  break-inside: avoid;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
-}
-
-/* Group CSS /
-
-/ Sub Segment CSS /
-
-/ OP CSS */
-textarea.input {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  font-size: 28px;
-  background-color: rgb(20, 20, 20);
-  color: whitesmoke;
-  margin: 0px;
-  resize: none;
-}
-
-#inputs {
-  width: calc(50% - 10px);
-  height: calc(100% - 2px);
-  font-size: 28px;
-  background-color: rgb(20, 20, 20);
-  overflow-y: scroll;
-}
-
-#output {
-  width: calc(50% - 10px);
-  height: calc(100% - 12px);
-  font-size: 28px;
-  background-color: whitesmoke;
-  color: black;
-  align-items: center;
-  display: flex;
-  padding: 5px;
-  overflow-y: scroll;
-  flex-direction: column;
-}
-
-div.baseOutput {
-  display: flex;
-  width: calc(100% - 4px);
-  margin-bottom: 10px;
-  border: 2px solid black;
-}
-
-span.baseOutputLabel {
-  position: relative;
-  top: 0px;
-  left: 5px;
-  z-index: 2;
-  display: block;
-}
-
-div.baseOutputContents {
-  display: grid;
-  position: relative;
-  top: 0px;
-  z-index: 1;
-  align-items: center;
   text-align: center;
+  z-index: 1;
+}
+
+span.baseOutputLabel {
+  display: block;
+  position: relative;
+  z-index: 2;
 }
 
 math.segment {
-  margin-bottom: 10px;
-  break-inside: avoid;
-  margin-left: auto;
-  margin-right: auto;
-  width: fit-content;
+  page-break-inside: avoid !important;
 }
-
-/* Group CSS /
-
-/ Sub Segment CSS /
-
-/ OP CSS */
