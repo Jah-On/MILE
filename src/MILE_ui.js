@@ -128,12 +128,13 @@ export function newProblemTableRow(inputID, visibleID) {
     return rowDiv;
 }
 
-export function addNewInput(tupleStringID) {
+export function addNewInput(tupleStringID, visibleID) {
+    console.log(tupleStringID, visibleID);
     let problemNameInput = document.getElementById("baseForm").children[0];
     let ID = generateID(problemNameInput.value);
-    if (tupleStringID[1] != undefined){
-        ID[0] = tupleStringID[0];
-        ID[1] = Boolean(tupleStringID[1]);
+    if (visibleID != undefined){
+        ID[0] = tupleStringID;
+        ID[1] = Boolean(visibleID);
     }
     let problemList = document.getElementById("problemList");
     let newInput = newInputElement(ID[0], ID[1]);

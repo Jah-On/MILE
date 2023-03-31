@@ -63,7 +63,7 @@ export function exportToJSON(){
 export function importFromJSON(event){
     let decodedJSON = JSON.parse(event.srcElement.result);
     for (const importedInput of decodedJSON){
-        let newInput = addNewInput(importedInput.id, importedInput.visibleiD);
+        let newInput = addNewInput(importedInput.id, importedInput.visibleID);
         newInput.value = importedInput.src;
         for (const element of preProccess(importedInput.src)) {
             let mathElement = document.createElementNS(MLNameSpace, "math");
