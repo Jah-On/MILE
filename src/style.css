@@ -118,9 +118,10 @@ textarea.input {
   display: block;
   font-size: 28px;
   height: calc(100% - 12px);
+  overflow-y: scroll;
   padding: 5px;
   position: relative;
-  overflow-y: scroll;
+  text-align: center;
   width: calc(50% - 10px);
 }
 
