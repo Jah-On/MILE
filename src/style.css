@@ -114,7 +114,7 @@ textarea.input {
 #output {
   background-color: whitesmoke;
   color: black;
-  display: grid;
+  display: block;
   font-size: 28px;
   height: calc(100% - 12px);
   padding: 5px;
@@ -132,7 +132,7 @@ div.baseOutput {
 }
   
 div.baseOutputContents {
-  display: grid;
+  display: block;
   position: relative;
   text-align: center;
   z-index: 1;

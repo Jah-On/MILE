@@ -4,13 +4,16 @@ import { preProccess } from "./parser.js"
 
 export function inputElementTyping(event) {
     let outputElement = document.getElementById("output");
-
     outputElement.innerHTML = "";
 
+    outputElement.append(document.createElement("div"));
+    outputElement.lastChild.className = "baseOutputContents";
+
     for (const element of preProccess(event.srcElement.value)) {
-        outputElement.append(document.createElementNS(MLNameSpace, "math"));
-        outputElement.lastChild.className = "segment";
-        outputElement.lastChild.append(element);
+        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "math"));
+        outputElement.lastChild.lastChild.className = "segment";
+        outputElement.lastChild.lastChild.append(element);
+        outputElement.lastChild.append(document.createElement("br"));
     }
 
     event.srcElement.setAttribute("data", outputElement.innerHTML);

@@ -65,12 +65,17 @@ export function importFromJSON(event){
     for (const importedInput of decodedJSON){
         let newInput = addNewInput(importedInput.id, importedInput.visibleID);
         newInput.value = importedInput.src;
+        
+        let container = document.createElement("div");
+        container.className = "baseOutputContents";
+
         for (const element of preProccess(importedInput.src)) {
-            let mathElement = document.createElementNS(MLNameSpace, "math");
-            mathElement.className = "segment";
-            mathElement.append(element)
-            newInput.setAttribute("data", newInput.getAttribute("data") + mathElement.outerHTML);
+            container.append(document.createElementNS(MLNameSpace, "math"));
+            container.lastChild.className = "segment";
+            container.lastChild.append(element);
+            container.append(document.createElement("br"));
         }
+        newInput.setAttribute("data", newInput.getAttribute("data") + container.outerHTML);
     }
     updateBaseOutput();
 }
