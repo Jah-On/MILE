@@ -107,6 +107,11 @@ export function processor(inputTokens) {
                 groupOpenIndexes.push(index);
                 break;
             case GROUP_END:
+                if (groupOpenIndexes.length == 0) {
+                    inputTokens[index][0] = STRING;
+                    inputTokens[index][1] = processString(inputTokens[index]);
+                    break;
+                }
                 let groupStartIndex = groupOpenIndexes.pop();
                 inputTokens[groupStartIndex][1] = processGroup(inputTokens.slice(groupStartIndex, index + 1));
                 inputTokens.splice(groupStartIndex + 1, index - groupStartIndex);
