@@ -6,9 +6,7 @@ body {
 }
 
 span {
-  display: inline-block;
   line-height: 0.8;
-  vertical-align: middle;
 }
 
 @media print {
