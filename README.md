@@ -29,7 +29,7 @@ I have Cerebral Palsy which makes writing math, especially for prolonged periods
 
 # Documentation
 
-Download the documentation [MIL](https://raw.githubusercontent.com/Jah-On/MILE/main/docs/DOCGEN.mil) file and import it in the editor.
+Download the documentation <a href="https://raw.githubusercontent.com/Jah-On/MILE/main/docs/DOCGEN.mil" download="DOCGEN.mil" target="_blank">MIL</a> file and import it in the editor.
 A PDF version is being worked upon but working yet. 
 
 # How can you help?
