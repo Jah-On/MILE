@@ -90,4 +90,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: MILdocs
-          path: doc/DOCGEN.mil
+          path: ./docs/DOCGEN.mil
