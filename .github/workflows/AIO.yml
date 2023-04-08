@@ -91,9 +91,12 @@ jobs:
       - name: Generate docs
         run: npm run docgen
 
-      - name: Upload docs artifact
-      # Should upload to "/docs" folder in repo
-        uses: actions/upload-artifact@v2
+      # Should commit the docs folder to the repo
+      - name: Commit docs
+        uses: EndBug/add-and-commit@v7
         with:
-          name: docs
-          path: ./docs
+          author_name: "GitHub Actions"
+          author_email: ""
+          message: "Update docs"
+          add: "docs"
+          signoff: true
