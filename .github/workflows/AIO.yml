@@ -99,4 +99,3 @@ jobs:
           author_email: ""
           message: "Update docs"
           add: "docs"
-          signoff: true
