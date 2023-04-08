@@ -70,7 +70,7 @@ function main(){
         visibleID: "false",
         src:       MILsrc,
     }];
-    writeFile("DOCGEN.mil", JSON.stringify(MILobj));
+    writeFile("docs/DOCGEN.mil", JSON.stringify(MILobj));
 }
 
 main();
