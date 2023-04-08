@@ -79,6 +79,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -93,10 +96,9 @@ jobs:
 
       # Should commit the docs folder to the repo
       - name: Commit docs
-        uses: EndBug/add-and-commit@v7
+        uses: Andro999b/push@v1.3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          author_name: "GitHub Actions"
-          author_email: ""
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          folder: docs
           message: "Update docs"
-          add: "docs"
