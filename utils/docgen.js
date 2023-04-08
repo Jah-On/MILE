@@ -6,9 +6,9 @@ from "../src/constants.js";
 import { preProccess, parse } from "../src/parser.js";
 import { processor } from "../src/processors.js";
 import { link } from "../src/htmlGen.js";
-import { JSDOM } from "jsdom";
-import pdfGen from "wkhtmltopdf";
-import { createWriteStream } from "fs";
+// import { JSDOM } from "jsdom";
+// import pdfGen from "wkhtmltopdf";
+import { mkdir } from "fs";
 import { writeFile } from "fs/promises";
 
 function main(){
@@ -70,7 +70,10 @@ function main(){
         visibleID: "false",
         src:       MILsrc,
     }];
-    writeFile("docs/DOCGEN.mil", JSON.stringify(MILobj));
+    mkdir("./docs", { recursive: true }, (err) => {
+        if (err) throw err;
+    });
+    writeFile("./docs/DOCGEN.mil", JSON.stringify(MILobj));
 }
 
 main();
