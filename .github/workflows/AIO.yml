@@ -41,12 +41,18 @@ jobs:
           path: ./dist
 
       - name: Draft Release
-        uses: softprops/action-gh-release@v1
+        # Only run on new tags and upload the AIO file
+        uses: actions/create-release@v1
         if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: true
-          files: ./dist/index.html
-          fail_on_unmatched_files: true
+          prerelease: false
+          body: |
+            AIO file for this release is attached.
 
   deploy:
     name: Deploy
@@ -89,5 +95,5 @@ jobs:
       # Should upload to "/docs" folder in repo
         uses: actions/upload-artifact@v2
         with:
-          name: MILdocs
-          path: ./docs/DOCGEN.mil
+          name: docs
+          path: ./docs
