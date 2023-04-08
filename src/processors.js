@@ -4,6 +4,8 @@ import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
 import { preProccess } from "./parser.js"
 
+/* ### */
+
 export function processLeftFunction(functionToken, tokensRight) {
     let accumulator = [];
     for (let index = 0; index < functionToken[3]; ++index) {
