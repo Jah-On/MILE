@@ -12,10 +12,11 @@ export const singleChar    = {
     "ens":"∅", "exists":"∃", "forall":"∀", "infinity":"∞",
     "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
     "rens":"ℝ", "theta":"θ", "top":"⊤", "upsilon":"υ",
-    "varphi":"φ", "varpi":"π", "varrho":"ρ",
-    "varsigma":"ς", "vartheta":"θ", "wp":"℘", "zeta":"ζ", 
+    "phi":"φ", "rho":"ρ", "sigma":"ς", "wp":"℘", "zeta":"ζ", 
     "alpha":"α", "beta":"β", "gamma":"γ", "delta":"δ",
-    "epsilon":"ε", "eta":"η", "pi":"π"
+    "epsilon":"ε", "eta":"η", "pi":"π", "Omega":"Ω",
+    "omega":"ω", "lambda":"λ", "mu":"μ", "angle":"∠",
+    "degree":"°"
 };
 export const leftOne       = {
     "abs":"", "sqrt":"", "vhat":""
