@@ -19,7 +19,7 @@ export const singleChar    = {
     "degree":"°"
 };
 export const leftOne       = {
-    "abs":"", "sqrt":"", "vhat":""
+    "abs":"", "ceiling":"", "floor":"", "round":"", "sqrt":"", "vhat":""
 };
 export const leftOneChar   = {
     "-":"−", "minus":"−", "neg":"¬", "+":"+", "plus":"+",
