@@ -16,7 +16,7 @@ export const singleChar    = {
     "alpha":"α", "beta":"β", "gamma":"γ", "delta":"δ",
     "epsilon":"ε", "eta":"η", "pi":"π", "Omega":"Ω",
     "omega":"ω", "lambda":"λ", "mu":"μ", "angle":"∠",
-    "degree":"°"
+    "degree":"°", "Phi":"Φ"
 };
 export const leftOne       = {
     "abs":"", "ceiling":"", "floor":"", "round":"", "sqrt":"", "vhat":""
