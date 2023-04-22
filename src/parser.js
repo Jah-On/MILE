@@ -199,10 +199,7 @@ export function preProccess(stringMILCode){
                     .replaceAll("+-", "±")
                     .replaceAll("-+", "∓")
                     .replaceAll(/(^| ) +($| )/g, " ");
-    let segments = stringsRemoved.split(/(^| )end($| )/gi);
-    while (segments.indexOf(" ") != -1){
-        segments.splice(segments.indexOf(" "), 1);
-    }
+    let segments = stringsRemoved.split(/(?<![aA-zZ])end(\b|[0-9])/gi);
     while (segments.indexOf("") != -1){
         segments.splice(segments.indexOf(""), 1);
     }
