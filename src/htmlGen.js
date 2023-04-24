@@ -67,6 +67,11 @@ export function functionToHTML(funcName, argElements) {
         outputElement.append(argElements[1]);
         return outputElement;
     }
+    if (funcName == "nroot") {
+        outputElement.append(document.createElementNS(MLNameSpace, "mroot"));
+        outputElement.lastChild.append(argElements[1], argElements[0]);
+        return outputElement;
+    }
     if (funcName == "over") {
         outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
         outputElement.lastChild.append(argElements[0], argElements[1]);
