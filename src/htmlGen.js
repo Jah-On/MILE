@@ -7,6 +7,8 @@ import {
 
 /* ### */
 
+const STYLES = {"largeop":"true", "symmetric":"true"};
+
 // ChatGPT aided
 // Returns element
 export function functionToHTML(funcName, argElements) {
@@ -41,7 +43,7 @@ export function functionToHTML(funcName, argElements) {
     if (funcName == "evalint") {
         outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
         outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.lastChild.setAttribute("largeop", "true");
+        outputElement.lastChild.lastChild.setAttribute("stretchy", "true");
         outputElement.lastChild.lastChild.append(document.createTextNode("|"));
         outputElement.lastChild.append(argElements[1], argElements[0]);
         return outputElement;
@@ -120,7 +122,8 @@ export function functionToHTML(funcName, argElements) {
     }
     if (operators.hasOwnProperty(funcName)) {
         outputElement.append(document.createElement("mo"));
-        outputElement.lastChild.setAttribute("largeop", "true");
+        outputElement.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
+        outputElement.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
         outputElement.lastChild.append(document.createTextNode(operators[funcName]));
         outputElement.append(argElements[0]);
         return outputElement;
@@ -130,7 +133,8 @@ export function functionToHTML(funcName, argElements) {
             outputElement.append(document.createElementNS(MLNameSpace, "mover"));
 
             outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.setAttribute("largeop", "true");
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
             outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
 
             outputElement.lastChild.append(argElements[0]);
@@ -143,7 +147,8 @@ export function functionToHTML(funcName, argElements) {
             outputElement.append(document.createElementNS(MLNameSpace, "munder"));
 
             outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.setAttribute("largeop", "true");
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
             outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
 
             outputElement.lastChild.append(argElements[0]);
@@ -156,7 +161,8 @@ export function functionToHTML(funcName, argElements) {
             outputElement.append(document.createElementNS(MLNameSpace, "munderover"));
 
             outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.setAttribute("largeop", "true");
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
+            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
             outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
 
             outputElement.lastChild.append(argElements[1]);
