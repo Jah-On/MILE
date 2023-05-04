@@ -13,7 +13,7 @@ export const singleChar    = {
     "ins":"ℤ", "nns":"ℕ", "\'":"'", "prime":"'", "rans":"ℚ", 
     "rens":"ℝ", "theta":"θ", "top":"⊤", "upsilon":"υ",
     "phi":"φ", "rho":"ρ", "sigma":"ς", "wp":"℘", "zeta":"ζ", 
-    "alpha":"α", "beta":"β", "gamma":"γ", "delta":"δ",
+    "alpha":"α", "beta":"β", "gamma":"γ", "Delta":"δ",
     "epsilon":"ε", "eta":"η", "pi":"π", "Omega":"Ω",
     "omega":"ω", "lambda":"λ", "mu":"μ", "angle":"∠",
     "degree":"°", "Phi":"Φ"
