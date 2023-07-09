@@ -47,6 +47,11 @@ span {
   margin-right: 1%;
 }
 
+#homeSpecific {
+  display: flex;
+  flex-direction: row;
+}
+
 #baseForm {
   display: flex;
   width: fit-content;
@@ -78,27 +83,17 @@ span {
 }
 
 div.problemListRow {
-  display: flex;
   flex-direction: row;
   margin-top: 10px;
+  width: inherit;
 }
 
-input.problemName {
-  width: 40%;
-}
-button.editProblem {
+div.problemListRow * {
   margin: auto;
-  vertical-align: baseline;
 }
 
-textarea.input {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  font-size: 28px;
-  background-color: rgb(20, 20, 20);
-  color: whitesmoke;
-  margin: 0px;
-  resize: none;
+div.problemListRow > input {
+  width: 40%;
 }
 
 #inputs {
@@ -119,6 +114,16 @@ textarea.input {
   overflow-y: scroll;
   position: relative;
   width: calc(50% - 10px);
+}
+
+#inputArea {
+  width: 100%;
+  height: 100%;
+  font-size: 28px;
+  background-color: rgb(20, 20, 20);
+  color: whitesmoke;
+  margin: 0px;
+  resize: none;
 }
 
 div.baseOutput {

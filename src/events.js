@@ -1,22 +1,30 @@
 import { MLNameSpace } from "./constants.js";
 import { exportToJSON, localDownloader, importFromJSON } from "./helper.js"
 import { preProccess } from "./parser.js"
+import { fragmentMap } from "./MILE_ui.js";
 
 export function inputElementTyping(event) {
-    let outputElement = document.getElementById("output");
-    outputElement.innerHTML = "";
+    let fragment = fragmentMap.get(event.target.getAttribute("UUID"));
 
-    outputElement.append(document.createElement("div"));
-    outputElement.lastChild.className = "baseOutputContents";
+    fragment.replaceChildren();
 
-    for (const element of preProccess(event.srcElement.value)) {
-        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "math"));
-        outputElement.lastChild.lastChild.className = "segment";
-        outputElement.lastChild.lastChild.append(element);
-        outputElement.lastChild.append(document.createElement("br"));
+    for (const element of preProccess(event.target.innerText)) {
+        fragment.append(document.createElementNS(MLNameSpace, "math"));
+        fragment.lastChild.className = "segment";
+        fragment.lastChild.append(element);
+        fragment.append(document.createElement("br"));
     }
 
-    event.srcElement.setAttribute("data", outputElement.innerHTML);
+    let outputDiv = document.createElement("div");
+    outputDiv.className = "baseOutputContents";
+    outputDiv.append(fragment.cloneNode(true));
+    document.getElementById("output").replaceChildren(
+        outputDiv
+    );
+    document.getElementById(event.target.getAttribute("UUID")).setAttribute(
+        "MIL", 
+        event.target.innerText
+    );
 }
 
 export function pageSave(event) {
@@ -33,13 +41,9 @@ export function pageSave(event) {
     }
 }
 
-export function printOutput() {
-    window.print();
-}
-
 export function exportMIL(){
     localDownloader(
-        document.getElementById("documentName").getAttribute("name") + ".mil",
+        document.body.getAttribute("name") + ".mil",
         exportToJSON(),
         "text/plain"
     );
@@ -55,7 +59,7 @@ export function importMIL(){
 
 function handleMILFile(event){
     let fileIOHandle = new FileReader;
-    fileIOHandle.readAsText(event.srcElement.files[0]);
+    fileIOHandle.readAsText(event.target.files[0]);
     fileIOHandle.addEventListener("loadend", importFromJSON);
 }
 

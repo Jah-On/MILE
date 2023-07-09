@@ -1,170 +1,121 @@
-import { inputElementTyping } from "./events.js"
-import { generateID } from "./helper.js"
+import { inputElementTyping } from "./events.js";
+import { generateDisplayName } from "./helper.js";
 
-export function updateName(event) {
-    let newID = generateID(event.srcElement.value);
-    document.getElementById(event.srcElement.getAttribute("data")).setAttribute("showID", String(newID[1]));
-    document.getElementById(event.srcElement.getAttribute("data")).id = newID[0];
-    for (let index = 0; index < event.srcElement.parentNode.childNodes.length; ++index) {
-        event.srcElement.parentNode.childNodes[index].setAttribute("data", newID[0]);
-    };
-    updateBaseOutput();
+const functionArray = [
+    updateBaseOutput, moveInputUp, moveInputDown, copyInput, 
+    deleteInput, editInput
+];
+const eventArray = [
+    "input", "click", "click", "click", "click", "click"
+];
+
+export let fragmentMap = new Map();
+
+export function addProblemListeners(problemRow) {
+    for (let index = 0; index < eventArray.length; ++index) {
+        problemRow.children[index].addEventListener(
+            eventArray[index], functionArray[index]
+        );
+    }
 }
 
 export function moveInputUp(event) {
-    let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
-    let previousElement = event.srcElement.parentNode.previousSibling;
-    if (previousElement) {
-        event.srcElement.parentNode.parentNode.insertBefore(event.srcElement.parentNode, previousElement);
-        inputElement.parentNode.insertBefore(inputElement, inputElement.previousSibling);
+    let rowElement = event.target.parentNode;
+    if (rowElement.previousSibling.id != "rowTemplate") {
+        rowElement.parentNode.insertBefore(rowElement, rowElement.previousSibling);
     }
     updateBaseOutput();
 }
 
 export function moveInputDown(event) {
-    let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
-    let nextElement = event.srcElement.parentNode.nextSibling;
-    if (nextElement) {
-        event.srcElement.parentNode.parentNode.insertBefore(nextElement, event.srcElement.parentNode);
-        inputElement.parentNode.insertBefore(inputElement.nextSibling, inputElement);
+    let rowElement = event.target.parentNode;
+    if (rowElement.nextSibling) {
+        rowElement.parentNode.insertBefore(rowElement.nextSibling, rowElement);
     }
     updateBaseOutput();
 }
 
 export function copyInput(event) {
-    let inputElement = document.getElementById(event.srcElement.getAttribute("data"));
-    let newID = generateID(event.srcElement.getAttribute("data"));
-    inputElement.insertAdjacentElement("afterend", newInputElement(newID[0], newID[1]));
-    document.getElementById(newID[0]).setAttribute("data", inputElement.getAttribute("data"));
-    document.getElementById(newID[0]).value = inputElement.value;
-    document.getElementById(newID[0]).setAttribute("showID", inputElement.getAttribute("showID"));
-    event.srcElement.parentNode.insertAdjacentElement("afterend", newProblemTableRow(newID[0], inputElement.getAttribute("showID") == "true"));
-    document.getElementById("problemList").lastChild.scrollIntoView();
+    let newUUID = crypto.randomUUID();
+    fragmentMap.set(
+        newUUID, 
+        fragmentMap.get(event.target.parentNode.id).cloneNode(true)
+    );
+    let cloned  = event.target.parentNode.cloneNode(true);
+    cloned.id = newUUID;
+    cloned.children[0].value = generateDisplayName(cloned.children[0].value);
+    addProblemListeners(cloned);
+    event.target.parentNode.insertAdjacentElement("afterend", cloned);
+    cloned.scrollIntoView();
     updateBaseOutput();
 }
 
 export function deleteInput(event) {
-    event.srcElement.parentNode.remove();
-    document.getElementById(event.srcElement.getAttribute("data")).remove();
+    event.target.parentNode.remove();
+    fragmentMap.delete(event.target.parentNode.id);
     updateBaseOutput();
 }
 
 export function editInput(event) {
-    for (let child of document.getElementById("baseForm")){
-        child.hidden = true;
-    }
-    document.getElementById("problemList").hidden = true;
-    document.getElementById("importButton").hidden = true;
-    document.getElementById("exportButton").hidden = true;
-    document.getElementById("backToBase").hidden = false;
-    document.getElementById("backToBase").setAttribute("data", event.srcElement.getAttribute("data"));
-    document.getElementById(event.srcElement.getAttribute("data")).hidden = false;
-    document.getElementById(event.srcElement.getAttribute("data")).focus();
-    document.getElementById("output").innerHTML = document.getElementById(event.srcElement.getAttribute("data")).getAttribute("data");
+    document.getElementById("homeSpecific").style.display = "none";
+    document.getElementById("problemList").style.display = "none";
+    document.getElementById("backToBase").style.display = "flex";
+    let inputArea = document.getElementById("inputArea");
+    inputArea.style.display = "block";
+    inputArea.focus();
+    inputArea.setAttribute("UUID", event.target.parentNode.id);
+    document.getElementById("output").replaceChildren(
+        fragmentMap.get(event.target.parentNode.id).cloneNode(true)
+    );
 }
 
 export function backToBase(event) {
-    for (let child of document.getElementById("baseForm")){
-        child.hidden = false;
-    }
-    document.getElementById("problemList").hidden = false;
-    document.getElementById("importButton").hidden = false;
-    document.getElementById("exportButton").hidden = false;
-    document.getElementById("backToBase").hidden = true;
-    document.getElementById(event.srcElement.getAttribute("data")).hidden = true;
+    document.getElementById("homeSpecific").style.display = "flex";
+    document.getElementById("problemList").style.display = "block";
+    document.getElementById("backToBase").style.display = "none";
+    let inputArea = document.getElementById("inputArea");
+    inputArea.style.display = "none";
     updateBaseOutput();
 }
 
-export function newInputElement(id, showID) {
-    let newInput = document.createElement("textarea");
-    newInput.className = "input";
-    newInput.id = id;
-    newInput.addEventListener("input", inputElementTyping);
-    newInput.setAttribute("data", "");
-    newInput.setAttribute("showID", String(showID));
-    newInput.hidden = true;
-    return newInput;
+export function newProblemRow(UUID, displayName) {
+    let clone = document.getElementById("rowTemplate").cloneNode(true);
+    clone.id = UUID;
+    clone.style.display = "flex";
+    clone.children[0].value = displayName;
+    addProblemListeners(clone);
+    return clone;
 }
 
-export function newProblemTableRow(inputID, visibleID) {
-    let rowDiv = document.createElement("div");
-    rowDiv.className = "problemListRow"
-    let nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameInput.className = "problemName";
-    if (visibleID) {
-        nameInput.value = inputID;
+export function addProblem(event, displayName) {
+    if (event) {
+        displayName = event.target.children[0].value;
     }
-    nameInput.setAttribute("data", inputID);
-    nameInput.addEventListener("input", updateName);
-    let moveUp = document.createElement("button");
-    moveUp.className = "editProblem";
-    moveUp.textContent = "Move Up";
-    moveUp.setAttribute("data", inputID);
-    moveUp.addEventListener("click", moveInputUp);
-    let moveDown = document.createElement("button");
-    moveDown.className = "editProblem";
-    moveDown.textContent = "Move Down";
-    moveDown.setAttribute("data", inputID);
-    moveDown.addEventListener("click", moveInputDown);
-    let copy = document.createElement("button");
-    copy.className = "editProblem";
-    copy.textContent = "Copy";
-    copy.setAttribute("data", inputID);
-    copy.addEventListener("click", copyInput);
-    let remove = document.createElement("button");
-    remove.className = "editProblem";
-    remove.textContent = "Delete";
-    remove.setAttribute("data", inputID);
-    remove.addEventListener("click", deleteInput);
-    let edit = document.createElement("button");
-    edit.className = "editProblem";
-    edit.textContent = "Edit";
-    edit.setAttribute("data", inputID);
-    edit.addEventListener("click", editInput);
-
-    rowDiv.append(nameInput, moveUp, moveDown, copy, remove, edit);
-
-    return rowDiv;
-}
-
-export function addNewInput(tupleStringID, visibleID) {
-    console.log(tupleStringID, visibleID);
-    let problemNameInput = document.getElementById("baseForm").children[0];
-    let ID = generateID(problemNameInput.value);
-    if (visibleID != undefined){
-        ID[0] = tupleStringID;
-        ID[1] = Boolean(visibleID);
-    }
+    let UUID = crypto.randomUUID();
+    fragmentMap.set(UUID, document.createDocumentFragment());
     let problemList = document.getElementById("problemList");
-    let newInput = newInputElement(ID[0], ID[1]);
-    document.getElementById("inputs").append(newInput);
-    problemList.append(newProblemTableRow(ID[0], ID[1]));
-    problemNameInput.value = "";
+    problemList.appendChild(newProblemRow(UUID, displayName));
     problemList.lastChild.scrollIntoView();
     updateBaseOutput();
-    return newInput;
 }
 
 export function updateBaseOutput() {
-    let outputElement = document.getElementById("output");
-    outputElement.innerHTML = "";
-    const inputElements = document.getElementsByClassName("input");
-    for (let index = 0; index < inputElements.length; ++index) {
-        let problem = document.createElement("div");
-        problem.className = "baseOutput";
-        let label = document.createElement("span");
-        if (inputElements[index].getAttribute("showID") == "true") {
-            label.innerText = inputElements[index].id + ".";
+    let temp = document.createDocumentFragment();
+
+    let problems = [...document.getElementById("problemList").children];
+    problems = problems.slice(1, problems.length);
+    for (const problem of problems) {
+        temp.append(document.createElement("div"));
+        let divRef = temp.lastChild;
+        divRef.className = "baseOutput";
+        divRef.append(document.createElement("span"));
+        if (problem.children[0].value) {
+            divRef.lastChild.innerText = problem.children[0].value + ".";
         }
-        label.className = "baseOutputLabel";
-        let contents = document.createElement("div");
-        contents.innerHTML = inputElements[index].getAttribute("data");
-        contents.className = "baseOutputContents";
-        problem.append(label, contents);
-        outputElement.append(problem);
-        if (index == inputElements.length - 1) {
-            contents.scrollIntoView();
-        }
+        divRef.lastChild.className = "baseOutputLabel";
+        divRef.append(document.createElement("div"));
+        divRef.lastChild.append(fragmentMap.get(problem.id).cloneNode(true));
+        divRef.lastChild.className = "baseOutputContents";
     }
+    document.getElementById("output").replaceChildren(temp);
 }

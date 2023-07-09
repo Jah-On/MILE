@@ -1,6 +1,7 @@
 import { MLNameSpace } from "./constants.js"
-import { addNewInput, updateBaseOutput } from "./MILE_ui.js"
+import { addProblem, updateBaseOutput } from "./MILE_ui.js"
 import { preProccess } from "./parser.js"
+import { fragmentMap } from "./MILE_ui.js"
 
 // ChatGPT implementation
 // Returns boolean
@@ -18,64 +19,46 @@ export function isUTF_8(char) {
     return (char.charCodeAt(0) > 127);
 }
 
-export function generateRand16(){
-    let returnString = "";
-    for (let index = 0; index < 16; ++index){
-        returnString = returnString + String.fromCharCode(
-            Math.random() * 10 + 48
-        );
+export function generateDisplayName(currentName){
+    if (!currentName){ return ""; }
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+    if (/.*[a-y]/.test(currentName)){
+        return currentName.slice(0, -1) + alphabet[alphabet.indexOf(currentName.slice(-1)) + 1];
+    } else {
+        return currentName + "a";
     }
-    return returnString;
-}
-
-export function generateID(IDString){
-    if (IDString.length == 0){
-        return [generateRand16(), false];
-    }
-    if (document.getElementById(IDString) == null){
-        return [IDString, true];
-    }
-    let newID = IDString;
-    while (document.getElementById(newID) != null){
-        if (isAlpha(newID[newID.length - 1]) && (newID[newID.length - 1] != "z")){
-            newID = newID.substring(0, newID.length - 1) + String.fromCharCode(newID[newID.length - 1].charCodeAt() + 1);
-        } else {
-            newID = newID + "a";
-        }
-    }
-    return [newID, true];
 }
 
 export function exportToJSON(){
     let outputData = [];
-    for (const inputElement of document.getElementsByClassName("input")){
+    let problems = [...document.getElementsByClassName("problemListRow")];
+    problems = problems.slice(1, problems.length);
+    for (const problem of problems){
         outputData.push(
             {
-                id:        inputElement.id,
-                visibleID: inputElement.getAttribute("showID"),
-                src:       inputElement.value
+                displayName: problem.children[0].value||"",
+                MILSource:   problem.getAttribute("MIL"),
             }
         );
     }
     return JSON.stringify(outputData);
 }
 
-export function importFromJSON(event){
-    let decodedJSON = JSON.parse(event.srcElement.result);
+export function importFromJSON(event){ 
+    let decodedJSON = JSON.parse(event.target.result);
     for (const importedInput of decodedJSON){
-        let newInput = addNewInput(importedInput.id, importedInput.visibleID);
-        newInput.value = importedInput.src;
+        addProblem(undefined, importedInput.displayName);
+        let newRow = document.getElementById("problemList").lastChild;
+        newRow.setAttribute("MIL", importedInput.MILSource);
+        newRow.childNodes[0].value = importedInput.displayName;
         
-        let container = document.createElement("div");
-        container.className = "baseOutputContents";
-
-        for (const element of preProccess(importedInput.src)) {
-            container.append(document.createElementNS(MLNameSpace, "math"));
-            container.lastChild.className = "segment";
-            container.lastChild.append(element);
-            container.append(document.createElement("br"));
+        let fragment = fragmentMap.get(newRow.id);
+        for (const element of preProccess(importedInput.MILSource)) {
+            fragment.append(document.createElementNS(MLNameSpace, "math"));
+            fragment.lastChild.className = "segment";
+            fragment.lastChild.append(element);
+            fragment.append(document.createElement("br"));
         }
-        newInput.setAttribute("data", newInput.getAttribute("data") + container.outerHTML);
     }
     updateBaseOutput();
 }

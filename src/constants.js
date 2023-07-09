@@ -1,4 +1,3 @@
-// Type constants
 export const NUMBER      = 0;
 export const VARIABLE    = 1;
 export const SYMBOL      = 2;

@@ -13,18 +13,31 @@
   </head>
   <body>
     <div id="header">
-      <form id="baseForm" method="dialog">
-        <input type="text" placeholder="Problem name or number">
-        <button type="submit">Add</button>
-      </form>
-      <button type="button" id="importButton">Import</button>
-      <button type="button" id="exportButton">Export</button>
+      <div id="homeSpecific">
+        <form id="baseForm" method="dialog">
+          <input type="text" placeholder="Problem name or number">
+          <button type="submit">Add</button>
+        </form>
+        <button type="button" id="importButton">Import</button>
+        <button type="button" id="exportButton">Export</button>
+      </div>
       <button type="button" id="backToBase" hidden>🡸 Back</button>
       <button type="button" id="printButton">Print</button>
     </div>
     <div id="container">
       <div id="inputs">
-        <div id="problemList"></div>
+        <div id="problemList">
+          <div class="problemListRow" id="rowTemplate" style="display: none;" HTML=""> <!-- Template -->
+            <input type="text" class="problemName" placeholder="Problem name or number">
+            <button>Move Up</button>
+            <button>Move Down</button>
+            <button>Copy</button>
+            <button>Delete</button>
+            <button>Edit</button>
+          </div>
+        </div>
+        <div id="inputArea" contenteditable="true" style="display: none;">
+        </div>
       </div>
       <div id="output"></div>
     </div>
