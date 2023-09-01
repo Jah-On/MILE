@@ -14,18 +14,6 @@ export function onTextInput(event) {
         suggestion.remove();
     }
 
-    fragmentMap.get(
-        event.target.getAttribute("uuid")
-    ).replaceChildren(
-        preProccess(event.target.innerText)
-    );
-
-    document.getElementById("output").replaceChildren(
-        fragmentMap.get(
-            event.target.getAttribute("uuid")
-        ).cloneNode(true)
-    );
-
     let selected = window.getSelection();
     if (!selected.focusNode.data) {
         return;
@@ -37,6 +25,37 @@ export function onTextInput(event) {
     if (last.length < 1) {
         return;
     }
+
+    // for (const match of charRegex.matchAll(last)) {
+    //     selected.focusNode.replaceData(
+    //         offset - last.length - 1,
+    //         match.length,
+    //         charMap.get(last)
+    //     );
+    //     selected.collapse(selected.focusNode, offset - last.length + charMap.get(last).length);
+    // }
+
+    fragmentMap.get(
+        event.target.getAttribute("uuid")
+    ).replaceChildren();
+    for (const element of preProccess(event.target.innerText)) {
+        fragmentMap.get(
+            event.target.getAttribute("uuid")
+        ).append(document.createElementNS(MLNameSpace, "math"));
+        fragmentMap.get(
+            event.target.getAttribute("uuid")
+        ).lastChild.append(element);
+        fragmentMap.get(
+            event.target.getAttribute("uuid")
+        ).append(document.createElement("br"));
+    }
+
+    document.getElementById("output").replaceChildren(
+        fragmentMap.get(
+            event.target.getAttribute("uuid")
+        ).cloneNode(true)
+    );
+
     for (const key of charMap.keys()) {
         if (!key.startsWith(last)) {
             continue;

@@ -141,6 +141,12 @@ export function parse(stringRow, stringLiterals) {
                 tokens.push([STRING, "", 0, 0]);
             }
             tokens[tokens.length - 1][1] += stringRow[index];
+            isFunction = functionData(tokens[tokens.length - 1][1]);
+            if (isFunction[0] != -1) {
+                tokens[tokens.length - 1][0] = FUNCTION;
+                tokens[tokens.length - 1][2] = isFunction[0];
+                tokens[tokens.length - 1][3] = isFunction[1];
+            }
             continue;
         }
         if (/\0/.test(stringRow[index])) {
@@ -201,12 +207,12 @@ export function preProccess(stringMILCode){
         segments.splice(segments.indexOf(""), 1);
     }
 
-    let returnElements = document.createElementNS(MLNameSpace, "math");
+    let returnElements = [];
     let sliceStart = 0;
     let sliceEnd   = 0;
     for (const segment of segments) {
         sliceEnd += (segment.match(/\0/g) || []).length;
-        returnElements.append(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
+        returnElements.push(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
         sliceStart += (segment.match(/\0/g) || []).length;
     }
 

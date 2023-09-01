@@ -64,14 +64,36 @@ export function editInput(event) {
     inputArea.style.display = "block";
     inputArea.focus();
     inputArea.setAttribute("UUID", event.target.parentNode.id);
+    let src = event.target.parentNode.getAttribute("src");
+    inputArea.replaceChildren();
+    for (const line of src.split("\n")) {
+        console.log(line);
+        if (line == "") {
+            inputArea.append(document.createElement("br"));
+            continue;
+        }
+        inputArea.append(document.createTextNode(line));
+        inputArea.append(document.createElement("br"));
+    }
 }
 
 export function backToBase(event) {
+    let srcString = "";
+    for (const line of document.getElementById("inputArea").childNodes) {
+        if (line.nodeName == "BR") {
+            srcString += "\n";
+            continue;
+        }
+        srcString += line.data;
+    }
     document.getElementById("homeSpecific").style.display = "flex";
     document.getElementById("problemList").style.display = "block";
     document.getElementById("backToBase").style.display = "none";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "none";
+    document.getElementById(
+        inputArea.getAttribute("UUID")
+    ).setAttribute("src", srcString);
     updateBaseOutput();
 }
 

@@ -37,7 +37,7 @@ export function exportToJSON(){
         outputData.push(
             {
                 displayName: problem.children[0].value||"",
-                MILSource:   problem.getAttribute("MIL"),
+                MILSource:   problem.getAttribute("src"),
             }
         );
     }
@@ -49,13 +49,12 @@ export function importFromJSON(event){
     for (const importedInput of decodedJSON){
         addProblem(undefined, importedInput.displayName);
         let newRow = document.getElementById("problemList").lastChild;
-        newRow.setAttribute("MIL", importedInput.MILSource);
+        newRow.setAttribute("src", importedInput.MILSource);
         newRow.childNodes[0].value = importedInput.displayName;
         
         let fragment = fragmentMap.get(newRow.id);
         for (const element of preProccess(importedInput.MILSource)) {
             fragment.append(document.createElementNS(MLNameSpace, "math"));
-            fragment.lastChild.className = "segment";
             fragment.lastChild.append(element);
             fragment.append(document.createElement("br"));
         }

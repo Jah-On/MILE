@@ -114,6 +114,7 @@ div.problemListRow > input {
   overflow-y: scroll;
   position: relative;
   width: calc(50% - 10px);
+  text-align: center;
 }
 
 #inputArea {
@@ -160,6 +161,7 @@ div.baseOutputContents {
 span.baseOutputLabel {
   display: block;
   position: relative;
+  text-align: left;
   z-index: 2;
 }
 

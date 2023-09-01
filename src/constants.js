@@ -44,7 +44,7 @@ export const middlePlusOneChar = {
     "cminus":"⊖", "cplus":"⊕", "cslash":"⊘", "ctimes":"⊗", 
     "def":"≝", "/":"/", "div":"÷", "|":"∣", "divides":"∣", 
     "dlarrow":"⇐", "dlrarrow":"⇔", "drarrow":"⇒", 
-    ">":">", "gthan":">", 
+    ">":">", "gthan":">", "➜":"➜",
     "gethan":"≥", "geslant":"⩾", "in":"∈", "imgof":"⊷", 
     "intersect":"∩", "<":"<", "lthan":"<", "lethan":"≤", 
     "leslant":"⩽", "mgthan":"≫", "mlthan":"≪", 
