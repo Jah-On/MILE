@@ -1,6 +1,6 @@
 import {
 NUMBER, VARIABLE, SYMBOL, FUNCTION, GROUP_START, GROUP_END, 
-STRING, singleChar, leftOne, leftOneChar, 
+STRING, leftOne, leftOneChar, 
 leftTwo, operators, middlePlusOne, middlePlusOneChar, 
 middlePlusTwo, MLNameSpace
 } from "./constants.js"
@@ -10,9 +10,6 @@ import { processor } from "./processors.js";
 
 // Return 2 wide integer array
 export function functionData(functionNameString) {
-    if (singleChar.hasOwnProperty(functionNameString)) {
-        return [0, 0]; // Right and 0 arguments
-    }
     if (
         leftOne.hasOwnProperty(functionNameString) ||
         leftOneChar.hasOwnProperty(functionNameString) ||
@@ -204,12 +201,12 @@ export function preProccess(stringMILCode){
         segments.splice(segments.indexOf(""), 1);
     }
 
-    let returnElements = [];
+    let returnElements = document.createElementNS(MLNameSpace, "math");
     let sliceStart = 0;
     let sliceEnd   = 0;
     for (const segment of segments) {
         sliceEnd += (segment.match(/\0/g) || []).length;
-        returnElements.push(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
+        returnElements.append(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
         sliceStart += (segment.match(/\0/g) || []).length;
     }
 

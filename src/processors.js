@@ -1,5 +1,5 @@
 import {NUMBER, VARIABLE, SYMBOL, FUNCTION, GROUP_START, 
-        GROUP_END, STRING, singleChar, MLNameSpace } from "./constants.js";
+        GROUP_END, STRING, charMap, MLNameSpace } from "./constants.js";
 import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
 import { preProccess } from "./parser.js"
@@ -44,12 +44,6 @@ export function processNumber(inputToken) {
     return outputElement;
 }
 
-export function processSymbol(inputToken) {
-    let outputElement = document.createElementNS(MLNameSpace, "mtext");
-    outputElement.append(document.createTextNode(singleChar[inputToken[1]]));
-    return outputElement;
-}
-
 export function processGroup(inputTokens) {
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
 
@@ -90,9 +84,6 @@ export function processor(inputTokens) {
                 break;
             case VARIABLE:
                 inputTokens[index][1] = processVariable(inputTokens[index]);
-                break;
-            case SYMBOL:
-                inputTokens[index][1] = processSymbol(inputTokens[index]);
                 break;
             case STRING:
                 inputTokens[index][1] = processString(inputTokens[index]);

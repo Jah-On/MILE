@@ -1,5 +1,6 @@
 import {windowLeave, pageSave, importMIL,
-        exportMIL, inputElementTyping} from "./events.js"
+        exportMIL, onTextInput 
+} from "./events.js"
 import {addProblem, backToBase, addProblemListeners } from "./MILE_ui.js"
 
 // Main entry point
@@ -22,7 +23,7 @@ window.addEventListener("load", () => {
   for (const problemRow of document.getElementsByClassName("problemListRow")) {
     addProblemListeners(problemRow);
   }
-  document.getElementById("inputArea").addEventListener("input", inputElementTyping);
+  document.getElementById("inputArea").addEventListener("input", onTextInput);
   let documentName = prompt("Enter in a project name:", "MILE_Project");
   document.body.setAttribute("name", documentName);
 });

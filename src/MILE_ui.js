@@ -1,4 +1,4 @@
-import { inputElementTyping } from "./events.js";
+import { MLNameSpace } from "./constants.js";
 import { generateDisplayName } from "./helper.js";
 
 const functionArray = [
@@ -64,10 +64,6 @@ export function editInput(event) {
     inputArea.style.display = "block";
     inputArea.focus();
     inputArea.setAttribute("UUID", event.target.parentNode.id);
-    inputArea.innerText = event.target.parentNode.getAttribute("MIL");
-    document.getElementById("output").replaceChildren(
-        fragmentMap.get(event.target.parentNode.id).cloneNode(true)
-    );
 }
 
 export function backToBase(event) {

@@ -1,6 +1,6 @@
 // This file will generate the documentation for MIL
 // It is meant to be run from the command line with node.js
-import {singleChar, leftOne, leftOneChar, leftTwo, middlePlusOne, 
+import {charMap, leftOne, leftOneChar, leftTwo, middlePlusOne, 
         middlePlusOneChar, middlePlusTwo, operators, MLNameSpace } 
 from "../src/constants.js";
 import { preProccess, parse } from "../src/parser.js";
@@ -15,7 +15,7 @@ function main(){
     // let { window } = new JSDOM(`<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><math><mrow><mfrac><mn>1</mn><mn>3</mn></mfrac></mrow></math></body></html>`);
     // window.document.body.style = "display: block; text-align: center;";
     let MILsrc = "";
-    for (const key of Object.keys(singleChar)) {
+    for (const key of charMap.keys()) {
         MILsrc += `\"${key}: \"${key}\nend\n\nend\n`;
     }
     for (const key of Object.keys(leftOne)) {

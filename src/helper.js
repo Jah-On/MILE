@@ -71,3 +71,14 @@ export function localDownloader(stringName, stringData, stringMIME) {
     downloadLink.href = downloadURL;
     downloadLink.click();
 }
+
+export function lasrIndexOf(string, regex){
+    let lastIndex = -1;
+    for (let i = string.length - 1; i >= 0; i--){
+        if (regex.test(string[i])){
+            lastIndex = i;
+            break;
+        }
+    }
+    return lastIndex;
+}

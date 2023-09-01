@@ -11,6 +11,9 @@
     "deploy": "vite build --base=/MILE/ && node utils/publish.js"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.44.0",
     "gh-pages": "^3.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",

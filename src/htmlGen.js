@@ -1,4 +1,4 @@
-import {FUNCTION, singleChar, leftOneChar, operators,
+import {FUNCTION, charMap, leftOneChar, operators,
     middlePlusOneChar, MLNameSpace
 } from "./constants.js"
 import {

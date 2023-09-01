@@ -123,7 +123,23 @@ div.problemListRow > input {
   background-color: rgb(20, 20, 20);
   color: whitesmoke;
   margin: 0px;
-  resize: none;
+  cursor: text;
+  overflow-y: scroll;
+}
+
+.inputRow {
+  width: 100%;
+  height: fit-content;
+  border: 0px;
+  margin: 0px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: normal;
+  outline: none;
+}
+
+#suggestion {
+  color: gray;
 }
 
 div.baseOutput {
@@ -147,7 +163,7 @@ span.baseOutputLabel {
   z-index: 2;
 }
 
-math.segment {
+math {
   margin-left: auto;
   margin-right: auto;
   page-break-inside: avoid !important;
