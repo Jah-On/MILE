@@ -1,4 +1,4 @@
-import { MathElement } from "./types";
+import { MathElement } from "./types.js";
 
 export const NUMBER      = 0;
 export const VARIABLE    = 1;

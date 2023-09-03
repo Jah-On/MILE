@@ -16,38 +16,38 @@ function main(){
     // window.document.body.style = "display: block; text-align: center;";
     let MILsrc = "";
     for (const key of charMap.keys()) {
-        MILsrc += `\"${key}: \"${key}\nend\n\nend\n`;
+        MILsrc += `\"${key}: \"${key}\n\n\n\n`;
     }
     for (const key of Object.keys(leftOne)) {
-        MILsrc += `\"${key}: \"${key} x\nend\n\nend\n`;
+        MILsrc += `\"${key}: \"${key} x\n\n\n\n`;
     }
     for (const key of Object.keys(leftOneChar)) {
-        MILsrc += `\"${key}: \"${key} x\nend\n\nend\n`;
+        MILsrc += `\"${key}: \"${key} x\n\n\n\n`;
     }
     for (const key of Object.keys(leftTwo)) {
-        MILsrc += `\"${key}: \"${key} x y\nend\n\nend\n`;
+        MILsrc += `\"${key}: \"${key} x y\n\n\n\n`;
     }
     for (const key of Object.keys(middlePlusOne)) {
-        MILsrc += `\"${key}: \" x ${key} y\nend\n\nend\n`;
+        MILsrc += `\"${key}: \" x ${key} y\n\n\n\n`;
     }
     for (const key of Object.keys(middlePlusOneChar)) {
-        MILsrc += `\"${key}: \" x ${key} y\nend\n\nend\n`;
+        MILsrc += `\"${key}: \" x ${key} y\n\n\n\n`;
     }
     for (const key of Object.keys(middlePlusTwo)) {
-        MILsrc += `\"${key}: \" x ${key} y z\nend\n\nend\n`;
+        MILsrc += `\"${key}: \" x ${key} y z\n\n\n\n`;
     }
     for (const key of Object.keys(operators)) {
         for (const mod of ["", "o", "u", "b"]){
             switch (mod) {
                 case "o":
                 case "u":
-                    MILsrc += `\"${key}${mod}: \"${key}${mod} a x\nend\n\nend\n`;
+                    MILsrc += `\"${key}${mod}: \"${key}${mod} a x\n\n\n\n`;
                     break;
                 case "b":
-                    MILsrc += `\"${key}${mod}: \"${key}${mod} a b x\nend\n\nend\n`;
+                    MILsrc += `\"${key}${mod}: \"${key}${mod} a b x\n\n\n\n`;
                     break;
                 default:
-                    MILsrc += `\"${key}${mod}: \"${key}${mod} x\nend\n\nend\n`;
+                    MILsrc += `\"${key}${mod}: \"${key}${mod} x\n\n\n\n`;
                     break;
             }
         }
@@ -67,7 +67,6 @@ function main(){
     // pdfGen(window.document.documentElement.outerHTML, { pageSize: "letter", output: "DOCGEN.pdf", zoom: 1.5, debug: true });
     let MILobj = [{
         id:        "DOCGEN",
-        visibleID: "false",
         src:       MILsrc,
     }];
     mkdir("./docs", { recursive: true }, (err) => {

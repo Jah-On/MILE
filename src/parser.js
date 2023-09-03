@@ -206,6 +206,10 @@ export function preProccess(stringMILCode){
     let sliceStart = 0;
     let sliceEnd   = 0;
     for (const segment of segments) {
+        if (segment == ""){ 
+            returnElements.push(document.createElement("br"));
+            continue;
+        }
         sliceEnd += (segment.match(/\0/g) || []).length;
         returnElements.push(link(processor(parse(segment, stringLiterals.slice(sliceStart, sliceEnd)))));
         sliceStart += (segment.match(/\0/g) || []).length;
