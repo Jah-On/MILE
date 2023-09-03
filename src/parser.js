@@ -12,7 +12,7 @@ import { processor } from "./processors.js";
 export function functionData(functionNameString) {
     if (
         leftOne.hasOwnProperty(functionNameString) ||
-        leftOneChar.hasOwnProperty(functionNameString) ||
+        leftOneChar.includes(functionNameString) ||
         operators.hasOwnProperty(functionNameString)
     ) {
         return [0, 1]; // Right and 1 arguments
@@ -33,7 +33,7 @@ export function functionData(functionNameString) {
     }
     if (
         middlePlusOne.hasOwnProperty(functionNameString) ||
-        middlePlusOneChar.hasOwnProperty(functionNameString)
+        middlePlusOneChar.includes(functionNameString)
     ) {
         return [1, 1]; // Middle and 1 argument right
     }
@@ -198,14 +198,9 @@ export function preProccess(stringMILCode){
     }
     
     stringsRemoved = stringsRemoved
-                    .replaceAll("\n", " ")
-                    .replaceAll("+-", "±")
-                    .replaceAll("-+", "∓")
+                    .replaceAll(/(?<!\n)\n(?!\n)/g, " ")
                     .replaceAll(/(^| ) +($| )/g, " ");
-    let segments = stringsRemoved.split(/(?<![aA-zZ])end(\b|[0-9])/gi);
-    while (segments.indexOf("") != -1){
-        segments.splice(segments.indexOf(""), 1);
-    }
+    let segments = stringsRemoved.split(/\n\n/g);
 
     let returnElements = [];
     let sliceStart = 0;

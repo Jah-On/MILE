@@ -126,6 +126,9 @@ div.problemListRow > input {
   margin: 0px;
   cursor: text;
   overflow-y: scroll;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .inputRow {

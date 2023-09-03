@@ -2,7 +2,8 @@ import { MLNameSpace, charMap, charRegex,
 } from "./constants.js";
 import { 
     exportToJSON, localDownloader, importFromJSON,
-    lasrIndexOf
+    lastIndexOf,
+    isAlpha
 } from "./helper.js"
 import { preProccess } from "./parser.js"
 import { fragmentMap } from "./MILE_ui.js";
@@ -10,52 +11,34 @@ import { fragmentMap } from "./MILE_ui.js";
 
 export function onTextInput(event) {
     let suggestion = document.getElementById("suggestion");
-    if (suggestion) {
-        suggestion.remove();
-    }
+    if (suggestion) { suggestion.remove(); }
 
-    let selected = window.getSelection();
-    if (!selected.focusNode.data) {
-        return;
-    }
+    let selected    = window.getSelection();
+    let focusedNode = selected.focusNode;
+    
+    if (!focusedNode.data) { return; }
+
     let range  = selected.getRangeAt(0);
     let offset = range.startOffset;
-    let cursorSplit = [selected.focusNode.data.slice(0, offset), selected.focusNode.data.slice(offset)];
-    let last = cursorSplit[0].split(/[^aA-zZ]/).slice(-1)[0];
-    if (last.length < 1) {
-        return;
-    }
-
-    // for (const match of charRegex.matchAll(last)) {
-    //     selected.focusNode.replaceData(
-    //         offset - last.length - 1,
-    //         match.length,
-    //         charMap.get(last)
-    //     );
-    //     selected.collapse(selected.focusNode, offset - last.length + charMap.get(last).length);
-    // }
-
-    fragmentMap.get(
-        event.target.getAttribute("uuid")
-    ).replaceChildren();
-    for (const element of preProccess(event.target.innerText)) {
-        fragmentMap.get(
-            event.target.getAttribute("uuid")
-        ).append(document.createElementNS(MLNameSpace, "math"));
-        fragmentMap.get(
-            event.target.getAttribute("uuid")
-        ).lastChild.append(element);
-        fragmentMap.get(
-            event.target.getAttribute("uuid")
-        ).append(document.createElement("br"));
-    }
-
-    document.getElementById("output").replaceChildren(
-        fragmentMap.get(
-            event.target.getAttribute("uuid")
-        ).cloneNode(true)
+    let last = focusedNode.data.slice(
+        lastIndexOf(focusedNode.data, /[^aA-zZ]/, offset - 1 - !isAlpha(event.data)|0) + 1, 
+        offset - !isAlpha(event.data)|0
     );
 
+    if (!isAlpha(event.data) && charMap.has(last)) {
+        selected.focusNode.replaceData(
+            offset - last.length - 1,
+            last.length,
+            charMap.get(last)
+        );
+        range.setStart(selected.focusNode, offset - last.length + 1);
+    }
+
+    updateOutput();
+
+    if ((last.length < 1) || !isAlpha(event.data)) {
+        return;
+    }
     for (const key of charMap.keys()) {
         if (!key.startsWith(last)) {
             continue;
@@ -68,7 +51,7 @@ export function onTextInput(event) {
         suggestion.addEventListener("focus", suggestionFocus);
     
         event.target.append(suggestion);
-        event.target.insertBefore(suggestion, selected.focusNode.splitText(offset));
+        event.target.insertBefore(suggestion, focusedNode.splitText(offset));
 
         break;
     }
@@ -83,7 +66,7 @@ function suggestionFocus(event) {
     }
     let range  = selected.getRangeAt(0);
     let offset = range.startOffset;
-    let matchIndex = lasrIndexOf(selected.focusNode.data, /[^aA-zZ]/) + 1;
+    let matchIndex = lastIndexOf(selected.focusNode.data, /[^aA-zZ]/) + 1;
     let match = selected.focusNode.data.substr(matchIndex) + event.target.innerText;
     event.target.remove();
     selected.focusNode.replaceData(
@@ -93,6 +76,32 @@ function suggestionFocus(event) {
     );
     selected.collapse(selected.focusNode, matchIndex + charMap.get(match).length);
     parent.focus();
+
+    updateOutput();
+}
+
+function updateOutput(){
+    let inputArea = document.getElementById("inputArea");
+    fragmentMap.get(
+        inputArea.getAttribute("uuid")
+    ).replaceChildren();
+    for (const element of preProccess(inputArea.innerText)) {
+        fragmentMap.get(
+            inputArea.getAttribute("uuid")
+        ).append(document.createElementNS(MLNameSpace, "math"));
+        fragmentMap.get(
+            inputArea.getAttribute("uuid")
+        ).lastChild.append(element);
+        fragmentMap.get(
+            inputArea.getAttribute("uuid")
+        ).append(document.createElement("br"));
+    }
+
+    document.getElementById("output").replaceChildren(
+        fragmentMap.get(
+            inputArea.getAttribute("uuid")
+        ).cloneNode(true)
+    );
 }
 
 export function pageSave(event) {

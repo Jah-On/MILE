@@ -1,9 +1,11 @@
 import {FUNCTION, charMap, leftOneChar, operators,
-    middlePlusOneChar, MLNameSpace
+    middlePlusOneChar, MLNameSpace, middlePlusOne,
+    generationMap
 } from "./constants.js"
 import {
     processLeftFunction, processMiddleFunction
 } from "./processors.js"
+import { MathElement, MathStyle } from "./types.js";
 
 /* ### */
 
@@ -12,177 +14,104 @@ const STYLES = {"largeop":"true", "symmetric":"true"};
 // ChatGPT aided
 // Returns element
 export function functionToHTML(funcName, argElements) {
-    funcName = funcName.replace("^", "pow")
-        .replace("'", "prime")
-        .replace("-", "minus")
-        .replace("+", "plus")
-        .replace("|", "divides")
-        .replace("=", "equals")
-        .replace(">", "gthan")
-        .replace("<", "lthan")
-        .replace("*", "times")
+    funcName = funcName.replace("^", "pow");
     let ID = "";
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
     outputElement.setAttribute("displaystyle", "true");
-    if (funcName == "abs") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("|"));
-        outputElement.append(argElements[0]);
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("|"));
+    if (generationMap.hasOwnProperty(funcName)) {
+        recursiveHTMLGenerator(outputElement, generationMap[funcName], argElements);
         return outputElement;
     }
-    if (funcName == "ceiling") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌈"));
-        outputElement.append(argElements[0]);
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌉"));
-        return outputElement;
-    }
-    if (funcName == "evalint") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
-        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.lastChild.setAttribute("stretchy", "true");
-        outputElement.lastChild.lastChild.append(document.createTextNode("|"));
-        outputElement.lastChild.append(argElements[1], argElements[0]);
-        return outputElement;
-    }
-    if (funcName == "floor") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌊"));
-        outputElement.append(argElements[0]);
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌋"));
-        return outputElement;
-    }
-    if (funcName == "frac") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
-        outputElement.lastChild.append(argElements[0], argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "logbase") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msub"));
-        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mtext"));
-        outputElement.lastChild.lastChild.append(document.createTextNode("log"));
-        outputElement.lastChild.append(argElements[0]);
-        outputElement.append(argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "nroot") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mroot"));
-        outputElement.lastChild.append(argElements[1], argElements[0]);
-        return outputElement;
-    }
-    if (funcName == "over") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mfrac"));
-        outputElement.lastChild.append(argElements[0], argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "pow") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msup"));
-        outputElement.lastChild.append(argElements[0], argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "round") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌊"));
-        outputElement.append(argElements[0]);
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode("⌉"));
-        return outputElement;
-    }
-    if (funcName == "sub") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msub"));
-        outputElement.lastChild.append(argElements[0], argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "supsub") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msubsup"));
-        outputElement.lastChild.append(argElements[0], argElements[2], argElements[1]);
-        return outputElement;
-    }
-    if (funcName == "sqrt") {
-        outputElement.append(document.createElementNS(MLNameSpace, "msqrt"));
-        outputElement.lastChild.append(argElements[0]);
-        return outputElement;
-    }
-    if (funcName == "vhat") {
-        outputElement.append(document.createElementNS(MLNameSpace, "mover"));
-        outputElement.lastChild.append(argElements[0]);
-        outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.lastChild.innerHTML = "&#8407;";
-        return outputElement;
-    }
-    if (leftOneChar.hasOwnProperty(funcName)) {
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode(leftOneChar[funcName]));
-        outputElement.append(argElements[0]);
+    if (leftOneChar.includes(funcName)) {
+        recursiveHTMLGenerator(
+            outputElement, 
+            [new MathElement("mo", [funcName]), 0], 
+            argElements
+        );
         return outputElement;
     }
     if (operators.hasOwnProperty(funcName)) {
-        outputElement.append(document.createElement("mo"));
-        outputElement.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
-        outputElement.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
-        outputElement.lastChild.append(document.createTextNode(operators[funcName]));
-        outputElement.append(argElements[0]);
+        recursiveHTMLGenerator(
+            outputElement,
+            [new MathElement("mo", [
+                new MathStyle(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]),
+                new MathStyle(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]),
+                operators[funcName]
+            ]), 0],
+            argElements
+        );
         return outputElement;
     }
     if (operators.hasOwnProperty(funcName.slice(0, -1))) {
         if (funcName.slice(-1) == "o") {
-            outputElement.append(document.createElementNS(MLNameSpace, "mover"));
-
-            outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
-            outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
-
-            outputElement.lastChild.append(argElements[0]);
-
-            outputElement.append(argElements[1]);
-
+            recursiveHTMLGenerator(
+                outputElement,
+                [new MathElement("mover", [
+                    new MathElement("mo", [
+                        new MathStyle(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]),
+                        new MathStyle(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]),
+                        operators[funcName.slice(0, -1)]
+                    ]), 0
+                ]), 1],
+                argElements
+            );
             return outputElement;
         }
         if (funcName.slice(-1) == "u") {
-            outputElement.append(document.createElementNS(MLNameSpace, "munder"));
-
-            outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
-            outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
-
-            outputElement.lastChild.append(argElements[0]);
-
-            outputElement.append(argElements[1]);
-
+            recursiveHTMLGenerator(
+                outputElement,
+                [new MathElement("munder", [
+                    new MathElement("mo", [
+                        new MathStyle(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]),
+                        new MathStyle(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]),
+                        operators[funcName.slice(0, -1)]
+                    ]), 0
+                ]), 1],
+                argElements
+            );
             return outputElement;
         }
         if (funcName.slice(-1) == "b") {
-            outputElement.append(document.createElementNS(MLNameSpace, "munderover"));
-
-            outputElement.lastChild.append(document.createElementNS(MLNameSpace, "mo"));
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]);
-            outputElement.lastChild.lastChild.setAttribute(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]);
-            outputElement.lastChild.lastChild.append(document.createTextNode(operators[funcName.substr(0, funcName.length - 1)]));
-
-            outputElement.lastChild.append(argElements[1]);
-
-            outputElement.lastChild.append(argElements[0]);
-
-            outputElement.append(argElements[2]);
-
+            recursiveHTMLGenerator(
+                outputElement,
+                [new MathElement("munderover", [
+                    new MathElement("mo", [
+                        new MathStyle(Object.keys(STYLES)[0], STYLES[Object.keys(STYLES)[0]]),
+                        new MathStyle(Object.keys(STYLES)[1], STYLES[Object.keys(STYLES)[1]]),
+                        operators[funcName.slice(0, -1)]
+                    ]), 0, 1
+                ]), 2],
+                argElements
+            );
             return outputElement;
         }
     }
-    if (middlePlusOneChar.hasOwnProperty(funcName)) {
-        outputElement.append(argElements[0]);
-        outputElement.append(document.createElementNS(MLNameSpace, "mo"));
-        outputElement.lastChild.append(document.createTextNode(middlePlusOneChar[funcName]));
-        outputElement.append(argElements[1]);
+    if (middlePlusOneChar.includes(funcName)) {
+        recursiveHTMLGenerator(
+            outputElement,
+            [0, new MathElement("mo", [funcName]), 1],
+            argElements
+        );
         return outputElement;
     }
 
     return outputElement;
+}
+
+function recursiveHTMLGenerator(parentNode, input, args) {
+    console.log(input);
+    for (const property of input) {
+        if (property instanceof MathElement){
+            parentNode.append(document.createElementNS(MLNameSpace, property.type));
+            recursiveHTMLGenerator(parentNode.lastChild, property.children, args);
+        } else if (property instanceof MathStyle) {
+            parentNode.setAttribute(property.attribute, property.value);
+        } else if (typeof property == "string") {
+            parentNode.append(document.createTextNode(property));
+        } else if (typeof property == "number") {
+            parentNode.append(args[property]);
+        }
+    }
 }
 
 // Returns element

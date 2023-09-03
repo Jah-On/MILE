@@ -5,27 +5,27 @@ import { fragmentMap } from "./MILE_ui.js"
 
 // ChatGPT implementation
 // Returns boolean
-export function isAlpha(char) {
+export function isAlpha(char = "") {
     return /^[a-zA-Z]+$/.test(char);
 }
 
 // ChatGPT implementation
 // Returns boolean
-export function isNumber(char) {
+export function isNumber(char = "") {
     return /^[0-9]+$/.test(char);
 }
 
-export function isUTF_8(char) {
+export function isUTF_8(char = "") {
     return (char.charCodeAt(0) > 127);
 }
 
-export function generateDisplayName(currentName){
-    if (!currentName){ return ""; }
+export function generateDisplayName(current=""){
+    if (!current){ return ""; }
     const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-    if (/.*[a-y]/.test(currentName)){
-        return currentName.slice(0, -1) + alphabet[alphabet.indexOf(currentName.slice(-1)) + 1];
+    if (/.*[a-y]/.test(current)){
+        return current.slice(0, -1) + alphabet[alphabet.indexOf(current.slice(-1)) + 1];
     } else {
-        return currentName + "a";
+        return current + "a";
     }
 }
 
@@ -37,23 +37,23 @@ export function exportToJSON(){
         outputData.push(
             {
                 displayName: problem.children[0].value||"",
-                MILSource:   problem.getAttribute("src"),
+                src:   problem.getAttribute("src"),
             }
         );
     }
     return JSON.stringify(outputData);
 }
 
-export function importFromJSON(event){ 
+export function importFromJSON(event = new ProgressEvent()){ 
     let decodedJSON = JSON.parse(event.target.result);
     for (const importedInput of decodedJSON){
         addProblem(undefined, importedInput.displayName);
         let newRow = document.getElementById("problemList").lastChild;
-        newRow.setAttribute("src", importedInput.MILSource);
+        newRow.setAttribute("src", importedInput.src);
         newRow.childNodes[0].value = importedInput.displayName;
         
         let fragment = fragmentMap.get(newRow.id);
-        for (const element of preProccess(importedInput.MILSource)) {
+        for (const element of preProccess(importedInput.src)) {
             fragment.append(document.createElementNS(MLNameSpace, "math"));
             fragment.lastChild.append(element);
             fragment.append(document.createElement("br"));
@@ -62,18 +62,21 @@ export function importFromJSON(event){
     updateBaseOutput();
 }
 
-export function localDownloader(stringName, stringData, stringMIME) {
+export function localDownloader(name="", data="", MIME="") {
     let downloadLink = document.createElement("a");
-    downloadLink.download = stringName;
-    let blobby = new Blob([stringData], {type:stringMIME});
+    downloadLink.download = name;
+    let blobby = new Blob([data], {type:MIME});
     let downloadURL = window.URL.createObjectURL(blobby);
     downloadLink.href = downloadURL;
     downloadLink.click();
 }
 
-export function lasrIndexOf(string, regex){
-    let lastIndex = -1;
-    for (let i = string.length - 1; i >= 0; i--){
+export function lastIndexOf(string="", regex= new RegExp(), startIndex = -1, notFound = -1){
+    let lastIndex = notFound;
+    if (startIndex == -1){
+        startIndex = string.length - 1;
+    }
+    for (let i = startIndex; i >= 0; i-=1){
         if (regex.test(string[i])){
             lastIndex = i;
             break;
