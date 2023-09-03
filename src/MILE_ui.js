@@ -67,7 +67,6 @@ export function editInput(event) {
     let src = event.target.parentNode.getAttribute("src");
     inputArea.replaceChildren();
     for (const line of src.split("\n")) {
-        console.log(line);
         if (line == "") {
             inputArea.append(document.createElement("br"));
             continue;

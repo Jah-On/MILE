@@ -99,7 +99,6 @@ export function functionToHTML(funcName, argElements) {
 }
 
 function recursiveHTMLGenerator(parentNode, input, args) {
-    console.log(input);
     for (const property of input) {
         if (property instanceof MathElement){
             parentNode.append(document.createElementNS(MLNameSpace, property.type));
