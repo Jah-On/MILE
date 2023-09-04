@@ -5,7 +5,7 @@ import {
     lastIndexOf,
     isAlpha
 } from "./helper.js"
-import { preProccess } from "./parser.js"
+import { preProcess } from "./parser.js"
 import { fragmentMap } from "./MILE_ui.js";
 
 
@@ -87,7 +87,7 @@ export function updateOutput(){
     fragmentMap.get(
         inputArea.getAttribute("uuid")
     ).replaceChildren();
-    for (const element of preProccess(inputArea.innerText)) {
+    for (const element of preProcess(inputArea.innerText)) {
         fragmentMap.get(
             inputArea.getAttribute("uuid")
         ).append(document.createElementNS(MLNameSpace, "math"));

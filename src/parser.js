@@ -189,7 +189,7 @@ export function parse(stringRow, stringLiterals) {
     return tokens;
 }
 
-export function preProccess(stringMILCode){
+export function preProcess(stringMILCode){
     let stringLiterals = [];
     let stringsRemoved = stringMILCode;
     while (stringsRemoved.search(/"(?:[^"\\]|\\.)*("|$)/) != -1){

@@ -1,6 +1,6 @@
 import { MLNameSpace } from "./constants.js"
 import { addProblem, updateBaseOutput } from "./MILE_ui.js"
-import { preProccess } from "./parser.js"
+import { preProcess } from "./parser.js"
 import { fragmentMap } from "./MILE_ui.js"
 
 // ChatGPT implementation
@@ -53,7 +53,7 @@ export function importFromJSON(event = new ProgressEvent()){
         newRow.childNodes[0].value = importedInput.displayName;
         
         let fragment = fragmentMap.get(newRow.id);
-        for (const element of preProccess(importedInput.src)) {
+        for (const element of preProcess(importedInput.src)) {
             fragment.append(document.createElementNS(MLNameSpace, "math"));
             fragment.lastChild.append(element);
             fragment.append(document.createElement("br"));

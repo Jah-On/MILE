@@ -3,7 +3,7 @@
 import {charMap, leftOne, leftOneChar, leftTwo, middlePlusOne, 
         middlePlusOneChar, middlePlusTwo, operators, MLNameSpace } 
 from "../src/constants.js";
-import { preProccess, parse } from "../src/parser.js";
+import { preProcess, parse } from "../src/parser.js";
 import { processor } from "../src/processors.js";
 import { link } from "../src/htmlGen.js";
 // import { JSDOM } from "jsdom";
@@ -56,8 +56,8 @@ function main(){
     // Fails to render the mathml correctly
     // Hopefully this will be fixed in the future
 
-    // console.log(preProccess(MILsrc)[0].outerHTML);
-    // for (const element of preProccess(MILsrc)) {
+    // console.log(preProcess(MILsrc)[0].outerHTML);
+    // for (const element of preProcess(MILsrc)) {
     //     window.document.body.append(window.document.createElementNS(MLNameSpace, "math"));
     //     window.document.body.lastChild.append(element);
     //     console.log(window.document.body.lastChild.outerHTML);

@@ -2,7 +2,7 @@ import {NUMBER, VARIABLE, SYMBOL, FUNCTION, GROUP_START,
         GROUP_END, STRING, charMap, MLNameSpace } from "./constants.js";
 import { isAlpha, isNumber, isUTF_8 } from "./helper.js"
 import { functionToHTML, link } from "./htmlGen.js"
-import { preProccess } from "./parser.js"
+import { preProcess } from "./parser.js"
 
 /* ### */
 
