@@ -44,9 +44,9 @@ export const charMap = new Map([
 
 ]);
 export const charRegex = `${[...charMap.keys()].join("|")}`;
-export const leftOne       = {
-    "abs":"", "ceiling":"", "floor":"", "round":"", "sqrt":""
-};
+export const leftOne       = [
+    "abs", "ceiling", "floor", "round", "sqrt"
+];
 export const leftOneChar = [
     "−", "¬", "+", "sin", "cos", "tan", "cot", "sec", "csc", "=",
     "≡"
@@ -57,12 +57,12 @@ export const operators     = {
     "lint":"∮", "llint":"∯", "lllint":"∰", "prod":"∏", 
     "sum":"∑"
 };
-export const leftTwo       = {
-    "frac":"", "logbase":"", "evalint":"", "nroot":""
-};
-export const middlePlusOne     = {
-    "over":"", "^":"", "pow":"", "sub":"", "sup":"",
-};
+export const leftTwo       = [
+    "frac", "logbase", "evalint", "nroot"
+];
+export const middlePlusOne     = [
+    "over", "^", "pow", "sub", "sup",
+];
 export const middlePlusOneChar = [
     "⋀", "≈", "⊙", "◯", "⊖", "⊕", "⊘", "⊗", "≝", "/", "÷", 
     "∣", "⇐", "⇔", "⇒", ">", ">", "➜", "≥", "⩾", "∈", "⊷", 
@@ -71,9 +71,9 @@ export const middlePlusOneChar = [
     "\\", "/", "∼", "≃", "*", "⊂", "⊆", "≻", "≽", "≿", "⊃", "⊇", "⋅", 
     "⋅", "∪", "×"
 ];
-export const middlePlusTwo = {
-    "supsub":""
-}
+export const middlePlusTwo = [
+    "supsub"
+]
 export const generationMap = {
     "abs": [new MathElement("mo", ["|"]), 0, new MathElement("mo", ["|"])],
     "ceiling": [new MathElement("mo", ["⌈"]), 0, new MathElement("mo", ["⌉"])],

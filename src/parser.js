@@ -11,13 +11,13 @@ import { processor } from "./processors.js";
 // Return 2 wide integer array
 export function functionData(functionNameString) {
     if (
-        leftOne.hasOwnProperty(functionNameString) ||
+        leftOne.includes(functionNameString) ||
         leftOneChar.includes(functionNameString) ||
         operators.hasOwnProperty(functionNameString)
     ) {
         return [0, 1]; // Right and 1 arguments
     }
-    if (leftTwo.hasOwnProperty(functionNameString)) {
+    if (leftTwo.includes(functionNameString)) {
         return [0, 2]; // Right and 2 arguments
     }
     if (operators.hasOwnProperty(functionNameString.slice(0, -1))) {
@@ -32,13 +32,13 @@ export function functionData(functionNameString) {
         }
     }
     if (
-        middlePlusOne.hasOwnProperty(functionNameString) ||
+        middlePlusOne.includes(functionNameString) ||
         middlePlusOneChar.includes(functionNameString)
     ) {
         return [1, 1]; // Middle and 1 argument right
     }
     if (
-        middlePlusTwo.hasOwnProperty(functionNameString)
+        middlePlusTwo.includes(functionNameString)
     ) {
         return [1, 2]; // Middle and 2 arguments right
     }
