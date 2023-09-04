@@ -18,22 +18,22 @@ function main(){
     for (const key of charMap.keys()) {
         MILsrc += `\"${key}: \"${key}\n\n\n\n`;
     }
-    for (const key of Object.keys(leftOne)) {
+    for (const key of leftOne) {
         MILsrc += `\"${key}: \"${key} x\n\n\n\n`;
     }
-    for (const key of Object.keys(leftOneChar)) {
+    for (const key of leftOneChar) {
         MILsrc += `\"${key}: \"${key} x\n\n\n\n`;
     }
-    for (const key of Object.keys(leftTwo)) {
+    for (const key of leftTwo) {
         MILsrc += `\"${key}: \"${key} x y\n\n\n\n`;
     }
-    for (const key of Object.keys(middlePlusOne)) {
+    for (const key of middlePlusOne) {
         MILsrc += `\"${key}: \" x ${key} y\n\n\n\n`;
     }
-    for (const key of Object.keys(middlePlusOneChar)) {
+    for (const key of middlePlusOneChar) {
         MILsrc += `\"${key}: \" x ${key} y\n\n\n\n`;
     }
-    for (const key of Object.keys(middlePlusTwo)) {
+    for (const key of middlePlusTwo) {
         MILsrc += `\"${key}: \" x ${key} y z\n\n\n\n`;
     }
     for (const key of Object.keys(operators)) {
