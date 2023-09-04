@@ -1,5 +1,6 @@
 import { MLNameSpace } from "./constants.js";
 import { generateDisplayName } from "./helper.js";
+import { updateOutput } from "./events.js";
 
 const functionArray = [
     updateBaseOutput, moveInputUp, moveInputDown, copyInput, 
@@ -74,6 +75,7 @@ export function editInput(event) {
         inputArea.append(document.createTextNode(line));
         inputArea.append(document.createElement("br"));
     }
+    updateOutput();
 }
 
 export function backToBase(event) {

@@ -200,7 +200,7 @@ export function preProccess(stringMILCode){
     stringsRemoved = stringsRemoved
                     .replaceAll(/(?<!\n)\n(?!\n)/g, " ")
                     .replaceAll(/(^| ) +($| )/g, " ");
-    let segments = stringsRemoved.split(/\n\n/g);
+    let segments = stringsRemoved.split(/(?<=\n)\n/g);
 
     let returnElements = [];
     let sliceStart = 0;

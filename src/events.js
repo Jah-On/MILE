@@ -10,20 +10,22 @@ import { fragmentMap } from "./MILE_ui.js";
 
 
 export function onTextInput(event) {
+    console.log(event);
     let suggestion = document.getElementById("suggestion");
     if (suggestion) { suggestion.remove(); }
 
     let selected    = window.getSelection();
     let focusedNode = selected.focusNode;
     
-    if (!focusedNode.data) { return; }
-
     let range  = selected.getRangeAt(0);
     let offset = range.startOffset;
-    let last = focusedNode.data.slice(
-        lastIndexOf(focusedNode.data, /[^aA-zZ]/, offset - 1 - !isAlpha(event.data)|0) + 1, 
-        offset - !isAlpha(event.data)|0
-    );
+    let last   = "";
+    if (focusedNode.data) {
+        last = focusedNode.data.slice(
+            lastIndexOf(focusedNode.data, /[^aA-zZ]/, offset - 1 - !isAlpha(event.data)|0) + 1, 
+            offset - !isAlpha(event.data)|0
+        );
+    }
 
     if (!isAlpha(event.data) && charMap.has(last)) {
         selected.focusNode.replaceData(
@@ -80,7 +82,7 @@ function suggestionFocus(event) {
     updateOutput();
 }
 
-function updateOutput(){
+export function updateOutput(){
     let inputArea = document.getElementById("inputArea");
     fragmentMap.get(
         inputArea.getAttribute("uuid")
