@@ -4,7 +4,7 @@ Editor for the Math Indicative Language (MIL)
 
 Try it out [here](https://jah-on.github.io/MILE/)!
 
-![image](https://user-images.githubusercontent.com/58399643/211452069-96e7ad1b-0512-4878-a065-2b4a7c1adae3.png)
+![image](https://github.com/Jah-On/MILE/assets/58399643/234c2911-cf73-4fee-908a-560af37d5486)
 
 Currently, the only out of the box way to use this program is through the above link. The all in one (AIO) generation system does not work properly in GitHub at the moment. 
 
