@@ -189,6 +189,11 @@ export function parse(stringRow, stringLiterals) {
     return tokens;
 }
 
+// export function parse(parent, data="", strings=[]) {
+
+//     return tokens;
+// }
+
 export function preProcess(stringMILCode){
     let stringLiterals = [];
     let stringsRemoved = stringMILCode;
@@ -208,6 +213,14 @@ export function preProcess(stringMILCode){
     for (const segment of segments) {
         if (segment == ""){ 
             returnElements.push(document.createElement("br"));
+            continue;
+        }
+        if (/^!.+!$/.test(segment)) {
+            returnElements.push(document.createElement("img"));
+            for (const attr of ["src", "alt"]) {
+                returnElements[returnElements.length - 1].setAttribute(attr, segment.slice(1, -1));
+            }
+            returnElements[returnElements.length - 1].className = "embeddedImage";
             continue;
         }
         sliceEnd += (segment.match(/\0/g) || []).length;
