@@ -10,7 +10,6 @@ import { fragmentMap } from "./MILE_ui.js";
 
 
 export function onTextInput(event) {
-    console.log(event);
     let suggestion = document.getElementById("suggestion");
     if (suggestion) { suggestion.remove(); }
 

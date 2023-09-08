@@ -211,14 +211,15 @@ export function preProcess(stringMILCode){
     let sliceStart = 0;
     let sliceEnd   = 0;
     for (const segment of segments) {
+        console.log(segment);
         if (segment == ""){ 
             returnElements.push(document.createElement("br"));
             continue;
         }
-        if (/^!.+!$/.test(segment)) {
+        if (/^!.+!$/gm.test(segment)) {
             returnElements.push(document.createElement("img"));
             for (const attr of ["src", "alt"]) {
-                returnElements[returnElements.length - 1].setAttribute(attr, segment.slice(1, -1));
+                returnElements[returnElements.length - 1].setAttribute(attr, segment.replaceAll(/\n| /g, "").slice(1, -1));
             }
             returnElements[returnElements.length - 1].className = "embeddedImage";
             continue;
