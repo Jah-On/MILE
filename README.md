@@ -24,8 +24,8 @@ I have Cerebral Palsy which makes writing math, especially for prolonged periods
 
 # Examples
 
-![image](https://user-images.githubusercontent.com/58399643/211452137-4fe79896-bcad-4342-8134-4dc66675f4fa.png)
-![image](https://user-images.githubusercontent.com/58399643/211452179-2d95a7bc-b5bf-4864-b011-cff5f6f22a15.png)
+![image](https://github.com/Jah-On/MILE/assets/58399643/9acd352e-e62c-44af-b0fe-e3967f6e3c0f)
+![image](https://github.com/Jah-On/MILE/assets/58399643/36152d45-904e-4a22-8c45-5a9c81797982)
 ![image](https://github.com/Jah-On/MILE/assets/58399643/d73ca95b-d404-45e1-a0c4-ae202da43070)
 
 
