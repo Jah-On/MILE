@@ -1,4 +1,7 @@
-import { MLNameSpace, charMap, charRegex,
+import { 
+    MLNameSpace, charMap, charRegex, leftOne,
+    leftTwo, middlePlusOne, middlePlusTwo,
+    operators
 } from "./constants.js";
 import { 
     exportToJSON, localDownloader, importFromJSON,
@@ -60,22 +63,25 @@ export function onTextInput(event) {
 
 function suggestionFocus(event) {
     let parent = event.target.parentNode;
-    let prev   = event.target.previousSibling;
     let selected = window.getSelection();
     if (!selected.focusNode.data) {
         return;
     }
-    let range  = selected.getRangeAt(0);
-    let offset = range.startOffset;
+    let range   = selected.getRangeAt(0);
     let matchIndex = lastIndexOf(selected.focusNode.data, /[^aA-zZ]/) + 1;
-    let match = selected.focusNode.data.substr(matchIndex) + event.target.innerText;
+    let match   = selected.focusNode.data.substr(matchIndex) + event.target.innerText;
+    let newChar = charMap.get(match);
     event.target.remove();
     selected.focusNode.replaceData(
         matchIndex,
         match.length, 
-        charMap.get(match)
+        newChar
     );
-    selected.collapse(selected.focusNode, matchIndex + charMap.get(match).length);
+    if (newChar.length == 2) {
+        range.setStart(selected.focusNode, matchIndex + 1);
+    } else {
+        selected.collapse(selected.focusNode, matchIndex + newChar.length);
+    }
     parent.focus();
 
     updateOutput();
@@ -142,6 +148,5 @@ function handleMILFile(event){
 }
 
 export function windowLeave(event) {
-    event.preventDefault();
-    return "";
+    return event.preventDefault();
 }

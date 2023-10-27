@@ -42,6 +42,10 @@ export const charMap = new Map([
     ["succsim","≿"], ["supset","⊃"], ["supsete","⊇"], ["*","⋅"],
     ["times","⋅"], ["union","∪"], ["xtimes","×"],
 
+    // ["abs", "\|\|"], ["ceiling", "⌈⌉"], ["floor", "⌊⌋"], ["round", "⌊⌉"], 
+    ["nroot", "√"],
+
+    ["pow", "^"], ["sub", "_"]
 ]);
 export const charRegex = `${[...charMap.keys()].join("|")}`;
 export const leftOne       = [
@@ -58,10 +62,10 @@ export const operators     = {
     "sum":"∑"
 };
 export const leftTwo       = [
-    "frac", "logbase", "evalint", "nroot"
+    "logbase", "evalint", "nroot"
 ];
 export const middlePlusOne     = [
-    "over", "^", "pow", "sub", "sup",
+    "over",
 ];
 export const middlePlusOneChar = [
     "⋀", "≈", "⊙", "◯", "⊖", "⊕", "⊘", "⊗", "≝", "/", "÷", 
@@ -69,7 +73,7 @@ export const middlePlusOneChar = [
     "∩", "<", "<", "≤", "⩽", "≫", "≪", "∤", "≠", "∉", "⊀", "⊁", 
     "⊄", "⊈", "⊅", "⊉", "∋", "∨", "⊶", "⟂", "∥", "≺", "≼", "≾", "∝", 
     "\\", "/", "∼", "≃", "*", "⊂", "⊆", "≻", "≽", "≿", "⊃", "⊇", "⋅", 
-    "⋅", "∪", "×"
+    "⋅", "∪", "×", "^", "_"
 ];
 export const middlePlusTwo = [
     "supsub"
@@ -79,13 +83,12 @@ export const generationMap = {
     "ceiling": [new MathElement("mo", ["⌈"]), 0, new MathElement("mo", ["⌉"])],
     "evalint": [new MathElement("msubsup", [new MathElement("mo", ["|"]), 1, 0])],
     "floor": [new MathElement("mo", ["⌊"]), 0, new MathElement("mo", ["⌋"])],
-    "frac": [new MathElement("mfrac", [0, 1])],
     "logbase": [new MathElement("msub", [new MathElement("mtext", ["log"]), 0]), 1],
     "nroot": [new MathElement("mroot", [0, 1])],
     "over": [new MathElement("mfrac", [0, 1])],
-    "pow": [new MathElement("msup", [0, 1])],
+    "^": [new MathElement("msup", [0, 1])],
     "round": [new MathElement("mo", ["⌊"]), 0, new MathElement("mo", ["⌉"])],
-    "sub": [new MathElement("msub", [0, 1])],
+    "_": [new MathElement("msub", [0, 1])],
     "supsub": [new MathElement("msubsup", [0, 2, 1])],
     "sqrt": [new MathElement("msqrt", [0])],
     "vhat": [new MathElement("mover", [0, new MathElement("mo", ["^"])])],

@@ -80,7 +80,7 @@ export function parse(stringRow, stringLiterals) {
             continue;
         }
         lastSemicolon = false;
-        if (/\)|\]|\}/.test(stringRow[index])){
+        if (/\)|\]|\}|\⌉|\⌋/.test(stringRow[index])){
             if (tokens.length > 0 && tokens[tokens.length - 1][0] == VARIABLE) {
                 isFunction = functionData(tokens[tokens.length - 1][1]);
                 if (isFunction[0] != -1) {
@@ -96,7 +96,7 @@ export function parse(stringRow, stringLiterals) {
             tokens.push([GROUP_END, stringRow[index], tokens.length - groupItems.pop(), 0]);
             continue;
         }
-        if (/\(|\[|\{/.test(stringRow[index])){
+        if (/\(|\[|\{|\⌊|\⌈/.test(stringRow[index])){
             tokens.push([GROUP_START, stringRow[index], 0, 0]);
             groupItems.push(tokens.length);
             continue;

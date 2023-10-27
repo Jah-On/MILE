@@ -14,7 +14,6 @@ const STYLES = {"largeop":"true", "symmetric":"true"};
 // ChatGPT aided
 // Returns element
 export function functionToHTML(funcName, argElements) {
-    funcName = funcName.replace("^", "pow");
     let ID = "";
     let outputElement = document.createElementNS(MLNameSpace, "mrow");
     outputElement.setAttribute("displaystyle", "true");
