@@ -58,14 +58,16 @@ export function deleteInput(event) {
 }
 
 export function editInput(event) {
-    document.getElementById("homeSpecific").style.display = "none";
+    let sideBar = document.getElementById("sideBar");
+    sideBar.children[0].style.display = "none";
+    sideBar.children[1].style.display = "none";
+    sideBar.children[2].style.display = "flex";
     document.getElementById("problemList").style.display = "none";
-    document.getElementById("backToBase").style.display = "flex";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "block";
     inputArea.focus();
     inputArea.setAttribute("UUID", event.target.parentNode.id);
-    let src = event.target.parentNode.getAttribute("src");
+    let src = event.target.parentNode.getAttribute("src") || "";
     inputArea.replaceChildren();
     for (const line of src.split("\n")) {
         if (line == "") {
@@ -80,16 +82,21 @@ export function editInput(event) {
 
 export function backToBase(event) {
     let srcString = "";
-    for (const line of document.getElementById("inputArea").childNodes) {
-        if (line.nodeName == "BR") {
+    let input = document.getElementById("inputArea");
+    let nodes = input.childNodes;
+    let stop  = nodes.length - (nodes[nodes.length - 1].nodeName == "BR")|0;
+    for (let i = 0; i < stop; i+=1) {
+        if (nodes[i].nodeName == "BR") {
             srcString += "\n";
             continue;
         }
-        srcString += line.data;
+        srcString += nodes[i].data.replace("\t", ""); 
     }
-    document.getElementById("homeSpecific").style.display = "flex";
+    let sideBar = document.getElementById("sideBar");
+    sideBar.children[0].style.display = "flex";
+    sideBar.children[1].style.display = "flex";
+    sideBar.children[2].style.display = "none";
     document.getElementById("problemList").style.display = "block";
-    document.getElementById("backToBase").style.display = "none";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "none";
     document.getElementById(
@@ -107,15 +114,15 @@ export function newProblemRow(UUID, displayName) {
     return clone;
 }
 
-export function addProblem(event, displayName) {
-    if (event) {
-        displayName = event.target.children[0].value;
-    }
-    let UUID = crypto.randomUUID();
+export function addProblem(displayName) {
+    let UUID         = crypto.randomUUID();
     fragmentMap.set(UUID, document.createDocumentFragment());
-    let problemList = document.getElementById("problemList");
-    problemList.appendChild(newProblemRow(UUID, displayName));
-    problemList.lastChild.scrollIntoView();
+    let problemList  = document.getElementById("problemList");
+    let addNewButton = document.getElementById("addNew");
+    problemList.append(newProblemRow(UUID, displayName));
+    problemList.insertBefore(problemList.lastChild, addNewButton);
+    addNewButton.scrollIntoView();
+    problemList.children[problemList.children.length - 2].children[0].focus();
     updateBaseOutput();
 }
 
@@ -123,7 +130,7 @@ export function updateBaseOutput() {
     let temp = document.createDocumentFragment();
 
     let problems = [...document.getElementById("problemList").children];
-    problems = problems.slice(1, problems.length);
+    problems = problems.slice(1, problems.length-1);
     for (const problem of problems) {
         temp.append(document.createElement("div"));
         let divRef = temp.lastChild;

@@ -8,18 +8,15 @@ import {addProblem, backToBase, addProblemListeners } from "./MILE_ui.js"
 window.addEventListener("beforeunload", windowLeave);
 // window.addEventListener("keydown", pageSave);
 window.addEventListener("load", () => {
-  document.getElementById("baseForm").addEventListener("submit", 
-    (event) => {
-      addProblem(event, "");
-      event.target.children[0].value = "";
-    }
-  );
   document.getElementById("backToBase").addEventListener("click", backToBase);
+  document.getElementById("importButton").addEventListener("click", importMIL);
+  document.getElementById("exportButton").addEventListener("click", exportMIL);
   document.getElementById("printButton").addEventListener("click", 
     () => { window.print(); }
   );
-  document.getElementById("importButton").addEventListener("click", importMIL);
-  document.getElementById("exportButton").addEventListener("click", exportMIL);
+  document.getElementById("addNew").addEventListener("click", 
+    () => { addProblem(""); }
+  );
   for (const problemRow of document.getElementsByClassName("problemListRow")) {
     addProblemListeners(problemRow);
   }
