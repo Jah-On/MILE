@@ -30,7 +30,7 @@ export function moveInputUp(event) {
 
 export function moveInputDown(event) {
     let rowElement = event.target.parentNode;
-    if (rowElement.nextSibling) {
+    if (rowElement.nextSibling != document.getElementById("addNew")) {
         rowElement.parentNode.insertBefore(rowElement.nextSibling, rowElement);
     }
     updateBaseOutput();
