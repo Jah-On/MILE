@@ -17,7 +17,8 @@ export const charMap = new Map([
     ["alpha","α"], ["beta","β"], ["gamma","γ"], ["Delta","δ"],
     ["epsilon","ε"], ["eta","η"], ["pi","π"], ["Omega","Ω"],
     ["omega","ω"], ["lambda","λ"], ["mu","μ"], ["angle","∠"],
-    ["degree","°"], ["Phi","Φ"], ["towards","➜"],
+    ["degree","°"], ["Phi","Φ"], ["towards","➜"], ["tau", "τ"], 
+    ["laplace", "ℒ"]
 
     ["-","−"], ["minus","−"], ["neg","¬"], ["plus","+"],
     ["sine","sin"], ["cosine","cos"], ["tangent","tan"],
