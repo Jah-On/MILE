@@ -48,9 +48,10 @@ export function importFromJSON(event = new ProgressEvent()){
     let decodedJSON = JSON.parse(event.target.result);
     for (const importedInput of decodedJSON){
         addProblem(undefined, importedInput.displayName);
-        let newRow = document.getElementById("problemList").lastChild;
+        let problems = document.getElementById("problemList");
+        let newRow = problems.children[problems.children.length - 2];
         newRow.setAttribute("src", importedInput.src);
-        newRow.childNodes[0].value = importedInput.displayName;
+        newRow.children[0].value = importedInput.displayName;
         
         let fragment = fragmentMap.get(newRow.id);
         for (const element of preProcess(importedInput.src)) {
