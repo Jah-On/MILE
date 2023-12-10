@@ -1,5 +1,4 @@
-import { MLNameSpace } from "./constants.js";
-import { generateDisplayName } from "./helper.js";
+import { exportToJSON, generateDisplayName } from "./helper.js";
 import { updateOutput } from "./events.js";
 
 const functionArray = [
@@ -58,10 +57,9 @@ export function deleteInput(event) {
 }
 
 export function editInput(event) {
-    let sideBar = document.getElementById("sideBar");
-    sideBar.children[0].style.display = "none";
-    sideBar.children[1].style.display = "none";
-    sideBar.children[2].style.display = "flex";
+    let backButton = document.getElementById("backButton");
+    backButton.removeEventListener("click", backToHome);
+    backButton.addEventListener("click", backToBase);
     document.getElementById("problemList").style.display = "none";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "block";
@@ -92,10 +90,9 @@ export function backToBase(event) {
         }
         srcString += nodes[i].data.replace("\t", ""); 
     }
-    let sideBar = document.getElementById("sideBar");
-    sideBar.children[0].style.display = "flex";
-    sideBar.children[1].style.display = "flex";
-    sideBar.children[2].style.display = "none";
+    let backButton = document.getElementById("backButton");
+    backButton.removeEventListener("click", backToBase);
+    backButton.addEventListener("click", backToHome);
     document.getElementById("problemList").style.display = "block";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "none";
@@ -129,20 +126,32 @@ export function addProblem(displayName) {
 export function updateBaseOutput() {
     let temp = document.createDocumentFragment();
 
-    let problems = [...document.getElementById("problemList").children];
-    problems = problems.slice(1, problems.length-1);
-    for (const problem of problems) {
+    for (const UUID of fragmentMap.keys()) {
         temp.append(document.createElement("div"));
         let divRef = temp.lastChild;
         divRef.className = "baseOutput";
         divRef.append(document.createElement("span"));
-        if (problem.children[0].value) {
-            divRef.lastChild.innerText = problem.children[0].value + ".";
+        const name = document.getElementById(UUID).children[0].value;
+        if (name) {
+            divRef.lastChild.innerText = name + ".";
         }
         divRef.lastChild.className = "baseOutputLabel";
         divRef.append(document.createElement("div"));
-        divRef.lastChild.append(fragmentMap.get(problem.id).cloneNode(true));
+        divRef.lastChild.append(fragmentMap.get(UUID).cloneNode(true));
         divRef.lastChild.className = "baseOutputContents";
     }
     document.getElementById("output").replaceChildren(temp);
+
+    let projectName = document.getElementById("project").getAttribute("data-name");
+
+    window.localStorage.setItem(projectName, exportToJSON());
+}
+
+export function backToHome(){
+    for (const UUID of fragmentMap.keys()) {
+        document.getElementById(UUID).remove();
+    }
+    fragmentMap.clear();
+    document.getElementById("projects").style.display = "flex";
+    document.getElementById("project").style.display = "none";
 }

@@ -4,13 +4,12 @@ import {
     operators
 } from "./constants.js";
 import { 
-    exportToJSON, localDownloader, importFromJSON,
-    lastIndexOf,
+    exportToJSON, localDownloader, lastIndexOf,
     isAlpha
 } from "./helper.js"
 import { preProcess } from "./parser.js"
 import { fragmentMap } from "./MILE_ui.js";
-
+import { importToLocal } from "./js/project/util.js";
 
 export function onTextInput(event) {
     let suggestion = document.getElementById("suggestion");
@@ -143,8 +142,14 @@ export function importMIL(){
 
 function handleMILFile(event){
     let fileIOHandle = new FileReader;
+    if (event.target.files[0].name.slice(-4) != ".mil") {
+        window.alert("Invalid file type.");
+        return;
+    }
     fileIOHandle.readAsText(event.target.files[0]);
-    fileIOHandle.addEventListener("loadend", importFromJSON);
+    fileIOHandle.addEventListener("loadend", (e) => {
+        importToLocal(e, event.target.files[0].name.slice(0, -4));
+    });
 }
 
 export function windowLeave(event) {

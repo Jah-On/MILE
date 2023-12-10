@@ -1,0 +1,144 @@
+@media print {
+    #sideBar, #inputs {
+        visibility: hidden;
+    }
+    #output {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        min-width: calc(100% - 8px);
+        height: fit-content !important;
+        overflow-y: auto;
+        margin: 0px;
+    }
+    #container,
+    body,
+    html {
+        height: fit-content !important;
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+    }
+}
+
+#project {
+    div.sideBar {
+        display:        inline-flex;
+        flex-direction: column;
+        padding:        10px;
+        position:       relative;
+        width:          2.5%;
+
+        * {
+            background-color: whitesmoke;
+            border:             solid whitesmoke 2px;
+            margin-bottom:      10px;
+            padding:            0px;
+        }
+
+        input:hover {
+            background-color:  lightgray;
+            border-color:      lawngreen;
+        }
+
+        #printButton {
+            bottom:            0px;
+            position:          absolute;
+            width:             calc(100% - 25px);
+        }
+    }
+
+    #container {
+        display:     flex;
+        height:      inherit;
+        margin:      10px;
+        margin-left: 0px;
+        width:       100%;
+
+        #problemList {
+            font-size: 32px;
+            margin-left: 10px;
+            background-color: rgb(20, 20, 20);
+            overflow-y: auto;
+            margin-left: 10px;
+            margin-right: 10px;
+            width: auto;
+        }
+        
+        #addNew {
+            background-color: transparent;
+            border:           2px dashed lightgrey;
+            border-radius:    2px;
+            color:            lightgrey;
+            font-size:        x-large;
+            margin-left:      auto;
+            margin-right:     auto;
+            width:            100%;
+        }
+        
+        #addNew:hover {
+            border-color:     lawngreen;
+            color:            lawngreen;
+        }
+        
+        div.problemListRow {
+            display: flex;
+            flex-direction: row;
+            margin-top: 10px;
+            width: inherit;
+        }
+        
+        div.problemListRow * {
+            margin: auto;
+        }
+        
+        div.problemListRow > input {
+            width: 40%;
+        }
+        
+        #inputs {
+            width: 50%;
+            height: calc(100% - 2px);
+            font-size: 28px;
+            background-color: rgb(20, 20, 20);
+            overflow-y: scroll;
+        }
+        
+        #output {
+            background-color: whitesmoke;
+            color: black;
+            display: block;
+            font-size: 1.5em;
+            height: calc(100% - 12px);
+            padding: 5px;
+            overflow-y: scroll;
+            width: 50%;
+            text-align: center;
+        }
+        
+        #inputArea {
+            width: 100%;
+            height: 100%;
+            font-size: 28px;
+            background-color: rgb(20, 20, 20);
+            color: whitesmoke;
+            margin: 0px;
+            cursor: text;
+            overflow-y: scroll;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+        
+        .inputRow {
+            width: 100%;
+            height: fit-content;
+            border: 0px;
+            margin: 0px;
+            word-break: break-all;
+            word-wrap: break-word;
+            white-space: normal;
+            outline: none;
+        }
+    }
+}

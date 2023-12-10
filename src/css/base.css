@@ -1,0 +1,91 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  min-height:       100%;
+  margin:           0px;
+  max-height:       100%;
+  padding:          0px;
+  display:          flex;
+  flex-direction:   row;
+}
+
+span {
+  line-height: 0.8;
+}
+
+@media print {
+  #sideBar, #inputs {
+    visibility: hidden;
+  }
+  #output {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    min-width: calc(100% - 8px);
+    height: fit-content !important;
+    overflow-y: auto;
+    margin: 0px;
+  }
+  #container,
+  body,
+  html {
+    height: fit-content !important;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+  }
+}
+
+div.page {
+  max-height: 100%;
+  width:      100%;
+}
+
+#suggestion {
+  color: gray;
+}
+
+div.baseOutput {
+  border: black solid 2px;
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+  width: calc(100% - 4px);
+}
+  
+div.baseOutputContents {
+  display: block;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+span.baseOutputLabel {
+  display: block;
+  position: relative;
+  text-align: left;
+  z-index: 2;
+}
+
+math {
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid !important;
+  font-size: inherit;
+}
+
+math * {
+  max-width: inherit;
+}
+
+img.embeddedImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 85%;
+  height: auto;
+  page-break-inside: avoid !important;
+}

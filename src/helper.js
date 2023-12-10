@@ -37,15 +37,24 @@ export function exportToJSON(){
         outputData.push(
             {
                 displayName: problem.children[0].value||"",
-                src:   problem.getAttribute("src"),
+                src:         problem.getAttribute("src"),
             }
         );
     }
     return JSON.stringify(outputData);
 }
 
-export function importFromJSON(event = new ProgressEvent()){ 
-    let decodedJSON = JSON.parse(event.target.result);
+export function importFromJSON(source){
+    let decodedJSON;
+    switch (typeof source){
+        case "string":
+            decodedJSON = JSON.parse(source);
+            break;
+        case "undefined":
+            return;
+        default:
+            throw new Error("Invalid source type.");
+    }
     for (const importedInput of decodedJSON){
         addProblem(undefined, importedInput.displayName);
         let problems = document.getElementById("problemList");

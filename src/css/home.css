@@ -1,0 +1,102 @@
+div.page#projects {
+    display:        flex;
+    flex-direction: column;
+
+    #header {
+        font-size: xx-large;
+        font-weight: bolder;
+        width: 100%;
+
+        * {
+            text-decoration: none;
+            color:           whitesmoke;
+        }
+    }
+
+    #container {
+        display:        flex;
+        flex-direction: row;
+        height:         100%;
+        width:          100%;
+        overflow:       hidden;
+
+        #sideBar {
+            display:        inline-flex;
+            flex-direction: column;
+            padding:        10px;
+            position:       relative;
+            width:          2.5%;
+            border-right:   solid 1px whitesmoke;
+
+            * {
+                background-color: whitesmoke;
+                margin-bottom:      10px;
+                padding:            0px;
+                border-radius:      2px;
+                border:             solid whitesmoke 2px;
+            }
+        }
+
+        #list {
+            border-top:     solid whitesmoke 1px;
+            display:        flex;
+            flex-direction: row;
+            flex-wrap:      wrap;
+            overflow-y:     scroll;
+            width:          100%;
+
+            .item {
+                align-items:      center;
+                border:           solid whitesmoke 2px;
+                border-radius:    10px;
+                box-sizing:       border-box;
+                background-color: black;
+                flex-direction:   column;
+                height:           250px;
+                margin-left:      50px;
+                margin-top:       50px;
+                padding:          10px;
+                position:         relative;
+                width:            250px;
+
+                div.name {
+                    background-color: black;
+                    border:           0px;
+                    color:            whitesmoke;
+                    font-size:        x-large;
+                    margin-top:       auto;
+                    margin-bottom:    auto;
+                    text-align:       center;
+                    width:            80%;
+                    word-wrap:        break-word;
+                }
+
+                div.actions {
+                    bottom:          10px;
+                    display:         flex;
+                    flex-direction:  row;
+                    justify-content: space-around;
+                    position:        absolute;
+                    width:           90%;
+                }
+
+                div.actions * {
+                    aspect-ratio: 1/1;
+                    font-size:    xx-large;
+                }
+            }
+
+            #addProject {
+                background-color: black;
+                border-style:     dashed;
+                color:            whitesmoke;
+                font-size:        xx-large;
+            }
+
+            #addProject:hover, #add:active {
+                color:        lawngreen;
+                border-color: lawngreen;
+            }
+        }
+    }
+}
