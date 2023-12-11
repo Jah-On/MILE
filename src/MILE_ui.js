@@ -51,6 +51,9 @@ export function copyInput(event) {
 }
 
 export function deleteInput(event) {
+    if (!window.confirm(`Are you sure you want to delete this problem?`)) {
+        return;
+    }
     event.target.parentNode.remove();
     fragmentMap.delete(event.target.parentNode.id);
     updateBaseOutput();

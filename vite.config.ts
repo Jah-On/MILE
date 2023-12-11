@@ -4,6 +4,7 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 export default defineConfig({
   plugins: [viteSingleFile()],
   build: {
-    minify: false,
+    minify:    true,
+    cssMinify: false,
   },
 });
