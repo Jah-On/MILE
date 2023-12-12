@@ -17,8 +17,8 @@ span {
 }
 
 @media print {
-  #sideBar, #inputs {
-    visibility: hidden;
+  .sideBar, #inputs {
+    visibility: collapse;
   }
   #output {
     position: relative;
