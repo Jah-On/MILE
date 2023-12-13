@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
   );
   document.getElementById("backButton").addEventListener("click", backToHome);
   document.getElementById("importButton").addEventListener("click", importMIL);
-  // document.getElementById("exportButton").addEventListener("click", exportMIL);
+  document.getElementById("exportButton").addEventListener("click", exportMIL);
   document.getElementById("printButton").addEventListener("click", 
     () => { window.print(); }
   );

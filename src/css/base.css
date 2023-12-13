@@ -16,29 +16,6 @@ span {
   line-height: 0.8;
 }
 
-@media print {
-  .sideBar, #inputs {
-    visibility: collapse;
-  }
-  #output {
-    position: relative;
-    top: 0px;
-    left: 0px;
-    min-width: calc(100% - 8px);
-    height: fit-content !important;
-    overflow-y: auto;
-    margin: 0px;
-  }
-  #container,
-  body,
-  html {
-    height: fit-content !important;
-    width: 100%;
-    padding: 0px;
-    margin: 0px;
-  }
-}
-
 div.page {
   max-height: 100%;
   width:      100%;

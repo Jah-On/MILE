@@ -125,8 +125,9 @@ export function pageSave(event) {
 }
 
 export function exportMIL(){
+    let name = document.getElementById("project").getAttribute("data-name");
     localDownloader(
-        document.body.getAttribute("name") + ".mil",
+        name + ".mil",
         exportToJSON(),
         "text/plain"
     );
