@@ -4,13 +4,9 @@ Editor for the Math Indicative Language (MIL)
 
 Try it out [here](https://jah-on.github.io/MILE/)!
 
-![image](https://github.com/Jah-On/MILE/assets/58399643/234c2911-cf73-4fee-908a-560af37d5486)
+# Is MILE/MIL stable?
 
-Currently, the only out of the box way to use this program is through the above link. The all in one (AIO) generation system does not work properly in GitHub at the moment. 
-
-# How do I save my work?
-
-Use the export button on the main page to save a MIL file. Alternatively, you can download the all in one HTML file by pressing CTRL + S. Note that the all in one file is still buggy between browsers and needs improvement. 
+Both MILE and MIL will be going through significant changes with the goal of being stable afterwards. My plan is to have a seperate branch and deployment with the last (mostly) polished version of "Old MILE". Coming soon, the main branch will no longer be stable and should only be used for testing. 
 
 # What is MIL?
 
@@ -22,12 +18,17 @@ The two main ways that MIL is more efficient is firstly by using semicolons as i
 
 I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessable across devices/operating systems.
 
-# Examples
+# Statement on accessibility...
 
-![image](https://github.com/Jah-On/MILE/assets/58399643/9acd352e-e62c-44af-b0fe-e3967f6e3c0f)
-![image](https://github.com/Jah-On/MILE/assets/58399643/36152d45-904e-4a22-8c45-5a9c81797982)
-![image](https://github.com/Jah-On/MILE/assets/58399643/d73ca95b-d404-45e1-a0c4-ae202da43070)
+MILE aims at making math more accessible as a whole but currently focuses on making the typing experience as efficient as possible. Little to no testing has been done to ensure proper behavior with screen readers, Braille, and other modalities. That being said, I try to ensure that all visual elements (buttons, images, etc.) have text alternatives or descriptors. 
 
+# Is there an "offline" version?
+
+All work is saved locally and there is an offline portable version of MILE currently. However, the offline file cannot read projects from the github.io site and vise versa. 
+
+# How do I save my work?
+
+MILE now saves your projects inside of your browser! However, these files are not backed up so it is your responsibilty to export individual projects to back them up or share among people/devices. 
 
 # Documentation
 
