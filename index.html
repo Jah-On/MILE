@@ -13,7 +13,16 @@
     <link rel="stylesheet" href="./src/css/home.css">
     <link rel="stylesheet" href="./src/css/project.css">
   </head>
+
   <body>
+    <template id="rowTemplate"><div class="problemListRow" src=""> <!-- Template -->
+      <input type="text" class="problemName" placeholder="Problem name or number">
+      <button>Move Up</button>
+      <button>Move Down</button>
+      <button>Copy</button>
+      <button>Delete</button>
+      <button>Edit</button>
+    </div></template>
 
     <div class="page" id="projects">
       <div id="header">
@@ -48,15 +57,8 @@
       </div>
       <div id="container">
         <div id="inputs">
-          <div id="problemList">
-            <div class="problemListRow" id="rowTemplate" style="display: none;" HTML=""> <!-- Template -->
-              <input type="text" class="problemName" placeholder="Problem name or number">
-              <button>Move Up</button>
-              <button>Move Down</button>
-              <button>Copy</button>
-              <button>Delete</button>
-              <button>Edit</button>
-            </div>
+          <div id="problems">
+            <div id="list"></div>
             <button id="addNew" title="Add new problem">+</button>
           </div>
           <pre id="inputArea" style="display: none;" contenteditable></pre>
@@ -69,7 +71,6 @@
     <script type="module" src="./src/events.js"></script>
     <script type="module" src="./src/helper.js"></script>
     <script type="module" src="./src/htmlGen.js"></script>
-    <script type="module" src="./src/MILE_ui.js"></script>
     <script type="module" src="./src/parser.js"></script>
     <script type="module" src="./src/processors.js"></script>
     <script type="module" src="./src/MILE.js"></script>

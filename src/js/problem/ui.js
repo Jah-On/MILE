@@ -1,17 +1,17 @@
-import { exportToJSON, generateDisplayName } from "./helper.js";
-import { updateOutput } from "./events.js";
+import { exportToJSON, generateDisplayName } from "../../helper.js";
+import { updateOutput } from "../../events.js";
 
-const functionArray = [
-    updateBaseOutput, moveInputUp, moveInputDown, copyInput, 
-    deleteInput, editInput
-];
-const eventArray = [
-    "input", "click", "click", "click", "click", "click"
-];
+const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
+const eventArray =    ["input", "click", "click", "click", "click", "click"];
 
 export let fragmentMap = new Map();
 
-export function addProblemListeners(problemRow) {
+const backButtonMap = new Map([
+    [backToBase, backToHome],
+    [backToHome, backToBase]
+]);
+
+function addProblemListeners(problemRow) {
     for (let index = 0; index < eventArray.length; ++index) {
         problemRow.children[index].addEventListener(
             eventArray[index], functionArray[index]
@@ -19,30 +19,35 @@ export function addProblemListeners(problemRow) {
     }
 }
 
-export function moveInputUp(event) {
-    let rowElement = event.target.parentNode;
-    if (rowElement.previousSibling.id != "rowTemplate") {
-        rowElement.parentNode.insertBefore(rowElement, rowElement.previousSibling);
+function move(node = Node, direction) {
+    switch (direction) {
+        case -1:
+            node.parentNode.insertBefore(node.nextSibling||node, node);
+            break;
+        default:
+            if (node == node.parentNode.firstElementChild) { break; }
+            node.parentNode.insertBefore(node, node.previousSibling);
+            break;
     }
     updateBaseOutput();
 }
 
-export function moveInputDown(event) {
-    let rowElement = event.target.parentNode;
-    if (rowElement.nextSibling != document.getElementById("addNew")) {
-        rowElement.parentNode.insertBefore(rowElement.nextSibling, rowElement);
-    }
-    updateBaseOutput();
+function moveDown(event) {
+    move(event.target.parentNode, -1);
 }
 
-export function copyInput(event) {
+function moveUp(event) {
+    move(event.target.parentNode, 1);
+}
+
+function copy(event) {
     let newUUID = crypto.randomUUID();
     fragmentMap.set(
         newUUID, 
         fragmentMap.get(event.target.parentNode.id).cloneNode(true)
     );
-    let cloned  = event.target.parentNode.cloneNode(true);
-    cloned.id = newUUID;
+    let cloned               = event.target.parentNode.cloneNode(true);
+    cloned.id                = newUUID;
     cloned.children[0].value = generateDisplayName(cloned.children[0].value);
     addProblemListeners(cloned);
     event.target.parentNode.insertAdjacentElement("afterend", cloned);
@@ -50,7 +55,7 @@ export function copyInput(event) {
     updateBaseOutput();
 }
 
-export function deleteInput(event) {
+function remove(event) {
     if (!window.confirm(`Are you sure you want to delete this problem?`)) {
         return;
     }
@@ -59,11 +64,9 @@ export function deleteInput(event) {
     updateBaseOutput();
 }
 
-export function editInput(event) {
-    let backButton = document.getElementById("backButton");
-    backButton.removeEventListener("click", backToHome);
-    backButton.addEventListener("click", backToBase);
-    document.getElementById("problemList").style.display = "none";
+function edit(event) {
+    setBackButton(backToBase);
+    document.getElementById("problems").style.display = "none";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "block";
     inputArea.focus();
@@ -71,65 +74,58 @@ export function editInput(event) {
     let src = event.target.parentNode.getAttribute("src") || "";
     inputArea.replaceChildren();
     for (const line of src.split("\n")) {
-        if (line == "") {
-            inputArea.append(document.createElement("br"));
-            continue;
+        if (line != "") {
+            inputArea.append(document.createTextNode(line));
         }
-        inputArea.append(document.createTextNode(line));
         inputArea.append(document.createElement("br"));
     }
     updateOutput();
 }
 
 export function backToBase(event) {
+    let input     = document.getElementById("inputArea");
+
+    let nodes     = input.childNodes;
     let srcString = "";
-    let input = document.getElementById("inputArea");
-    let nodes = input.childNodes;
-    let stop  = nodes.length - (nodes[nodes.length - 1].nodeName == "BR")|0;
-    for (let i = 0; i < stop; i+=1) {
-        if (nodes[i].nodeName == "BR") {
-            srcString += "\n";
-            continue;
-        }
-        srcString += nodes[i].data.replace("\t", ""); 
+    for (const node of nodes) {
+        srcString += node.data||"\n";
     }
-    let backButton = document.getElementById("backButton");
-    backButton.removeEventListener("click", backToBase);
-    backButton.addEventListener("click", backToHome);
-    document.getElementById("problemList").style.display = "block";
-    let inputArea = document.getElementById("inputArea");
-    inputArea.style.display = "none";
+    srcString = srcString.replace("\t", "");
+
+    setBackButton(backToHome);
+    document.getElementById("problems").style.display = "block";
+    input.style.display = "none";
     document.getElementById(
-        inputArea.getAttribute("UUID")
+        input.getAttribute("UUID")
     ).setAttribute("src", srcString);
     updateBaseOutput();
 }
 
 export function newProblemRow(UUID, displayName) {
-    let clone = document.getElementById("rowTemplate").cloneNode(true);
-    clone.id = UUID;
-    clone.style.display = "flex";
+    let clone               = document.getElementById("rowTemplate").content.children[0].cloneNode(true);
+    clone.id                = UUID;
     clone.children[0].value = displayName;
+
     addProblemListeners(clone);
     return clone;
 }
 
-export function addProblem(displayName) {
-    let UUID         = crypto.randomUUID();
+export function add(displayName) {
+    let UUID      = crypto.randomUUID();
+    let problems  = document.getElementById("problems").firstElementChild;
+    let newRow    = newProblemRow(UUID, displayName);
+
     fragmentMap.set(UUID, document.createDocumentFragment());
-    let problemList  = document.getElementById("problemList");
-    let addNewButton = document.getElementById("addNew");
-    problemList.append(newProblemRow(UUID, displayName));
-    problemList.insertBefore(problemList.lastChild, addNewButton);
-    addNewButton.scrollIntoView();
-    problemList.children[problemList.children.length - 2].children[0].focus();
+    problems.append(newRow);
+    newRow.children[0].focus();
     updateBaseOutput();
 }
 
 export function updateBaseOutput() {
     let temp = document.createDocumentFragment();
 
-    for (const UUID of fragmentMap.keys()) {
+    for (const item of document.getElementById("problems").firstElementChild.children) {
+        let UUID = item.id;
         temp.append(document.createElement("div"));
         let divRef = temp.lastChild;
         divRef.className = "baseOutput";
@@ -157,4 +153,10 @@ export function backToHome(){
     fragmentMap.clear();
     document.getElementById("projects").style.display = "flex";
     document.getElementById("project").style.display = "none";
+}
+
+function setBackButton(fn) {
+    let backButton = document.getElementById("backButton");
+    backButton.removeEventListener("click", backButtonMap.get(fn));
+    backButton.addEventListener("click", fn);
 }

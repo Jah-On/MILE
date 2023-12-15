@@ -1,7 +1,7 @@
 import { MLNameSpace } from "./constants.js"
-import { addProblem, updateBaseOutput } from "./MILE_ui.js"
+import * as problem from "./js/problem/ui.js"
 import { preProcess } from "./parser.js"
-import { fragmentMap } from "./MILE_ui.js"
+import { fragmentMap } from "./js/problem/ui.js";
 
 // ChatGPT implementation
 // Returns boolean
@@ -32,7 +32,6 @@ export function generateDisplayName(current=""){
 export function exportToJSON(){
     let outputData = [];
     let problems = [...document.getElementsByClassName("problemListRow")];
-    problems = problems.slice(1, problems.length);
     for (const problem of problems){
         outputData.push(
             {
@@ -56,9 +55,9 @@ export function importFromJSON(source){
             throw new Error("Invalid source type.");
     }
     for (const importedInput of decodedJSON){
-        addProblem(undefined, importedInput.displayName);
-        let problems = document.getElementById("problemList");
-        let newRow = problems.children[problems.children.length - 2];
+        problem.add(undefined, importedInput.displayName);
+        let problems = document.getElementById("problems").firstElementChild;
+        let newRow = problems.children[problems.children.length - 1];
         newRow.setAttribute("src", importedInput.src);
         newRow.children[0].value = importedInput.displayName;
         
@@ -69,7 +68,7 @@ export function importFromJSON(source){
             fragment.append(document.createElement("br"));
         }
     }
-    updateBaseOutput();
+    problem.updateBaseOutput();
 }
 
 export function localDownloader(name="", data="", MIME="") {

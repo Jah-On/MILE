@@ -8,7 +8,7 @@ import {
     isAlpha
 } from "./helper.js"
 import { preProcess } from "./parser.js"
-import { fragmentMap } from "./MILE_ui.js";
+import { fragmentMap } from "./js/problem/ui.js";
 import { importToLocal } from "./js/project/util.js";
 
 export function onTextInput(event) {
