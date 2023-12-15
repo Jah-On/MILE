@@ -22,6 +22,10 @@
             bottom:            0px;
             position:          absolute;
             width:             calc(100% - 25px);
+            
+            @media print {
+                visibility:    collapse;
+            }
         }
     }
 
@@ -111,6 +115,10 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
+
+            @media print {
+                visibility:    collapse;
+            }
         }
         
         .inputRow {
