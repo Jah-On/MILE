@@ -1,18 +1,12 @@
 # MILE
 
-Editor for the Math Indicative Language (MIL)
+Math Inclusive Live Editor
 
-Try it out [here](https://jah-on.github.io/MILE/)!
+<!-- Try it out [here](https://jah-on.github.io/MILE/)! -->
 
 # Is MILE/MIL stable?
 
-Both MILE and MIL will be going through significant changes with the goal of being stable afterwards. My plan is to have a seperate branch and deployment with the last (mostly) polished version of "Old MILE". Coming soon, the main branch will no longer be stable and should only be used for testing. 
-
-# What is MIL?
-
-MIL stands for Math Indicative Language and allows for more efficient math display typing compared to LaTeX or LibreOffice's Formula Object language. MIL is also more freely typed.
-
-The two main ways that MIL is more efficient is firstly by using semicolons as invisible groupings compared to curly brackets in LibreOffice's FOL. Semicolons are more centrally located and do not require modifier keys. Secondly, all character math operations (i.e. + - \*) have shortened word equivalents. This means that no modifier key needs to be pressed besides for visible grouping to achieve the same output.
+This branch should not be considered stable, yet! If you want to use a stable version, see the "Old MILE" branch.
 
 # Why did I make this?
 
