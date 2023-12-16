@@ -34,7 +34,7 @@
         height:      inherit;
         margin:      10px;
         margin-left: 0px;
-        width:       100%;
+        width:       calc(97.5% - 20px);
 
         #problemList {
             font-size: 32px;
@@ -60,27 +60,49 @@
             color:            lawngreen;
         }
         
-        div.problemListRow {
-            display: flex;
-            flex-direction: row;
-            margin-top: 10px;
-            width: inherit;
-        }
-        
-        div.problemListRow * {
-            margin: auto;
-        }
-        
-        div.problemListRow > input {
-            width: 40%;
-        }
-        
         #inputs {
             width: 50%;
             height: calc(100% - 2px);
-            font-size: 28px;
             background-color: rgb(20, 20, 20);
             overflow-y: scroll;
+
+            #problems {
+                padding:         10px;
+
+                #list {
+                    width:       100%;
+
+                    .problem {
+                        display:        flex;
+                        flex-direction: row;
+                        margin-bottom:  10px;
+
+                        * {
+                            flex:       1 1 100%;
+                            font-size:  larger;
+                        }
+
+                        input[type="text"] {
+                            max-width:  50%;
+                        }
+
+                        input[type="button"] {
+                            aspect-ratio: 1;
+                            margin-left:  auto;
+                            max-width:    5%;
+                        }
+                    }
+                }
+
+                button {
+                    background-color: transparent;
+                    border:           2px dashed whitesmoke;
+                    border-radius:    2px;
+                    color:            whitesmoke;
+                    font-size:        x-large;
+                    width:            100%;
+                }
+            }
         }
         
         #output {

@@ -7,8 +7,8 @@ const eventArray =    ["input", "click", "click", "click", "click", "click"];
 export let fragmentMap = new Map();
 
 const backButtonMap = new Map([
-    [backToBase, backToHome],
-    [backToHome, backToBase]
+    [backToList, backToHome],
+    [backToHome, backToList]
 ]);
 
 function addProblemListeners(problemRow) {
@@ -65,7 +65,8 @@ function remove(event) {
 }
 
 function edit(event) {
-    setBackButton(backToBase);
+    setBackButton(backToList);
+    document.getElementById("exportButton").style.display = "none";
     document.getElementById("problems").style.display = "none";
     let inputArea = document.getElementById("inputArea");
     inputArea.style.display = "block";
@@ -82,7 +83,7 @@ function edit(event) {
     updateOutput();
 }
 
-export function backToBase(event) {
+export function backToList(event) {
     let input     = document.getElementById("inputArea");
 
     let nodes     = input.childNodes;
@@ -93,6 +94,7 @@ export function backToBase(event) {
     srcString = srcString.replace("\t", "");
 
     setBackButton(backToHome);
+    document.getElementById("exportButton").style.display = "block";
     document.getElementById("problems").style.display = "block";
     input.style.display = "none";
     document.getElementById(

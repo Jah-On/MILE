@@ -12,16 +12,17 @@
     <link rel="stylesheet" href="./src/css/base.css">
     <link rel="stylesheet" href="./src/css/home.css">
     <link rel="stylesheet" href="./src/css/project.css">
+    <link rel="stylesheet" href="./src/css/MathML.css">
   </head>
 
   <body>
-    <template id="rowTemplate"><div class="problemListRow" src=""> <!-- Template -->
-      <input type="text" class="problemName" placeholder="Problem name or number">
-      <button>Move Up</button>
-      <button>Move Down</button>
-      <button>Copy</button>
-      <button>Delete</button>
-      <button>Edit</button>
+    <template id="rowTemplate"><div class="problem" src=""> <!-- Template -->
+      <input type="text"   placeholder="Problem name or number">
+      <input type="button" title="Move up"   value="⬆">
+      <input type="button" title="Move down" value="⬇">
+      <input type="button" title="Copy"      value="📋">
+      <input type="button" title="Delete"    value="🗑">
+      <input type="button" title="Edit"      value="🖊">
     </div></template>
 
     <div class="page" id="projects">

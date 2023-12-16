@@ -47,17 +47,6 @@ span.baseOutputLabel {
   z-index: 2;
 }
 
-math {
-  margin-left: auto;
-  margin-right: auto;
-  page-break-inside: avoid !important;
-  font-size: inherit;
-}
-
-math * {
-  max-width: inherit;
-}
-
 img.embeddedImage {
   display: block;
   margin-left: auto;

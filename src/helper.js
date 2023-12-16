@@ -31,7 +31,7 @@ export function generateDisplayName(current=""){
 
 export function exportToJSON(){
     let outputData = [];
-    let problems = [...document.getElementsByClassName("problemListRow")];
+    let problems = [...document.getElementsByClassName("problem")];
     for (const problem of problems){
         outputData.push(
             {
