@@ -1,6 +1,7 @@
 import { fromTemplate } from "./ui.js";
 
-export function importToLocal(event = new ProgressEvent(""), name = ""){
+export function importToLocal(event, name){
+    let target = event.target;
     fromTemplate(name);
-    window.localStorage.setItem(name, event.target.result);
+    window.localStorage.setItem(name, target.result.toString());
 }

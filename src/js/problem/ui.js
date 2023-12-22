@@ -1,5 +1,6 @@
-import { exportToJSON, generateDisplayName } from "../../helper.js";
+import { exportToJSON } from "../../helper.js";
 import { updateOutput } from "../../events.js";
+import { generateDisplayName } from "./util.js";
 
 const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
 const eventArray =    ["input", "click", "click", "click", "click", "click"];
@@ -19,60 +20,72 @@ function addProblemListeners(problemRow) {
     }
 }
 
-function move(node = Node, direction) {
+function move(node, direction) {
+    let parent = node.parentElement;
     switch (direction) {
         case -1:
-            node.parentNode.insertBefore(node.nextSibling||node, node);
+            parent.insertBefore(node.nextSibling||node, node);
             break;
         default:
-            if (node == node.parentNode.firstElementChild) { break; }
-            node.parentNode.insertBefore(node, node.previousSibling);
+            if (node == parent.firstElementChild) { break; }
+            parent.insertBefore(node, node.previousSibling);
             break;
     }
     updateBaseOutput();
 }
 
 function moveDown(event) {
-    move(event.target.parentNode, -1);
+    let parent = event.target.parentElement;
+    move(parent, -1);
 }
 
 function moveUp(event) {
-    move(event.target.parentNode, 1);
+    let parent = event.target.parentElement;
+    move(parent, 1);    
 }
 
 function copy(event) {
+    let parent = event.target.parentElement;
     let newUUID = crypto.randomUUID();
     fragmentMap.set(
         newUUID, 
-        fragmentMap.get(event.target.parentNode.id).cloneNode(true)
+        fragmentMap.get(parent.id).cloneNode(true)
     );
-    let cloned               = event.target.parentNode.cloneNode(true);
+    let cloned               = parent.cloneNode(true);
+    let firstChild           = cloned.firstElementChild;
     cloned.id                = newUUID;
-    cloned.children[0].value = generateDisplayName(cloned.children[0].value);
+    firstChild.value         = generateDisplayName(firstChild.value);
     addProblemListeners(cloned);
-    event.target.parentNode.insertAdjacentElement("afterend", cloned);
+    parent.insertAdjacentElement("afterend", cloned);
     cloned.scrollIntoView();
     updateBaseOutput();
 }
 
 function remove(event) {
+    let parent = event.target.parentElement;
     if (!window.confirm(`Are you sure you want to delete this problem?`)) {
         return;
     }
-    event.target.parentNode.remove();
-    fragmentMap.delete(event.target.parentNode.id);
+    parent.remove();
+    fragmentMap.delete(parent.id);
     updateBaseOutput();
 }
 
 function edit(event) {
     setBackButton(backToList);
-    document.getElementById("exportButton").style.display = "none";
-    document.getElementById("problems").style.display = "none";
-    let inputArea = document.getElementById("inputArea");
-    inputArea.style.display = "block";
+    let parent       = event.target.parentElement;
+    let exportButton = document.getElementById("exportButton");
+    let problems     = document.getElementById("problems");
+    let inputArea    = document.getElementById("inputArea");
+
+    exportButton.style.display = "none";
+    problems.style.display     = "none";
+    inputArea.style.display    = "block";
+
     inputArea.focus();
-    inputArea.setAttribute("UUID", event.target.parentNode.id);
-    let src = event.target.parentNode.getAttribute("src") || "";
+    inputArea.setAttribute("UUID", parent.id);
+
+    let src = parent.getAttribute("src") || "";
     inputArea.replaceChildren();
     for (const line of src.split("\n")) {
         if (line != "") {
@@ -83,28 +96,31 @@ function edit(event) {
     updateOutput();
 }
 
-export function backToList(event) {
+export function backToList() {
+    let exportButton = document.getElementById("exportButton");
+    let problems     = document.getElementById("problems");
     let input     = document.getElementById("inputArea");
 
-    let nodes     = input.childNodes;
     let srcString = "";
-    for (const node of nodes) {
-        srcString += node.data||"\n";
-    }
+    input.childNodes.forEach((node) => {
+        srcString += node.textContent||"\n";
+    });
     srcString = srcString.replace("\t", "");
 
     setBackButton(backToHome);
-    document.getElementById("exportButton").style.display = "block";
-    document.getElementById("problems").style.display = "block";
-    input.style.display = "none";
-    document.getElementById(
-        input.getAttribute("UUID")
-    ).setAttribute("src", srcString);
+    exportButton.style.display = "block";
+    problems.style.display     = "block";
+    input.style.display        = "none";
+    
+    let UUID = input.getAttribute("UUID");
+    let row = document.getElementById(UUID);
+    row.setAttribute("src", srcString);
     updateBaseOutput();
 }
 
 export function newProblemRow(UUID, displayName) {
-    let clone               = document.getElementById("rowTemplate").content.children[0].cloneNode(true);
+    let rowTemplate         = document.getElementById("rowTemplate");
+    let clone               = rowTemplate.content.firstElementChild.cloneNode(true);
     clone.id                = UUID;
     clone.children[0].value = displayName;
 
@@ -124,9 +140,13 @@ export function add(displayName) {
 }
 
 export function updateBaseOutput() {
+    let output     = document.getElementById("output");
+    let problems   = document.getElementById("problems");
+    let project    = document.getElementById("project");
+    let firstChild = problems.firstElementChild;
     let temp = document.createDocumentFragment();
 
-    for (const item of document.getElementById("problems").firstElementChild.children) {
+    for (const item of firstChild.children) {
         let UUID = item.id;
         temp.append(document.createElement("div"));
         let divRef = temp.lastChild;
@@ -141,24 +161,38 @@ export function updateBaseOutput() {
         divRef.lastChild.append(fragmentMap.get(UUID).cloneNode(true));
         divRef.lastChild.className = "baseOutputContents";
     }
-    document.getElementById("output").replaceChildren(temp);
+    output.replaceChildren(temp);
 
-    let projectName = document.getElementById("project").getAttribute("data-name");
-
+    let projectName = project.getAttribute("data-name");
     window.localStorage.setItem(projectName, exportToJSON());
 }
 
 export function backToHome(){
+    let project  = document.getElementById("project");
+    let projects = document.getElementById("projects");
     for (const UUID of fragmentMap.keys()) {
-        document.getElementById(UUID).remove();
+        let row = document.getElementById(UUID);
+        row.remove();
     }
     fragmentMap.clear();
-    document.getElementById("projects").style.display = "flex";
-    document.getElementById("project").style.display = "none";
+    project.style.display  = "none";
+    projects.style.display = "flex";
 }
 
 function setBackButton(fn) {
     let backButton = document.getElementById("backButton");
     backButton.removeEventListener("click", backButtonMap.get(fn));
     backButton.addEventListener("click", fn);
+}
+
+export function loadAll(data) {
+    let decodedJSON = JSON.parse(data);
+    for (const importedInput of decodedJSON){
+        add(undefined, importedInput.displayName);
+        let problems = document.getElementById("problems").firstElementChild;
+        let newRow = problems.children[problems.children.length - 1];
+        newRow.setAttribute("src", importedInput.src);
+        newRow.children[0].value = importedInput.displayName;
+    }
+    updateBaseOutput();
 }

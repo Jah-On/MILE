@@ -1,8 +1,6 @@
-import {windowLeave, importMIL,
-        exportMIL, onTextInput 
-} from "./events.js"
-import * as problem from "./js/problem/ui.js"
-import * as project from "./js/project/ui.js"
+import { onTextInput } from "./text-suggestion/nextText.js"
+import * as problem from "./problem/ui.js"
+import * as project from "./project/ui.js"
 // Main entry point
 
 // window.addEventListener("beforeunload", windowLeave);
@@ -12,8 +10,8 @@ window.addEventListener("load", () => {
     "click", project.add
   );
   document.getElementById("backButton").addEventListener("click", problem.backToHome);
-  document.getElementById("importButton").addEventListener("click", importMIL);
-  document.getElementById("exportButton").addEventListener("click", exportMIL);
+  // document.getElementById("importButton").addEventListener("click", importMIL);
+  // document.getElementById("exportButton").addEventListener("click", exportMIL);
   document.getElementById("printButton").addEventListener("click", 
     () => { window.print(); }
   );

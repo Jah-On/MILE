@@ -1,4 +1,4 @@
-import { importFromJSON } from "../../helper";
+import * as problem from "../problem/ui.js";
 
 const eventFunctions = [
     edit, remove, copy
@@ -22,7 +22,10 @@ export function add(){
 }
 
 function rename(event) {
-    const name = event.target.innerText.replace("\n", "");
+    let target = event.target;
+    let parent = target.parentElement;
+
+    const name = target.innerText.replace("\n", "");
     switch (event.key) {
         case "Enter":
             event.preventDefault();
@@ -42,7 +45,7 @@ function rename(event) {
             return;
     }
 
-    const oldName = event.target.parentNode.getAttribute("data-name");
+    const oldName = parent.getAttribute("data-name");
 
     if (name == "") {
         return;
@@ -53,24 +56,27 @@ function rename(event) {
         return;
     }
 
-    window.localStorage.setItem(
-        name,
-        window.localStorage.getItem(oldName)
-    );
+    let saved = window.localStorage.getItem(oldName);
+    window.localStorage.setItem(name, saved);
     window.localStorage.removeItem(oldName);
-    event.target.parentNode.setAttribute("data-name", name);
+    parent.setAttribute("data-name", name);
 }
 
 function remove(event) {
-    const name = event.target.parentNode.parentNode.getAttribute("data-name");
+    let temp   = event.target.parentElement;
+    let parent = temp.parentElement;
+    const name = parent.getAttribute("data-name");
     if (window.confirm(`Delete ${name}?`)) {
         window.localStorage.removeItem(name);
-        event.target.parentNode.parentNode.remove();
+        parent.remove();
     }
 }
 
 function copy(event) {
-    const name = event.target.parentNode.parentNode.getAttribute("data-name");
+    let temp = event.target.parentElement;
+    let parent = temp.parentElement;
+    
+    const name = parent.getAttribute("data-name");
     const newName = `${name}(1)`;
     
     if (window.localStorage.getItem(newName) != null) {
@@ -78,21 +84,22 @@ function copy(event) {
         return;
     }
 
-    window.localStorage.setItem(
-        newName,
-        window.localStorage.getItem(name)
-    );
+    let saved = window.localStorage.getItem(name);
+    window.localStorage.setItem(newName, saved);
 
     fromTemplate(newName);
 }
 
 export function fromTemplate(name){
-    let clonedElement = document.getElementById("projectTemplate").cloneNode(true);
+    let list     = document.getElementById("list");
+    let template = document.getElementById("projectTemplate");
+    let clonedElement = template.cloneNode(true);
     clonedElement.id = "";
     clonedElement.setAttribute("data-name", name);
     clonedElement.style.display = "flex";
-    clonedElement.children[0].innerText = name;
-    clonedElement.children[0].addEventListener(
+    let firstChild = clonedElement.firstElementChild;
+    firstChild.innerText = name;
+    firstChild.addEventListener(
         "keydown",
         rename
     );
@@ -102,22 +109,28 @@ export function fromTemplate(name){
             eventFunctions[i]
         );
     }
-    document.getElementById("list").append(clonedElement);
+    list.append(clonedElement);
 }
 
 function edit(event) {
-    const name = event.target.parentNode.parentNode.getAttribute("data-name");
-    document.getElementById("projects").style.display = "none";
+    let projects  = document.getElementById("projects");
+    let project   = document.getElementById("project");
+    let target    = event.target;
+    let temp      = target.parentElement;
+    let parent    = temp.parentElement;
+    const name    = parent.getAttribute("data-name");
 
-    let workspace = document.getElementById("project");
-    workspace.style.display = "flex";
-    workspace.setAttribute("data-name", name);
+    projects.style.display = "none";
 
-    importFromJSON(window.localStorage.getItem(name));
+    project.style.display  = "flex";
+    project.setAttribute("data-name", name);
+
+    problem.loadAll(window.localStorage.getItem(name));
 }
 
 export function loadAll(){
     for (let i = 0; i < window.localStorage.length; i += 1) {
-        fromTemplate(window.localStorage.key(i));
+        let name = window.localStorage.key(i);
+        fromTemplate(name);
     }
 }
