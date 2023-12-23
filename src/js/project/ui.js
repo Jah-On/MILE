@@ -1,4 +1,5 @@
 import * as problem from "../problem/ui.js";
+import * as storage from "../storage/util.js";
 
 const eventFunctions = [
     edit, remove, copy
@@ -13,12 +14,12 @@ export function add(){
             name = "Untitled";
             break;
     }
-    if (window.localStorage.getItem(name) != null) {
+    if (storage.exists(name)) {
         window.alert("Project already exists.");
         return;
     }
     fromTemplate(name);
-    window.localStorage.setItem(name, "");
+    storage.save(name);
 }
 
 function rename(event) {
@@ -51,14 +52,12 @@ function rename(event) {
         return;
     } else if (name == oldName){
         return;
-    } else if (window.localStorage.getItem(name) != null) {
+    } else if (storage.exists(name)) {
         window.alert("Project name already exists.");
         return;
     }
 
-    let saved = window.localStorage.getItem(oldName);
-    window.localStorage.setItem(name, saved);
-    window.localStorage.removeItem(oldName);
+    storage.rename(oldName, name);
     parent.setAttribute("data-name", name);
 }
 
@@ -67,7 +66,7 @@ function remove(event) {
     let parent = temp.parentElement;
     const name = parent.getAttribute("data-name");
     if (window.confirm(`Delete ${name}?`)) {
-        window.localStorage.removeItem(name);
+        storage.remove(name);
         parent.remove();
     }
 }
@@ -79,13 +78,12 @@ function copy(event) {
     const name = parent.getAttribute("data-name");
     const newName = `${name}(1)`;
     
-    if (window.localStorage.getItem(newName) != null) {
+    if (storage.exists(newName)) {
         window.alert("Project already exists.");
         return;
     }
 
-    let saved = window.localStorage.getItem(name);
-    window.localStorage.setItem(newName, saved);
+    storage.copy(name, newName);
 
     fromTemplate(newName);
 }
@@ -125,7 +123,7 @@ function edit(event) {
     project.style.display  = "flex";
     project.setAttribute("data-name", name);
 
-    problem.loadAll(window.localStorage.getItem(name));
+    problem.loadAll(storage.load(name));
 }
 
 export function loadAll(){

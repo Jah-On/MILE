@@ -1,6 +1,7 @@
 import { onTextInput } from "./text-suggestion/nextText.js"
 import * as problem from "./problem/ui.js"
 import * as project from "./project/ui.js"
+import * as storage from "./storage/util.js"
 // Main entry point
 
 // window.addEventListener("beforeunload", windowLeave);
@@ -10,8 +11,8 @@ window.addEventListener("load", () => {
     "click", project.add
   );
   document.getElementById("backButton").addEventListener("click", problem.backToHome);
-  // document.getElementById("importButton").addEventListener("click", importMIL);
-  // document.getElementById("exportButton").addEventListener("click", exportMIL);
+  document.getElementById("importButton").addEventListener("click", storage.uploadM3);
+  // document.getElementById("exportButton").addEventListener("click", storage.downloadM3);
   document.getElementById("printButton").addEventListener("click", 
     () => { window.print(); }
   );

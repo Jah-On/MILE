@@ -1,6 +1,6 @@
-import { exportToJSON } from "../../helper.js";
-import { updateOutput } from "../../events.js";
+// import { exportToJSON } from "../../helper.js";
 import { generateDisplayName } from "./util.js";
+import * as storage from "../storage/util.js";
 
 const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
 const eventArray =    ["input", "click", "click", "click", "click", "click"];
@@ -85,7 +85,7 @@ function edit(event) {
     inputArea.focus();
     inputArea.setAttribute("UUID", parent.id);
 
-    let src = parent.getAttribute("src") || "";
+    let src = parent.data || "";
     inputArea.replaceChildren();
     for (const line of src.split("\n")) {
         if (line != "") {
@@ -93,13 +93,14 @@ function edit(event) {
         }
         inputArea.append(document.createElement("br"));
     }
-    updateOutput();
+    // updateOutput();
 }
 
 export function backToList() {
     let exportButton = document.getElementById("exportButton");
     let problems     = document.getElementById("problems");
-    let input     = document.getElementById("inputArea");
+    let input        = document.getElementById("inputArea");
+    let project      = document.getElementById("project");
 
     let srcString = "";
     input.childNodes.forEach((node) => {
@@ -114,7 +115,9 @@ export function backToList() {
     
     let UUID = input.getAttribute("UUID");
     let row = document.getElementById(UUID);
-    row.setAttribute("src", srcString);
+    row.data = srcString;
+    let projectName = project.getAttribute("data-name");
+    storage.save(projectName);
     updateBaseOutput();
 }
 
@@ -142,7 +145,6 @@ export function add(displayName) {
 export function updateBaseOutput() {
     let output     = document.getElementById("output");
     let problems   = document.getElementById("problems");
-    let project    = document.getElementById("project");
     let firstChild = problems.firstElementChild;
     let temp = document.createDocumentFragment();
 
@@ -162,9 +164,6 @@ export function updateBaseOutput() {
         divRef.lastChild.className = "baseOutputContents";
     }
     output.replaceChildren(temp);
-
-    let projectName = project.getAttribute("data-name");
-    window.localStorage.setItem(projectName, exportToJSON());
 }
 
 export function backToHome(){
@@ -188,11 +187,13 @@ function setBackButton(fn) {
 export function loadAll(data) {
     let decodedJSON = JSON.parse(data);
     for (const importedInput of decodedJSON){
-        add(undefined, importedInput.displayName);
+        const name = importedInput.name;
+        const data = importedInput.data;
+        add(undefined, name);
         let problems = document.getElementById("problems").firstElementChild;
         let newRow = problems.children[problems.children.length - 1];
-        newRow.setAttribute("src", importedInput.src);
-        newRow.children[0].value = importedInput.displayName;
+        newRow.data = data;
+        newRow.children[0].value = name;
     }
     updateBaseOutput();
 }
