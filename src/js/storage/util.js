@@ -51,7 +51,6 @@ export function load(id) {
             struct.commits[commit].patches, text
         )[0];
     }
-    console.log(text);
     return text;
 }
 
@@ -71,7 +70,7 @@ function exportProblems(){
     problems.map((problem) => {
         output.push({
             name: problem.firstElementChild.value, 
-            data: problem.data
+            data: problem.data.replace(/\n/m, "")
         });
     });
     return JSON.stringify(output);
