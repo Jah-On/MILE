@@ -1,4 +1,5 @@
 import diff_match_patch from "diff-match-patch";
+import * as project     from "../project/ui.js";
 
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
@@ -31,7 +32,7 @@ function saveNew(id) {
 }
 
 function saveExisting(id) {
-    let struct     = JSON.parse(storage.getItem(id));
+    let struct     = JSON.parse(getRaw(id));
     let commitKeys = Object.keys(struct.commits);
     let lastTime   = commitKeys[commitKeys.length - 1];
     if ((Date.now() - lastTime) < 36e5) {
@@ -49,8 +50,12 @@ function saveExisting(id) {
     storage.setItem(id, res);
 }
 
+function getRaw(id) {
+    return storage.getItem(id);
+}
+
 export function load(id) {
-    const stored = storage.getItem(id);
+    const stored = getRaw(id);
     const struct = JSON.parse(stored);
     let   data   = "";
     for (const commit in struct.commits) {
@@ -101,7 +106,7 @@ function exportProblems(){
 }
 
 export function copy(id, newName) {
-    let saved = storage.getItem(id);
+    let saved = getRaw(id);
     storage.setItem(newName, saved);
 }
 
@@ -110,7 +115,7 @@ export function remove(id) {
 }
 
 export function rename(oldName, newName) {
-    let saved = storage.getItem(oldName);
+    let saved = getRaw(oldName);
     storage.setItem(newName, saved);
     remove(oldName);
 }
@@ -127,24 +132,29 @@ export async function uploadM3(){
 export function downloadM3(){
     let name = document.getElementById("project").getAttribute("data-name");
     let link = document.createElement("a");
-    downloadLink.download = `${name}.m3`;
-    let blobby = new Blob([exportToJSON()], {type:"text/plain"});
+    link.download = `${name}.m3`;
+    let blobby = new Blob([getRaw(name)], {type:"text/plain"});
     let downloadURL = window.URL.createObjectURL(blobby);
-    downloadLink.href = downloadURL;
-    downloadLink.click();
+    link.href = downloadURL;
+    link.click();
     link.remove();
 }
 
 function handleSelectedFile(event){
     let fileIOHandle = new FileReader;
     fileIOHandle.readAsText(event.target.files[0]);
-    fileIOHandle.addEventListener("loadend", importToLocal);
-    //     importToLocal(e, event.target.files[0].name.slice(0, -4));
-    // });
+    fileIOHandle.addEventListener("loadend", 
+        (e) => {
+            importToLocal(e, event.target.files[0].name.slice(0, -3));
+        }
+    );
 }
 
-function importToLocal(event){
-    // let data = event.target.result;
-    // localStorage.setItem(name, data);
-    // loadAll();
+function importToLocal(event, name){
+    while (exists(name)) {
+        name += "(1)";
+    }
+    const data = event.target.result;
+    localStorage.setItem(name, data);
+    project.loadAll();
 }
