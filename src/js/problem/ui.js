@@ -118,7 +118,7 @@ export function backToList() {
     row.data = srcString;
     let projectName = project.getAttribute("data-name");
     storage.save(projectName);
-    updateBaseOutput();
+    // updateBaseOutput();
 }
 
 export function newProblemRow(UUID, displayName) {

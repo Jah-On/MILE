@@ -3,24 +3,20 @@ import diff_match_patch from "diff-match-patch";
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
 
+const saveRoute = new Map([
+    [true, saveExisting],
+    [false, saveNew]
+]);
+
 export function exists(id) {
     for (let i = 0; i < storage.length; i++) {
-        if (storage.key(i) === id) {
-            return true;
-        }
+        if (storage.key(i) === id) { return true; }
     }
     return false;
 }
 
 export function save(id) {
-    switch (exists(id)) {
-        case false:
-            saveNew(id);
-            break;
-        default:
-            saveExisting(id);
-            break;
-    }
+    saveRoute.get(exists(id))(id);
 }
 
 function saveNew(id) {
@@ -29,51 +25,79 @@ function saveNew(id) {
         commits: {}
     };
     struct.commits[Date.now()] = generateCommit(
-        [], exportProblems()
+        "", exportProblems()
     );
     storage.setItem(id, JSON.stringify(struct));
 }
 
 function saveExisting(id) {
-    let struct = JSON.parse(storage.getItem(id));
-    struct.commits[Date.now()] = generateCommit(
-        load(id),
-        exportProblems()
-    );
-    storage.setItem(id, JSON.stringify(struct));
+    let struct     = JSON.parse(storage.getItem(id));
+    let commitKeys = Object.keys(struct.commits);
+    let lastTime   = commitKeys[commitKeys.length - 1];
+    if ((Date.now() - lastTime) < 36e5) {
+        struct.commits[lastTime].patches = regeneratePatches(
+            struct.commits[lastTime].patches,
+            exportProblems()
+        );
+    } else {
+        struct.commits[Date.now()] = generateCommit(
+            load(id),
+            exportProblems()
+        );
+    }
+    let res = JSON.stringify(struct);
+    storage.setItem(id, res);
 }
 
 export function load(id) {
-    let struct = JSON.parse(storage.getItem(id));
-    let text   = "";
+    const stored = storage.getItem(id);
+    const struct = JSON.parse(stored);
+    let   data   = "";
     for (const commit in struct.commits) {
-        text = dmp.patch_apply(
-            struct.commits[commit].patches, text
+        const patches = dmp.patch_fromText(
+            struct.commits[commit].patches
+        );
+        data = dmp.patch_apply(
+            patches, data
         )[0];
     }
-    return text;
+    return data;
 }
 
-function generateCommit(previousPatches, current) {
-    let previous = dmp.patch_toText(previousPatches);
-    let diffs = dmp.diff_main(previous, current);
+function generateCommit(oldData, netData) {
+    const diffs = dmp.diff_main(oldData, netData);
     dmp.diff_cleanupEfficiency(diffs);
-    return {
-        id:      crypto.randomUUID(),
-        patches: dmp.patch_make(previous, diffs)
+    const pathces = dmp.patch_make(oldData, diffs);
+    const result  = {
+        id:          crypto.randomUUID(),
+        patches:     dmp.patch_toText(pathces)
     };
+    return result;
+}    
+
+function regeneratePatches(patchesText, newData) {
+    let oldData = "";
+    let prevPatches = dmp.patch_fromText(patchesText);
+    oldData = dmp.patch_apply(
+        prevPatches, oldData
+    )[0];
+    const diffs = dmp.diff_main(oldData, newData);
+    dmp.diff_cleanupEfficiency(diffs);
+    prevPatches.push(...dmp.patch_make(oldData, diffs));
+    return dmp.patch_toText(prevPatches);
 }
 
 function exportProblems(){
-    let output   = [];
-    let problems = [...document.getElementsByClassName("problem")];
+    let   output   = [];
+    const problems = [...document.getElementsByClassName("problem")];
     problems.map((problem) => {
         output.push({
             name: problem.firstElementChild.value, 
-            data: problem.data.replace(/\n/m, "")
+            data: problem.data.replace(/\n$/, "")
         });
     });
-    return JSON.stringify(output);
+    const result = JSON.stringify(output);
+    return result;
 }
 
 export function copy(id, newName) {
