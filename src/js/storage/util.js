@@ -35,14 +35,14 @@ function saveExisting(id) {
     let struct     = JSON.parse(getRaw(id));
     let commitKeys = Object.keys(struct.commits);
     let lastTime   = commitKeys[commitKeys.length - 1];
-    if ((Date.now() - lastTime) < 36e5) {
+    if ((Date.now() - lastTime) < 36e5 /* 1 hour */) { // 6e4 - 1 minute (for testing)
         struct.commits[lastTime].patches = regeneratePatches(
             struct.commits[lastTime].patches,
             exportProblems()
         );
     } else {
         struct.commits[Date.now()] = generateCommit(
-            load(id),
+            struct.commits[lastTime].patches,
             exportProblems()
         );
     }
@@ -57,25 +57,17 @@ function getRaw(id) {
 export function load(id) {
     const stored = getRaw(id);
     const struct = JSON.parse(stored);
-    let   data   = "";
-    for (const commit in struct.commits) {
-        const patches = dmp.patch_fromText(
-            struct.commits[commit].patches
-        );
-        data = dmp.patch_apply(
-            patches, data
-        )[0];
-    }
+    let   last   = Object.keys(struct.commits).length - 1;
+    let   patch  = struct.commits[Object.keys(struct.commits)[last]].patches;
+    let   data   = dmp.patch_apply(dmp.patch_fromText(patch), "")[0];
     return data;
 }
 
-function generateCommit(oldData, netData) {
-    const diffs = dmp.diff_main(oldData, netData);
-    dmp.diff_cleanupEfficiency(diffs);
-    const pathces = dmp.patch_make(oldData, diffs);
+function generateCommit(patchesText, newData) {
+    console.log("generating commit");
     const result  = {
         id:          crypto.randomUUID(),
-        patches:     dmp.patch_toText(pathces)
+        patches:     regeneratePatches(patchesText, newData),
     };
     return result;
 }    

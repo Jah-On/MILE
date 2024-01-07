@@ -185,6 +185,7 @@ function setBackButton(fn) {
 }
 
 export function loadAll(data) {
+    console.log(data);
     let decodedJSON = JSON.parse(data);
     for (const importedInput of decodedJSON){
         const name = importedInput.name;

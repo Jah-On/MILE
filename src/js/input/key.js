@@ -64,6 +64,7 @@ function handleBracket(key){
     } else {
         startNode.insertData(start, key);
     }
+    end += (startNode == endNode)|0;
     range.setStart(startNode, start + 1);
-    range.setEnd(endNode, end + 1);
+    range.setEnd(endNode, end);
 }
