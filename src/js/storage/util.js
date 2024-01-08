@@ -4,11 +4,6 @@ import * as project     from "../project/ui.js";
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
 
-const saveRoute = new Map([
-    [true, saveExisting],
-    [false, saveNew]
-]);
-
 export function exists(id) {
     for (let i = 0; i < storage.length; i++) {
         if (storage.key(i) === id) { return true; }
@@ -16,22 +11,20 @@ export function exists(id) {
     return false;
 }
 
-export function save(id) {
-    saveRoute.get(exists(id))(id);
-}
-
-function saveNew(id) {
+export function create(name) {
+    let id = crypto.randomUUID();
     let struct = {
-        name:    id,
+        name:    name,
         commits: {}
     };
     struct.commits[Date.now()] = generateCommit(
         "", exportProblems()
     );
     storage.setItem(id, JSON.stringify(struct));
+    return id;
 }
 
-function saveExisting(id) {
+export function save(id) {
     let struct     = JSON.parse(getRaw(id));
     let commitKeys = Object.keys(struct.commits);
     let lastTime   = commitKeys[commitKeys.length - 1];
@@ -98,18 +91,27 @@ function exportProblems(){
 }
 
 export function copy(id, newName) {
-    let saved = getRaw(id);
-    storage.setItem(newName, saved);
+    let newID  = crypto.randomUUID();
+    let saved  = JSON.parse(getRaw(id));
+    saved.name = newName;
+
+    storage.setItem(newID, JSON.stringify(saved));
+    return newID;
 }
 
 export function remove(id) {
     storage.removeItem(id);
 }
 
-export function rename(oldName, newName) {
-    let saved = getRaw(oldName);
-    storage.setItem(newName, saved);
-    remove(oldName);
+export function getName(id){
+    return JSON.parse(getRaw(id)).name;
+}
+
+export function rename(id, newName) {
+    let saved = JSON.parse(getRaw(id));
+    saved.name = newName;
+
+    storage.setItem(id, JSON.stringify(saved));
 }
 
 export async function uploadM3(){
@@ -122,7 +124,8 @@ export async function uploadM3(){
 }
 
 export function downloadM3(){
-    let name = document.getElementById("project").getAttribute("data-name");
+    let id = document.getElementById("project").getAttribute("data-id");
+    let name = JSON.parse(getRaw(id)).name;
     let link = document.createElement("a");
     link.download = `${name}.m3`;
     let blobby = new Blob([getRaw(name)], {type:"text/plain"});
@@ -142,7 +145,7 @@ function handleSelectedFile(event){
     );
 }
 
-function importToLocal(event, name){
+function importToLocal(event, name){ // TODO: update
     while (exists(name)) {
         name += "(1)";
     }

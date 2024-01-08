@@ -59,16 +59,16 @@ div.page#projects {
                 position:         relative;
                 width:            250px;
 
-                div.name {
+                textarea.name {
                     background-color: black;
                     border:           0px;
                     color:            whitesmoke;
                     font-size:        x-large;
                     margin-top:       auto;
                     margin-bottom:    auto;
+                    resize:           none;
                     text-align:       center;
                     width:            80%;
-                    word-wrap:        break-word;
                 }
 
                 div.actions {

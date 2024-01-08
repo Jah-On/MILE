@@ -116,8 +116,8 @@ export function backToList() {
     let UUID = input.getAttribute("UUID");
     let row = document.getElementById(UUID);
     row.data = srcString;
-    let projectName = project.getAttribute("data-name");
-    storage.save(projectName);
+    let projectID = project.getAttribute("data-id");
+    storage.save(projectID);
     // updateBaseOutput();
 }
 

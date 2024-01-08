@@ -16,14 +16,27 @@
   </head>
 
   <body>
-    <template id="rowTemplate"><div class="problem" src=""> <!-- Template -->
-      <input type="text"   placeholder="Problem name or number">
-      <input type="button" title="Move up"   value="⬆">
-      <input type="button" title="Move down" value="⬇">
-      <input type="button" title="Copy"      value="📋">
-      <input type="button" title="Delete"    value="🗑">
-      <input type="button" title="Edit"      value="🖊">
-    </div></template>
+    <template id="rowTemplate">
+      <div class="problem" src="">
+        <input type="text"   placeholder="Problem name or number">
+        <input type="button" title="Move up"   value="⬆">
+        <input type="button" title="Move down" value="⬇">
+        <input type="button" title="Copy"      value="📋">
+        <input type="button" title="Delete"    value="🗑">
+        <input type="button" title="Edit"      value="🖊">
+      </div>
+  </template>
+    <template id="projectTemplate">
+      <div class="item">
+        <textarea class="name" title="Clcik to edit name" maxlength="30" placeholder="Name?">
+        </textarea>
+        <div class="actions">
+          <input type="button" title="Edit"   value="🖊">
+          <input type="button" title="Delete" value="🗑">
+          <input type="button" title="Copy"   value="📋">
+        </div>
+      </div>
+    </template>
 
     <div class="page" id="projects">
       <div id="header">
@@ -37,14 +50,6 @@
           <!-- <input type="image" class="projects" title="Export" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE4IDIyYTIgMiAwIDAgMCAyLTJ2LTVsLTUgNHYtM0g4di0yaDd2LTNsNSA0VjhsLTYtNkg2YTIgMiAwIDAgMC0yIDJ2MTZhMiAyIDAgMCAwIDIgMmgxMnpNMTMgNGw1IDVoLTVWNHoiLz48L3N2Zz4="> -->
         </div>
         <div id="list">
-          <div class="item" id="projectTemplate" hidden>
-            <div class="name" title="Clcik to edit name" contenteditable></div>
-            <div class="actions">
-              <input type="button" title="Edit"   value="🖊">
-              <input type="button" title="Delete" value="🗑">
-              <input type="button" title="Copy"   value="📋">
-            </div>
-          </div>
           <input type="button" class="item" id="addProject" title="Add new project" value="+">
         </div>
       </div>

@@ -6,99 +6,47 @@ const eventFunctions = [
 ]
 
 export function add(){
-    let name = window.prompt("Enter project name:");
-    switch (name) {
-        case null:
-            return;
-        case "":
-            name = "Untitled";
-            break;
-    }
-    if (storage.exists(name)) {
-        window.alert("Project already exists.");
-        return;
-    }
-    fromTemplate(name);
-    storage.save(name);
+    let id = storage.create("");
+    fromTemplate(id, "");
 }
 
 function rename(event) {
     let target = event.target;
     let parent = target.parentElement;
 
-    const name = target.innerText.replace("\n", "");
-    switch (event.key) {
-        case "Enter":
-            event.preventDefault();
-            event.stopPropagation();
-            break;
-        case "Delete":
-        case "Backspace":
-        case "ArrowLeft":
-        case "ArrowRight":
-        case "ArrowUp":
-        case "ArrowDown":
-            return;
-        default:
-            if (name.length == 30) {
-                event.preventDefault();
-            }
-            return;
-    }
-
-    const oldName = parent.getAttribute("data-name");
-
-    if (name == "") {
-        return;
-    } else if (name == oldName){
-        return;
-    } else if (storage.exists(name)) {
-        window.alert("Project name already exists.");
-        return;
-    }
-
-    storage.rename(oldName, name);
-    parent.setAttribute("data-name", name);
+    storage.rename(parent.id, target.value);
 }
 
 function remove(event) {
     let temp   = event.target.parentElement;
     let parent = temp.parentElement;
-    const name = parent.getAttribute("data-name");
+    const name = storage.getName(parent.id);
     if (window.confirm(`Delete ${name}?`)) {
-        storage.remove(name);
+        storage.remove(parent.id);
         parent.remove();
     }
 }
 
 function copy(event) {
-    let temp = event.target.parentElement;
+    let temp   = event.target.parentElement;
     let parent = temp.parentElement;
     
-    const name = parent.getAttribute("data-name");
-    const newName = `${name}(1)`;
-    
-    if (storage.exists(newName)) {
-        window.alert("Project already exists.");
-        return;
-    }
+    const id      = parent.id;
+    const newName = `${storage.getName(id)}(1)`;
 
-    storage.copy(name, newName);
-
-    fromTemplate(newName);
+    fromTemplate(storage.copy(id, newName), newName);
 }
 
-export function fromTemplate(name){
+export function fromTemplate(id, name){
     let list     = document.getElementById("list");
     let template = document.getElementById("projectTemplate");
-    let clonedElement = template.cloneNode(true);
-    clonedElement.id = "";
-    clonedElement.setAttribute("data-name", name);
+    let clonedElement = template.content.cloneNode(true).children[0];
+    clonedElement.id = id;
     clonedElement.style.display = "flex";
     let firstChild = clonedElement.firstElementChild;
     firstChild.innerText = name;
     firstChild.addEventListener(
-        "keydown",
+        "focusout",
         rename
     );
     for (let i = 0; i < eventFunctions.length; i += 1) {
@@ -108,6 +56,9 @@ export function fromTemplate(name){
         );
     }
     list.append(clonedElement);
+    if (name == "") {
+        clonedElement.children[0].focus();
+    }
 }
 
 function edit(event) {
@@ -116,19 +67,22 @@ function edit(event) {
     let target    = event.target;
     let temp      = target.parentElement;
     let parent    = temp.parentElement;
-    const name    = parent.getAttribute("data-name");
+    const id      = parent.id;
 
     projects.style.display = "none";
 
     project.style.display  = "flex";
-    project.setAttribute("data-name", name);
+    project.setAttribute("data-id", id);
 
-    problem.loadAll(storage.load(name));
+    problem.loadAll(storage.load(id));
 }
 
 export function loadAll(){
+    let id;
+    let name;
     for (let i = 0; i < window.localStorage.length; i += 1) {
-        let name = window.localStorage.key(i);
-        fromTemplate(name);
+        id   = window.localStorage.key(i);
+        name = storage.getName(id);
+        fromTemplate(id, name);
     }
 }
