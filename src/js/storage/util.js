@@ -112,6 +112,14 @@ export function getCommits(id) {
     return JSON.parse(getRaw(id)).timestamps;
 }
 
+export function getNames() {
+    let names = [];
+    for (let i = 0; i < storage.length; i++) {
+        names.push(JSON.parse(storage.getItem(storage.key(i))).name);
+    }
+    return names;
+}
+
 export function rebaseTo(id, index) {
     let saved   = JSON.parse(getRaw(id));
     saved.current    = saved.patches[index];
@@ -133,10 +141,11 @@ export async function uploadM3(){
 
 export function downloadM3(){
     let id = document.getElementById("project").getAttribute("data-id");
-    let name = JSON.parse(getRaw(id)).name;
+    let data = getRaw(id);
+    let name = JSON.parse(data).name;
     let link = document.createElement("a");
     link.download = `${name}.m3`;
-    let blobby = new Blob([getRaw(name)], {type:"text/plain"});
+    let blobby = new Blob([data], {type:"text/plain"});
     let downloadURL = window.URL.createObjectURL(blobby);
     link.href = downloadURL;
     link.click();
@@ -146,18 +155,21 @@ export function downloadM3(){
 function handleSelectedFile(event){
     let fileIOHandle = new FileReader;
     fileIOHandle.readAsText(event.target.files[0]);
-    fileIOHandle.addEventListener("loadend", 
-        (e) => {
-            importToLocal(e, event.target.files[0].name.slice(0, -3));
-        }
-    );
+    fileIOHandle.addEventListener("loadend", importToLocal);
 }
 
-function importToLocal(event, name){ // TODO: update
-    while (exists(name)) {
-        name += "(1)";
+function importToLocal(event){ // TODO: update 
+    const data   = event.target.result;
+    const names  = getNames();
+    let   struct = JSON.parse(data);
+
+    while (names.includes(struct.name)) {
+        struct.name += "(1)";
     }
-    const data = event.target.result;
-    localStorage.setItem(name, data);
+
+    localStorage.setItem(
+        crypto.randomUUID(), 
+        JSON.stringify(struct)
+    );
     project.loadAll();
 }

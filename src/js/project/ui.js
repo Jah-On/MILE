@@ -122,9 +122,13 @@ function edit(event) {
     problem.loadAll(storage.load(id));
 }
 
-export function loadAll(){
+export function loadAll() {    
     let id;
     let name;
+    document.getElementById("list").replaceChildren(
+        document.getElementById("addProject")
+    );
+
     for (let i = 0; i < window.localStorage.length; i += 1) {
         id   = window.localStorage.key(i);
         name = storage.getName(id);
