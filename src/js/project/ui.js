@@ -2,7 +2,7 @@ import * as problem from "../problem/ui.js";
 import * as storage from "../storage/util.js";
 
 const eventFunctions = [
-    edit, remove, copy
+    edit, remove, copy, showRevisions
 ]
 
 export function add(){
@@ -36,6 +36,51 @@ function copy(event) {
 
     fromTemplate(storage.copy(id, newName), newName);
 }
+
+function showRevisions(event) {
+    let   temp   = event.target.parentElement;
+    let   parent = temp.parentElement;
+    let   dialog = document.getElementById("revisions");
+    let   list   = document.getElementById("revisionList");
+    const id     = parent.id;
+
+    dialog.showModal();
+
+    let   timestamps = storage.getCommits(id);
+    for (const timestamp of timestamps) {
+        list.append(document.createElement("input"));
+        list.lastElementChild.id    = id;
+        list.lastElementChild.type  = "button";
+        list.lastElementChild.value = new Date(timestamp).toLocaleString();
+        list.lastElementChild.addEventListener(
+            "click",
+            revisionClick
+        );
+    }
+}
+
+function revisionClick(event) {
+    if (!window.confirm("Are you sure you want to revert to this revision?")) {
+        return;
+    }
+    let   target = event.target;
+    let   parent = target.parentElement;
+    const id     = target.id;
+    
+    storage.rebaseTo(id, [...parent.children].indexOf(target));
+
+    closeRevisions();
+}
+
+export function closeRevisions() {
+    let dialog = document.getElementById("revisions");
+
+    let list = document.getElementById("revisionList");
+    list.replaceChildren();
+
+    dialog.close();
+}
+
 
 export function fromTemplate(id, name){
     let list     = document.getElementById("list");

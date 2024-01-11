@@ -12,33 +12,35 @@ export function exists(id) {
 }
 
 export function create(name) {
-    let id = crypto.randomUUID();
+    let id      = crypto.randomUUID();
+    let current = exportProblems();
     let struct = {
-        name:    name,
-        commits: {}
+        name:       name,
+        timestamps: [],
+        ids:        [],
+        patches:    [],
+        initial:    current,
+        current:    "",
+        lastTime:   new Date().toUTCString()
     };
-    struct.commits[Date.now()] = generateCommit(
-        "", exportProblems()
-    );
     storage.setItem(id, JSON.stringify(struct));
     return id;
 }
 
 export function save(id) {
     let struct     = JSON.parse(getRaw(id));
-    let commitKeys = Object.keys(struct.commits);
-    let lastTime   = commitKeys[commitKeys.length - 1];
-    if ((Date.now() - lastTime) < 36e5 /* 1 hour */) { // 6e4 - 1 minute (for testing)
-        struct.commits[lastTime].patches = regeneratePatches(
-            struct.commits[lastTime].patches,
-            exportProblems()
-        );
-    } else {
-        struct.commits[Date.now()] = generateCommit(
-            struct.commits[lastTime].patches,
-            exportProblems()
-        );
+    let lastTime   = Date.parse(struct.lastTime);
+    let time       = new Date();
+    let newData    = exportProblems();
+
+    if (((time.getTime() - lastTime) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
+        struct.timestamps.push(time.toUTCString());
+        struct.ids.push(crypto.randomUUID());
+        struct.patches.push(struct.current);
+        struct.lastTime = time.toUTCString();
     }
+    struct.current = dmp.patch_toText(extendPatches(struct.current, load(id), newData));
+    
     let res = JSON.stringify(struct);
     storage.setItem(id, res);
 }
@@ -50,31 +52,23 @@ function getRaw(id) {
 export function load(id) {
     const stored = getRaw(id);
     const struct = JSON.parse(stored);
-    let   last   = Object.keys(struct.commits).length - 1;
-    let   patch  = struct.commits[Object.keys(struct.commits)[last]].patches;
-    let   data   = dmp.patch_apply(dmp.patch_fromText(patch), "")[0];
+    let   data   = struct.initial;
+    let   patches;
+    for (const patchesText of struct.patches) {
+        patches = dmp.patch_fromText(patchesText);
+        data = dmp.patch_apply(patches, data)[0];
+    }
+    patches = dmp.patch_fromText(struct.current);
+    data = dmp.patch_apply(patches, data)[0];
     return data;
 }
 
-function generateCommit(patchesText, newData) {
-    console.log("generating commit");
-    const result  = {
-        id:          crypto.randomUUID(),
-        patches:     regeneratePatches(patchesText, newData),
-    };
-    return result;
-}    
-
-function regeneratePatches(patchesText, newData) {
-    let oldData = "";
-    let prevPatches = dmp.patch_fromText(patchesText);
-    oldData = dmp.patch_apply(
-        prevPatches, oldData
-    )[0];
+function extendPatches(patchesText, oldData, newData) {
     const diffs = dmp.diff_main(oldData, newData);
     dmp.diff_cleanupEfficiency(diffs);
-    prevPatches.push(...dmp.patch_make(oldData, diffs));
-    return dmp.patch_toText(prevPatches);
+    let patches = dmp.patch_fromText(patchesText);
+    patches.push(...dmp.patch_make(oldData, diffs));
+    return patches;
 }
 
 function exportProblems(){
@@ -110,6 +104,20 @@ export function getName(id){
 export function rename(id, newName) {
     let saved = JSON.parse(getRaw(id));
     saved.name = newName;
+
+    storage.setItem(id, JSON.stringify(saved));
+}
+
+export function getCommits(id) {
+    return JSON.parse(getRaw(id)).timestamps;
+}
+
+export function rebaseTo(id, index) {
+    let saved   = JSON.parse(getRaw(id));
+    saved.current    = saved.patches[index];
+    saved.patches    = saved.patches.slice(0, index);
+    saved.timestamps = saved.timestamps.slice(0, index);
+    saved.ids        = saved.ids.slice(0, index);
 
     storage.setItem(id, JSON.stringify(saved));
 }

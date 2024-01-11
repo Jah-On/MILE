@@ -169,6 +169,10 @@ export function updateBaseOutput() {
 export function backToHome(){
     let project  = document.getElementById("project");
     let projects = document.getElementById("projects");
+
+    const id = project.getAttribute("data-id");
+    storage.save(id);
+
     for (const UUID of fragmentMap.keys()) {
         let row = document.getElementById(UUID);
         row.remove();
@@ -185,7 +189,6 @@ function setBackButton(fn) {
 }
 
 export function loadAll(data) {
-    console.log(data);
     let decodedJSON = JSON.parse(data);
     for (const importedInput of decodedJSON){
         const name = importedInput.name;

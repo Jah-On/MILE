@@ -31,9 +31,10 @@
         <textarea class="name" title="Clcik to edit name" maxlength="30" placeholder="Name?">
         </textarea>
         <div class="actions">
-          <input type="button" title="Edit"   value="🖊">
-          <input type="button" title="Delete" value="🗑">
-          <input type="button" title="Copy"   value="📋">
+          <input type="button" title="Edit"      value="🖊">
+          <input type="button" title="Delete"    value="🗑">
+          <input type="button" title="Copy"      value="📋">
+          <input type="button" title="Revisions" value="⏲">
         </div>
       </div>
     </template>
@@ -51,6 +52,12 @@
         </div>
         <div id="list">
           <input type="button" class="item" id="addProject" title="Add new project" value="+">
+          <dialog id="revisions">
+            <div id="container">
+              <div id="revisionList"></div>
+              <button id="closeRevisions">Close</button>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

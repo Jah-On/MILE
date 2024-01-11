@@ -10,6 +10,9 @@ window.addEventListener("load", () => {
   document.getElementById("addProject").addEventListener(
     "click", project.add
   );
+  document.getElementById("closeRevisions").addEventListener(
+    "click", project.closeRevisions
+  );
   document.getElementById("backButton").addEventListener("click", problem.backToHome);
   document.getElementById("importButton").addEventListener("click", storage.uploadM3);
   document.getElementById("exportButton").addEventListener("click", storage.downloadM3);

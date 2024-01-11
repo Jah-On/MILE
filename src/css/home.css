@@ -81,8 +81,11 @@ div.page#projects {
                 }
 
                 div.actions * {
-                    aspect-ratio: 1/1;
-                    font-size:    xx-large;
+                    aspect-ratio:  1/1;
+                    font-size:     xx-large;
+                    line-height:   1.0;
+                    border:        0px;
+                    border-radius: 5px;
                 }
             }
 
@@ -98,5 +101,50 @@ div.page#projects {
                 border-color: lawngreen;
             }
         }
+    }
+
+    #revisions {
+        background-color: black;
+        border:           solid whitesmoke 2px;
+        height:           80%;
+        width:            20%;
+
+        #container {
+            display:        flex;
+            flex-direction: column;
+            height:         100%;
+            width:          100%;
+
+            * {
+                font-size:      x-large;
+            }
+
+            #revisionList {
+                display:        flex;
+                flex-direction: column;
+                gap:            15px;
+                height:         100%;
+                margin-bottom:  15px;
+                margin-left:    auto;
+                margin-right:   auto;
+                overflow-y:     scroll;
+                width:          min-content;
+            }
+
+            #revisionList * {
+                
+            }
+    
+            #closeRevisions {
+                border:           0px;
+                margin-left:      auto;
+                margin-right:     auto;
+                margin-top:       auto;
+            }
+        }
+    }
+
+    #revisions::backdrop {
+        backdrop-filter: blur(2px);
     }
 }
