@@ -1,5 +1,5 @@
 import * as nextText from '../text-suggestion/nextText.js';
-import { render } from '../output/ui.js';
+import { renderProblem } from '../output/ui.js';
 
 const closeBracket = {
     "(": ")",
@@ -15,7 +15,7 @@ export function handleKeyDown(e) {
             e.preventDefault();
             e.stopPropagation();
             suggestion.focus();
-            render();
+            renderProblem();
         }
         break;
     case "(":
@@ -24,7 +24,7 @@ export function handleKeyDown(e) {
         e.preventDefault();
         e.stopPropagation();
         handleBracket(e.key);
-        render();
+        renderProblem();
         break;
     case "ArrowLeft":
     case "ArrowRight":
@@ -33,14 +33,14 @@ export function handleKeyDown(e) {
         return;
     default:
         nextText.removeSuggestion();
-        render();
+        renderProblem();
         return;
     }
 }
 
 export function handleInput(e) {
     nextText.removeSuggestion();
-    render();
+    renderProblem();
     nextText.showSuggestion();
 }
 

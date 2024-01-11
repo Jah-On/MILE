@@ -1,6 +1,7 @@
 // import { exportToJSON } from "../../helper.js";
 import { generateDisplayName } from "./util.js";
 import * as storage from "../storage/util.js";
+import * as output  from "../output/ui.js";
 
 const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
 const eventArray =    ["input", "click", "click", "click", "click", "click"];
@@ -83,17 +84,11 @@ function edit(event) {
     inputArea.style.display    = "block";
 
     inputArea.focus();
-    inputArea.setAttribute("UUID", parent.id);
+    inputArea.setAttribute("uuid", parent.id);
 
-    let src = parent.data || "";
-    inputArea.replaceChildren();
-    for (const line of src.split("\n")) {
-        if (line != "") {
-            inputArea.append(document.createTextNode(line));
-        }
-        inputArea.append(document.createElement("br"));
-    }
-    // updateOutput();
+    inputArea.innerText = parent.data;
+
+    output.renderProblem();
 }
 
 export function backToList() {
@@ -118,7 +113,7 @@ export function backToList() {
     row.data = srcString;
     let projectID = project.getAttribute("data-id");
     storage.save(projectID);
-    // updateBaseOutput();
+    updateBaseOutput();
 }
 
 export function newProblemRow(UUID, displayName) {
@@ -135,6 +130,7 @@ export function add(displayName) {
     let UUID      = crypto.randomUUID();
     let problems  = document.getElementById("problems").firstElementChild;
     let newRow    = newProblemRow(UUID, displayName);
+    newRow.data   = "\n";
 
     fragmentMap.set(UUID, document.createDocumentFragment());
     problems.append(newRow);
@@ -193,11 +189,13 @@ export function loadAll(data) {
     for (const importedInput of decodedJSON){
         const name = importedInput.name;
         const data = importedInput.data;
-        add(undefined, name);
+        add(name);
         let problems = document.getElementById("problems").firstElementChild;
-        let newRow = problems.children[problems.children.length - 1];
+        let newRow = problems.lastElementChild;
         newRow.data = data;
         newRow.children[0].value = name;
+        
+        output.render(newRow.id, data);
     }
     updateBaseOutput();
 }
