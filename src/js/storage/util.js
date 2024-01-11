@@ -21,7 +21,8 @@ export function create(name) {
         patches:    [],
         initial:    current,
         current:    "",
-        lastTime:   new Date().toUTCString()
+        lastSave:   new Date().toUTCString(),
+        lastDelta: new Date().toUTCString()
     };
     storage.setItem(id, JSON.stringify(struct));
     return id;
@@ -29,17 +30,18 @@ export function create(name) {
 
 export function save(id) {
     let struct     = JSON.parse(getRaw(id));
-    let lastTime   = Date.parse(struct.lastTime);
+    let lastDelta  = Date.parse(struct.lastDelta);
     let time       = new Date();
     let newData    = exportProblems();
 
-    if (((time.getTime() - lastTime) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
+    if (((time.getTime() - lastDelta) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
         struct.timestamps.push(time.toUTCString());
         struct.ids.push(crypto.randomUUID());
         struct.patches.push(struct.current);
         struct.lastTime = time.toUTCString();
     }
-    struct.current = dmp.patch_toText(extendPatches(struct.current, load(id), newData));
+    struct.lastSave = time.toUTCString();
+    struct.current  = dmp.patch_toText(extendPatches(struct.current, load(id), newData));
     
     let res = JSON.stringify(struct);
     storage.setItem(id, res);
@@ -118,6 +120,64 @@ export function getNames() {
         names.push(JSON.parse(storage.getItem(storage.key(i))).name);
     }
     return names;
+}
+
+export function getLastSaves() {
+    let lastSaves = [];
+    for (let i = 0; i < storage.length; i++) {
+        lastSaves.push(JSON.parse(storage.getItem(storage.key(i))).lastSave);
+    }
+    return lastSaves;
+}
+
+export function getIDsAlphabetically() {
+    let names     = getNames().sort(
+        (a, b) => a.localeCompare(b)
+    );
+    let ids       = [];
+    let sortedIDs = [];
+    for (let i = 0; i < storage.length; i++) {
+        ids.push(storage.key(i));
+    }
+
+    let i = 0;
+    while (ids.length > 0) {
+        if (names[0] === getName(ids[i])) {
+            sortedIDs.push(ids[i]);
+            ids.splice(i, 1);
+            names.shift();
+            i = 0;
+        } else {
+            i++;
+        }
+    }
+
+    return sortedIDs;
+}
+
+export function getIDsByLastSave() {
+    let times     = getLastSaves().sort(
+        (a, b) => Date.parse(a) - Date.parse(b)
+    ).reverse();
+    let ids       = [];
+    let sortedIDs = [];
+    for (let i = 0; i < storage.length; i++) {
+        ids.push(storage.key(i));
+    }
+
+    let i = 0;
+    while (ids.length > 0) {
+        if (times[0] === JSON.parse(storage.getItem(ids[i])).lastSave) {
+            sortedIDs.push(ids[i]);
+            ids.splice(i, 1);
+            times.shift();
+            i = 0;
+        } else {
+            i++;
+        }
+    }
+
+    return sortedIDs;
 }
 
 export function rebaseTo(id, index) {

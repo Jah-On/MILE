@@ -29,7 +29,6 @@ div.baseOutput {
   border: black solid 2px;
   display: block;
   position: relative;
-  margin-bottom: 10px;
   width: calc(100% - 4px);
 }
   

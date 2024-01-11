@@ -1,7 +1,8 @@
 // import { exportToJSON } from "../../helper.js";
 import { generateDisplayName } from "./util.js";
-import * as storage from "../storage/util.js";
-import * as output  from "../output/ui.js";
+import * as storage   from "../storage/util.js";
+import * as output    from "../output/ui.js";
+import * as projectUI from "../project/ui.js";
 
 const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
 const eventArray =    ["input", "click", "click", "click", "click", "click"];
@@ -176,6 +177,8 @@ export function backToHome(){
     fragmentMap.clear();
     project.style.display  = "none";
     projects.style.display = "flex";
+
+    projectUI.loadAll();
 }
 
 function setBackButton(fn) {
