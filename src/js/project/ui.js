@@ -1,5 +1,6 @@
-import * as problem from "../problem/ui.js";
-import * as storage from "../storage/util.js";
+import * as problem     from "../problem/ui.js";
+import * as problemUtil from "../problem/util.js";
+import * as storage     from "../storage/util.js";
 
 const eventFunctions = [
     edit, remove, copy, showRevisions
@@ -120,6 +121,11 @@ function edit(event) {
     project.setAttribute("data-id", id);
 
     problem.loadAll(storage.load(id));
+
+    window.autoSave = setInterval(
+        problemUtil.autoSaveCallback, 
+        10000//storage.autoSaveInterval
+    );
 }
 
 export function loadAll() {    

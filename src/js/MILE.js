@@ -24,4 +24,5 @@ window.addEventListener("load", () => {
   );
   document.getElementById("inputArea").addEventListener("input",   keyInput.handleInput);
   document.getElementById("inputArea").addEventListener("keydown", keyInput.handleKeyDown);
+  document.getElementById("inputArea").addEventListener("paste",   problem.saveRowData);
 });

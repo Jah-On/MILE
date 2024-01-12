@@ -1,3 +1,5 @@
+import * as storage from "../storage/util.js";
+
 const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
 export function generateDisplayName(current=""){
@@ -7,4 +9,9 @@ export function generateDisplayName(current=""){
     } else {
         return current + "a";
     }
+}
+
+export function autoSaveCallback(){
+    let id = document.getElementById("project").getAttribute("data-id");
+    storage.save(id);
 }

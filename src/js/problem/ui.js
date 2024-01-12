@@ -98,23 +98,28 @@ export function backToList() {
     let input        = document.getElementById("inputArea");
     let project      = document.getElementById("project");
 
-    let srcString = "";
-    input.childNodes.forEach((node) => {
-        srcString += node.textContent||"\n";
-    });
-    srcString = srcString.replace("\t", "");
-
     setBackButton(backToHome);
     exportButton.style.display = "block";
     problems.style.display     = "block";
     input.style.display        = "none";
     
-    let UUID = input.getAttribute("UUID");
-    let row = document.getElementById(UUID);
-    row.data = srcString;
     let projectID = project.getAttribute("data-id");
     storage.save(projectID);
     updateBaseOutput();
+}
+
+export function saveRowData() {
+    let input = document.getElementById("inputArea");
+    let UUID  = input.getAttribute("UUID");
+    let row   = document.getElementById(UUID);
+
+    let srcString = "";
+    input.childNodes.forEach((node) => {
+        srcString += node.textContent||"\n";
+    });
+    srcString = srcString.replace("\t", "");
+    console.log(srcString);
+    row.data = srcString;
 }
 
 export function newProblemRow(UUID, displayName) {
@@ -169,6 +174,8 @@ export function backToHome(){
 
     const id = project.getAttribute("data-id");
     storage.save(id);
+
+    clearInterval(window.autoSave);
 
     for (const UUID of fragmentMap.keys()) {
         let row = document.getElementById(UUID);

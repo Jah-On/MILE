@@ -33,10 +33,12 @@ div.baseOutput {
 }
   
 div.baseOutputContents {
-  display: block;
-  position: relative;
-  text-align: center;
-  z-index: 1;
+  display:        flex;
+  flex-direction: column;
+  gap:            18px;
+  position:       relative;
+  text-align:     center;
+  z-index:        1;
 }
 
 span.baseOutputLabel {

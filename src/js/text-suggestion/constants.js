@@ -7,6 +7,7 @@ export const asciiMathMap = new Map([
     ["partial", ["del", 0]], ["sqrt", ["sqrt{}", 1]],
     ["root", ["root[]{}", 3]], ["hat", ["hat{}", 1]],
     ["bar", ["bar{}", 1]], ["vec", ["vec{}", 1]],
+    ["text", ["text{}", 1]], 
 ]);
 export const asciiMathRegex = `${[...asciiMathMap.keys()].join("|")}`;
 

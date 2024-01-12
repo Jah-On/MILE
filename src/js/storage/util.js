@@ -4,6 +4,8 @@ import * as project     from "../project/ui.js";
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
 
+export const autoSaveInterval = 30e4; // 5 minutes
+
 export function exists(id) {
     for (let i = 0; i < storage.length; i++) {
         if (storage.key(i) === id) { return true; }
@@ -22,7 +24,7 @@ export function create(name) {
         initial:    current,
         current:    "",
         lastSave:   new Date().toUTCString(),
-        lastDelta: new Date().toUTCString()
+        lastDelta:  new Date().toUTCString()
     };
     storage.setItem(id, JSON.stringify(struct));
     return id;
@@ -32,7 +34,10 @@ export function save(id) {
     let struct     = JSON.parse(getRaw(id));
     let lastDelta  = Date.parse(struct.lastDelta);
     let time       = new Date();
+    let oldData    = load(id);
     let newData    = exportProblems();
+
+    if (oldData === newData) { return; }
 
     if (((time.getTime() - lastDelta) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
         struct.timestamps.push(time.toUTCString());
@@ -41,7 +46,7 @@ export function save(id) {
         struct.lastTime = time.toUTCString();
     }
     struct.lastSave = time.toUTCString();
-    struct.current  = dmp.patch_toText(extendPatches(struct.current, load(id), newData));
+    struct.current  = dmp.patch_toText(extendPatches(struct.current, oldData, newData));
     
     let res = JSON.stringify(struct);
     storage.setItem(id, res);
