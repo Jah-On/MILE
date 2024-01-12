@@ -18,6 +18,49 @@ A lot! The current iteration of MILE, "MASCII-JS", adds several new features whi
 
 <br>
 
+# Documentation
+
+MILE now uses ASCIIMath as the language of choice. Its list of commands and syntax can be found [here](http://asciimath.org/#syntax).
+
+Word suggestion list...
+| Name | ASCIIMath Equivalent |
+| ---- | -------------------- |
+| abs | abs{} |
+| bar | bar{} |
+| cancel | cancel{} |
+| ceil | ceil{} |
+| dot | dot{} |
+| doubledot | ddot{} |
+| floor | floor{} |
+| frac | frac{}{} |
+| fraction | frac{}{} |
+| hat | hat{} |
+| infinity | oo |
+| intboth | int_{}^{} |
+| intover | int^{} |
+| intunder | int_{} |
+| limunder | lim_{} |
+| overbrace | obrace{}{} |
+| overset | overset{}{} |
+| partial | del |
+| power | ^{} |
+| prodboth | prod_{}^{} |
+| prodover | prod^{} |
+| produnder | prod_{} |
+| strikethrough | cancel{} |
+| sumboth | sum_{}^{} |
+| sumover | sum^{} |
+| sumunder | sum_{} |
+| tilde | tilde{} |
+| towards | -> |
+| underbrace | ubrace{}{} |
+| underline | ul{} |
+| underset | underset{}{} |
+| vec | vec{} |
+
+
+<br>
+
 # What happens to "Old MILE"?
 
 "Old MILE" will still exist as it's own branch on this repository. If you need, or want, a deployment of "Old MILE", please send an email to **Jah-On-Inquiry [at] pm [dot] me** or open an issue. 
@@ -46,10 +89,6 @@ All work is saved locally and there is an offline portable version of MILE curre
 # How do I save my work?
 
 MILE now saves your projects inside of your browser! However, these files are not backed up so it is your responsibility to export individual projects to back them up or share among people/devices. 
-
-# Documentation
-
-MILE now uses ASCIIMath as the language of choice. It's list of commands and syntax can be found [here](http://asciimath.org/#syntax).
 
 # How can you help?
 
