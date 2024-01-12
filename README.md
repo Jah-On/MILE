@@ -2,9 +2,9 @@
 
 Math Inclusive Live Editor
 
-<!-- Try it out [here](https://jah-on.github.io/MILE/)! -->
+Try it out [here](https://jah-on.github.io/MILE/)!
 
-# What's new in MILE?
+## What's new in MILE?
 
 A lot! The current iteration of MILE, "MASCII-JS", adds several new features which are...
 
@@ -16,11 +16,11 @@ A lot! The current iteration of MILE, "MASCII-JS", adds several new features whi
 - Improved text suggestion replacement.
 - Sorted projects (currently only by most recent but selectable options coming soon!).
 
-<br>
-
-# Documentation
+## Documentation
 
 MILE now uses ASCIIMath as the language of choice. Its list of commands and syntax can be found [here](http://asciimath.org/#syntax).
+
+Suggestions are completed when the `Tab` key is pressed or the suggestion is clicked on.
 
 Word suggestion list...
 | Name | ASCIIMath Equivalent |
@@ -32,7 +32,6 @@ Word suggestion list...
 | dot | dot{} |
 | doubledot | ddot{} |
 | floor | floor{} |
-| frac | frac{}{} |
 | fraction | frac{}{} |
 | hat | hat{} |
 | infinity | oo |
@@ -58,12 +57,9 @@ Word suggestion list...
 | underset | underset{}{} |
 | vec | vec{} |
 
+## What happens to "Old MILE"?
 
-<br>
-
-# What happens to "Old MILE"?
-
-"Old MILE" will still exist as it's own branch on this repository. If you need, or want, a deployment of "Old MILE", please send an email to **Jah-On-Inquiry [at] pm [dot] me** or open an issue. 
+"Old MILE" will still exist as it's own branch on this repository. If you need, or want, a deployment of "Old MILE", please send an email to **Jah-On-Inquiry [at] pm [dot] me** or open an issue.
 
 ### File extension table
 
@@ -72,31 +68,43 @@ Word suggestion list...
 |`.majs`|`MASCII-JS` (**current**)|Yes|Coming soon!|
 |`.mil` |`Old MILE`               |No |            |
 
-<br>
+## How can you help?
 
-# Why did I make this?
+Please **kindly** report any bugs or provide format/operation/function suggestions!
+
+Another great way would be by adding/improving the suggestions in the CSV file
+
+## Developer Info
+
+Before doing steps in any section, except `Modifying the CSV file`, be sure to...
+
+1. Ensure Node.js and a package manager such as `npm` are installed
+2. Clone this repo (new to GitHub? [Learn here!](https://docs.github.com/en/get-started/quickstart/downloading-files-from-github))
+
+### Adding suggestions to the CSV file
+
+The CSV file represents each suggestion on its own line. Each suggestion contains the word, the ASCIIMath equivalent, and the completion offset. The completion offset sets how far back to move the cursor when a a suggestion is inserted. This file should not contain any spaces, tabs, etc. If you don't have a GitHub account but want to submit additions or modification, please email me the changed CSV file along with the purpose of each change.
+
+### Generating MILE yourself
+
+1. `npm install` to install the packages once
+2. `npm run dev` to run it in development mode
+3. `npm run build` to get a all-in-one, portable HTML file
+
+## Statement on accessibility
+
+MILE aims at making math more accessible as a whole but currently focuses on making the typing experience as efficient as possible. Little to no testing has been done to ensure proper behavior with screen readers, Braille, and other modalities. That being said, I try to ensure that all visual elements (buttons, images, etc.) have text alternatives or descriptors.
+
+## FAQ
+
+### Why did I make this?
 
 I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessable across devices/operating systems.
 
-# Statement on accessibility...
+### Is there an "offline" version?
 
-MILE aims at making math more accessible as a whole but currently focuses on making the typing experience as efficient as possible. Little to no testing has been done to ensure proper behavior with screen readers, Braille, and other modalities. That being said, I try to ensure that all visual elements (buttons, images, etc.) have text alternatives or descriptors. 
+All work is saved locally and there is an offline portable version of MILE currently. However, the offline file cannot read projects from the github.io site and vise versa.
 
-# Is there an "offline" version?
+### How do I save my work?
 
-All work is saved locally and there is an offline portable version of MILE currently. However, the offline file cannot read projects from the github.io site and vise versa. 
-
-# How do I save my work?
-
-MILE now saves your projects inside of your browser! However, these files are not backed up so it is your responsibility to export individual projects to back them up or share among people/devices. 
-
-# How can you help?
-
-Please **kindly** report any bugs or provide format/operation/function suggestions! I am eager to hear form those with more advanced knowledge in math!
-
-# Developer info
-
-1. Make sure that Node.js and a package manager such as `npm` is installed
-2. `npm install` to install the packages once
-3. `npm run dev` to run it in development mode
-4. `npm run build` to get a all-in-one, portable HTML file
+MILE now saves your projects inside of your browser! However, these files are not backed up so it is your responsibility to export individual projects to back them up or share among people/devices.
