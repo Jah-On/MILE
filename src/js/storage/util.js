@@ -190,21 +190,21 @@ export function rebaseTo(id, index) {
     storage.setItem(id, JSON.stringify(saved));
 }
 
-export async function uploadM3(){
+export async function upload(){
     let picker = document.createElement("input");
     picker.type     = "file";
-    picker.accept   = ".m3";
+    picker.accept   = ".majs";
     picker.multiple = false;
     picker.addEventListener("change", handleSelectedFile);
     picker.showPicker();
 }
 
-export function downloadM3(){
+export function download(){
     let id = document.getElementById("project").getAttribute("data-id");
     let data = getRaw(id);
     let name = JSON.parse(data).name;
     let link = document.createElement("a");
-    link.download = `${name}.m3`;
+    link.download = `${name}.majs`;
     let blobby = new Blob([data], {type:"text/plain"});
     let downloadURL = window.URL.createObjectURL(blobby);
     link.href = downloadURL;

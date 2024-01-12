@@ -14,8 +14,8 @@ window.addEventListener("load", () => {
     "click", project.closeRevisions
   );
   document.getElementById("backButton").addEventListener("click", problem.backToHome);
-  document.getElementById("importButton").addEventListener("click", storage.uploadM3);
-  document.getElementById("exportButton").addEventListener("click", storage.downloadM3);
+  document.getElementById("importButton").addEventListener("click", storage.upload);
+  document.getElementById("exportButton").addEventListener("click", storage.download);
   document.getElementById("printButton").addEventListener("click", 
     () => { window.print(); }
   );
