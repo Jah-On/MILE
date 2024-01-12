@@ -2,7 +2,7 @@
 
 Math Inclusive Live Editor
 
-Try it out [here](https://jah-on.github.io/MILE/)!
+<!-- Try it out [here](https://jah-on.github.io/MILE/)! -->
 
 ## What's new in MILE?
 
