@@ -6,7 +6,7 @@ Math Inclusive Live Editor
 
 ## What's new in MILE?
 
-A lot! The current iteration of MILE, "MASCII-JS", adds several new features which are...
+A lot! The current iteration of MILE, "MASCII-JS", adds several new features including...
 
 - ASCIIMath as the language of choice.
 - Revision history at one hour (or longer) periods.
@@ -85,6 +85,18 @@ Before doing steps in any section, except `Modifying the CSV file`, be sure to..
 
 The CSV file represents each suggestion on its own line. Each suggestion contains the word, the ASCIIMath equivalent, and the completion offset. The completion offset sets how far back to move the cursor when a a suggestion is inserted. This file should not contain any spaces, tabs, etc. If you don't have a GitHub account but want to submit additions or modification, please email me the changed CSV file along with the purpose of each change.
 
+### Using the nextTextGen utility script
+
+This script is used to generate important structures such as markdown tables for documentation or JS maps that MILE uses in the code. The script must be ran from the root of the cloned project. Run it with `node utils/nextTextGen.js <command>` where command is the target structure. 
+
+The currently supported commands are...
+
+|Word form|Short form|Standard form|Description|
+|-|-|-|-|
+|`help` |`-h`| `--help`|Prints the list of commands|
+|`map`  |`-m`|  `--map`|Prints out MILE JS Map|
+|`table`|`-t`|`--table`|Prints out markdown table of suggestions|
+
 ### Generating MILE yourself
 
 1. `npm install` to install the packages once
@@ -99,7 +111,7 @@ MILE aims at making math more accessible as a whole but currently focuses on mak
 
 ### Why did I make this?
 
-I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessable across devices/operating systems.
+I have Cerebral Palsy which makes writing math, especially for prolonged periods of time, challenging. I wanted a tool that allows for faster typing to compensate for my slower typing, easier to memorize, allows for editing multiple problems within one app/windows, formats the problems neatly, exports easily to PDF (via the print subsystem) or prints directly, and is universally accessible across devices/operating systems.
 
 ### Is there an "offline" version?
 
