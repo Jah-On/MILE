@@ -43,7 +43,7 @@ export function save(id) {
         struct.timestamps.push(time.toUTCString());
         struct.ids.push(crypto.randomUUID());
         struct.patches.push(struct.current);
-        struct.lastTime = time.toUTCString();
+        struct.lastDelta = time.toUTCString();
     }
     struct.lastSave = time.toUTCString();
     struct.current  = dmp.patch_toText(extendPatches(struct.current, oldData, newData));

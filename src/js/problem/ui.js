@@ -118,7 +118,6 @@ export function saveRowData() {
         srcString += node.textContent||"\n";
     });
     srcString = srcString.replace("\t", "");
-    console.log(srcString);
     row.data = srcString;
 }
 

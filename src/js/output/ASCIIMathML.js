@@ -42,8 +42,8 @@ var mathfontsize = "1em";      // change to e.g. 1.2em for larger math
 var mathfontfamily = "serif";  // change to "" to inherit (works in IE)
                                // or another family (e.g. "arial")
 var automathrecognize = false; // writing "amath" on page makes this true
-var checkForMathML = true;     // check if browser can display MathML
-var notifyIfNoMathML = true;   // display note at top if no MathML capability
+var checkForMathML = false;     // check if browser can display MathML
+var notifyIfNoMathML = false;   // display note at top if no MathML capability
 var alertIfNoMathML = false;   // show alert box if no MathML capability
 var translateOnLoad = true;    // set to false to do call translators from js
 var translateASCIIMath = true; // false to preserve `..`
@@ -244,7 +244,7 @@ var AMsymbols = [
 {input:"Pi",     tag:"mo", output:"\u03A0", tex:null, ttype:CONST},
 {input:"psi",    tag:"mi", output:"\u03C8", tex:null, ttype:CONST},
 {input:"Psi",    tag:"mi", output:"\u03A8", tex:null, ttype:CONST},
-{input:"rho",    tag:"mi", output:"\u03C1", tex:null, ttype:CONST},
+{input:"rho",    tag:"mo", output:"\u03C1", tex:null, ttype:CONST},
 {input:"sigma",  tag:"mi", output:"\u03C3", tex:null, ttype:CONST},
 {input:"Sigma",  tag:"mo", output:"\u03A3", tex:null, ttype:CONST},
 {input:"tau",    tag:"mi", output:"\u03C4", tex:null, ttype:CONST},
