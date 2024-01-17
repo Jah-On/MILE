@@ -2,7 +2,7 @@
 
 Math Inclusive Live Editor
 
-<!-- Try it out [here](https://jah-on.github.io/MILE/)! -->
+Try it out [here](https://jah-on.github.io/MILE/)!
 
 ## What's new in MILE?
 
@@ -112,7 +112,7 @@ Word suggestion list...
 
 | Extension | MILE Iteration/Code-Name  | Current Compatible | Deployment Link |
 |-|-|-|-|
-|`.majs`|`MASCII-JS` (**current**)|Yes|Coming soon!|
+|`.majs`|`MASCII-JS` (**current**)|Yes|[Main](https://jah-on.github.io/MILE/)|
 |`.mil` |`Old MILE`               |No |            |
 
 ## How can you help?
