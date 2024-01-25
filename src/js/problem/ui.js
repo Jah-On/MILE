@@ -47,7 +47,7 @@ function moveUp(event) {
 }
 
 function copy(event) {
-    let parent = event.target.parentElement;
+    let parent  = event.target.parentElement;
     let newUUID = crypto.randomUUID();
     fragmentMap.set(
         newUUID, 
@@ -56,6 +56,7 @@ function copy(event) {
     let cloned               = parent.cloneNode(true);
     let firstChild           = cloned.firstElementChild;
     cloned.id                = newUUID;
+    cloned.data              = parent.data;
     firstChild.value         = generateDisplayName(firstChild.value);
     addProblemListeners(cloned);
     parent.insertAdjacentElement("afterend", cloned);
