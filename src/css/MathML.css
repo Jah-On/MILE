@@ -8,9 +8,6 @@ math {
 }
 
 math * {
-    max-width:  inherit;
-}
-
-mtext {
-    word-break: break-all;
+    max-width:     inherit;
+    overflow-wrap: break-word;
 }
