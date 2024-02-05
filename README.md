@@ -22,7 +22,7 @@ MILE now uses ASCIIMath as the language of choice. Its list of commands and synt
 
 Suggestions are completed when the `Tab` key is pressed or the suggestion is clicked on.
 
-Word suggestion list...
+<!-- FOR DOC GEN -->
 | Name | ASCIIMath Equivalent |
 | ---- | -------------------- |
 | abs | abs{} |
@@ -90,10 +90,12 @@ Word suggestion list...
 | sumover | sum^{} |
 | sumunder | sum_{} |
 | tau | tau |
+| text | text() |
 | therefore | :. |
 | theta | theta |
 | Theta | Theta |
 | tilde | tilde{} |
+| times | × |
 | towards | -> |
 | underbrace | ubrace{}{} |
 | underline | ul{} |
@@ -103,6 +105,7 @@ Word suggestion list...
 | xi | xi |
 | Xi | Xi |
 | zeta | zeta |
+<!---->
 
 ## What happens to "Old MILE"?
 

@@ -63,10 +63,12 @@ sumboth,sum_{}^{},4
 sumover,sum^{},1
 sumunder,sum_{},1
 tau,tau,0
+text,text(),1
 therefore,:.,0
 theta,theta,0
 Theta,Theta,0
 tilde,tilde{},1
+times,×,0
 towards,->,0
 underbrace,ubrace{}{},3
 underline,ul{},1
