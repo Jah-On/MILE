@@ -57,7 +57,7 @@ function generateTable() {
 function generateJSList() {
 	let result = "Array(\n";
 	for (const row of readCSVasList()) {
-		result += `\t{ label:\"${row[0]}\", type:\"text\", apply:\"${row[1]}\"}, \n`;
+		result += `\tsnippetCompletion( \"${row[1]}\" , { label:\"${row[0]}\" } ), \n`;
 	}
 	result += ");\n";
 	return result;

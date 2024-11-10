@@ -2,14 +2,14 @@ import * as problem from "./problem/ui.js";
 import * as project from "./project/ui.js";
 import * as storage from "./storage/util.js";
 import * as keyInput from "./input/key.js";
-import { EditorView, lineNumbers, gutter } from "@codemirror/view";
+import { EditorView, gutter, lineNumbers, placeholder } from "@codemirror/view";
 import { EditorState, Line } from "@codemirror/state";
 import { minimalSetup } from "codemirror";
 import {
 	autocompletion,
 	closeBrackets,
 	completeFromList,
-	CompletionSource,
+	snippetCompletion,
 } from "@codemirror/autocomplete";
 import { autoCompleteList } from "./text-suggestion/constants.js";
 
@@ -46,6 +46,9 @@ window.addEventListener("load", () => {
 				minimalSetup,
 				closeBrackets(),
 				lineNumbers(),
+				placeholder(
+					"Enter AsciiMath or alternate names here...\nYou can press the <Tab> key to hop to the next component for functions like fraction!",
+				),
 				autocompletion({
 					override: [completeFromList(autoCompleteList)],
 				}),
