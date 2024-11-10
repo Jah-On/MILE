@@ -1,159 +1,167 @@
 #project {
-    div.sideBar {
-        display:        inline-flex;
-        flex-direction: column;
-        padding:        10px;
-        position:       relative;
-        width:          2.5%;
+	div.sideBar {
+		display: inline-flex;
+		flex-direction: column;
+		padding: 10px;
+		position: relative;
+		width: 2.5%;
 
-        * {
-            background-color: whitesmoke;
-            border:             solid whitesmoke 2px;
-            margin-bottom:      10px;
-            padding:            0px;
-        }
+		* {
+			background-color: whitesmoke;
+			border: solid whitesmoke 2px;
+			margin-bottom: 10px;
+			padding: 0px;
+		}
 
-        input:hover {
-            background-color:  lightgray;
-            border-color:      lawngreen;
-        }
+		input:hover {
+			background-color: lightgray;
+			border-color: lawngreen;
+		}
 
-        #printButton {
-            bottom:            0px;
-            position:          absolute;
-            width:             calc(100% - 25px);
-            
-            @media print {
-                visibility:    collapse;
-            }
-        }
-    }
+		#printButton {
+			bottom: 0px;
+			position: absolute;
+			width: calc(100% - 25px);
 
-    #container {
-        display:     flex;
-        height:      inherit;
-        margin:      10px;
-        margin-left: 0px;
-        width:       calc(97.5% - 20px);
+			@media print {
+				visibility: collapse;
+			}
+		}
+	}
 
-        #problemList {
-            font-size: 32px;
-            margin-left: 10px;
-            background-color: rgb(20, 20, 20);
-            overflow-y: auto;
-            margin-left: 10px;
-            margin-right: 10px;
-            width: auto;
-        }
-        
-        #addNew {
-            background-color: transparent;
-            border:           2px dashed lightgrey;
-            border-radius:    2px;
-            color:            lightgrey;
-            font-size:        x-large;
-            width:            100%;
-        }
-        
-        #addNew:hover {
-            border-color:     lawngreen;
-            color:            lawngreen;
-        }
-        
-        #inputs {
-            width: 50%;
-            height: calc(100% - 2px);
-            background-color: rgb(20, 20, 20);
-            overflow-y: scroll;
+	#container {
+		display: flex;
+		height: inherit;
+		margin: 10px;
+		margin-left: 0px;
+		width: calc(97.5% - 20px);
 
-            #problems {
-                padding:         10px;
+		#problemList {
+			font-size: 32px;
+			margin-left: 10px;
+			background-color: rgb(20, 20, 20);
+			overflow-y: auto;
+			margin-left: 10px;
+			margin-right: 10px;
+			width: auto;
+		}
 
-                #list {
-                    width:       100%;
+		#addNew {
+			background-color: transparent;
+			border: 2px dashed lightgrey;
+			border-radius: 2px;
+			color: lightgrey;
+			font-size: x-large;
+			width: 100%;
+		}
 
-                    .problem {
-                        display:        flex;
-                        flex-direction: row;
-                        margin-bottom:  10px;
+		#addNew:hover {
+			border-color: lawngreen;
+			color: lawngreen;
+		}
 
-                        * {
-                            flex:       1 1 100%;
-                            font-size:  larger;
-                        }
+		#inputs {
+			width: 50%;
+			height: calc(100% - 2px);
+			background-color: rgb(20, 20, 20);
+			overflow-y: scroll;
 
-                        input[type="text"] {
-                            max-width:  50%;
-                        }
+			#problems {
+				padding: 10px;
 
-                        input[type="button"] {
-                            aspect-ratio: 1;
-                            margin-left:  auto;
-                            max-width:    5%;
-                        }
-                    }
-                }
+				#list {
+					width: 100%;
 
-                button {
-                    background-color: transparent;
-                    border:           2px dashed whitesmoke;
-                    border-radius:    2px;
-                    color:            whitesmoke;
-                    font-size:        x-large;
-                    width:            100%;
-                }
-            }
-        }
-        
-        #output {
-            background-color: whitesmoke;
-            color: black;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            font-size: 1.5em;
-            height: calc(100% - 12px);
-            padding: 5px;
-            overflow-y: scroll;
-            width: 50%;
-            text-align: center;
+					.problem {
+						display: flex;
+						flex-direction: row;
+						margin-bottom: 10px;
 
-            @media print {
-                height:    fit-content !important;
-                left:      0px;
-                min-width: calc(100% - 8px);
-                position:  absolute;
-                top:       0px;
-            }
-        }
+						* {
+							flex: 1 1 100%;
+							font-size: larger;
+						}
 
-        #inputArea {
-            width: 100%;
-            height: 100%;
-            font-size: 28px;
-            background-color: rgb(20, 20, 20);
-            color: whitesmoke;
-            margin: 0px;
-            cursor: text;
-            overflow-y: scroll;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
+						input[type="text"] {
+							max-width: 50%;
+						}
 
-            @media print {
-                visibility:    collapse;
-            }
-        }
-        
-        .inputRow {
-            width: 100%;
-            height: fit-content;
-            border: 0px;
-            margin: 0px;
-            word-break: break-all;
-            word-wrap: break-word;
-            white-space: normal;
-            outline: none;
-        }
-    }
+						input[type="button"] {
+							aspect-ratio: 1;
+							margin-left: auto;
+							max-width: 5%;
+						}
+					}
+				}
+
+				button {
+					background-color: transparent;
+					border: 2px dashed whitesmoke;
+					border-radius: 2px;
+					color: whitesmoke;
+					font-size: x-large;
+					width: 100%;
+				}
+			}
+		}
+
+		#output {
+			background-color: whitesmoke;
+			color: black;
+			display: flex;
+			flex-direction: column;
+			gap: 18px;
+			font-size: 1.5em;
+			height: calc(100% - 12px);
+			padding: 5px;
+			overflow-y: scroll;
+			width: 50%;
+			text-align: center;
+
+			@media print {
+				height: fit-content !important;
+				left: 0px;
+				min-width: calc(100% - 8px);
+				position: absolute;
+				top: 0px;
+			}
+		}
+
+		#inputArea {
+			width: 100%;
+			height: 100%;
+			font-size: 20px;
+			background-color: rgb(20, 20, 20);
+			color: whitesmoke;
+			margin: 0px;
+			cursor: text;
+			overflow-y: scroll;
+			word-wrap: break-word;
+			overflow-wrap: break-word;
+			white-space: normal;
+
+			> div {
+				height: inherit;
+			}
+
+			* {
+				caret-color: whitesmoke;
+			}
+
+			@media print {
+				visibility: collapse;
+			}
+		}
+
+		.inputRow {
+			width: 100%;
+			height: fit-content;
+			border: 0px;
+			margin: 0px;
+			word-break: break-all;
+			word-wrap: break-word;
+			white-space: normal;
+			outline: none;
+		}
+	}
 }
