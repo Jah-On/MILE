@@ -1,8 +1,9 @@
 import diff_match_patch from "diff-match-patch";
-import * as project     from "../project/ui.js";
 
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
+
+export const fragmentMap = new Map();
 
 export const autoSaveInterval = 30e4; // 5 minutes
 
@@ -49,6 +50,7 @@ export function save(id) {
     struct.current  = dmp.patch_toText(extendPatches(struct.current, oldData, newData));
     
     let res = JSON.stringify(struct);
+
     storage.setItem(id, res);
 }
 
@@ -59,14 +61,22 @@ function getRaw(id) {
 export function load(id) {
     const stored = getRaw(id);
     const struct = JSON.parse(stored);
-    let   data   = struct.initial;
-    let   patches;
+
+    // console.log(struct);
+
+    let   data    = struct.initial;
+    let   patches = [];
+
     for (const patchesText of struct.patches) {
         patches = dmp.patch_fromText(patchesText);
         data = dmp.patch_apply(patches, data)[0];
+        // patches.unshift(...dmp.patch_fromText(patchesText));
     }
+    // patches.unshift(...dmp.patch_fromText(struct.current));
+    // data = dmp.patch_apply(patches, data)[0];
     patches = dmp.patch_fromText(struct.current);
     data = dmp.patch_apply(patches, data)[0];
+    // console.log(data);
     return data;
 }
 
@@ -80,11 +90,11 @@ function extendPatches(patchesText, oldData, newData) {
 
 function exportProblems(){
     let   output   = [];
-    const problems = [...document.getElementsByClassName("problem")];
-    problems.map((problem) => {
+
+    fragmentMap.forEach((fragment) => {
         output.push({
-            name: problem.firstElementChild.value, 
-            data: problem.data.replace(/\n$/, "")
+            name: fragment.name, 
+            data: fragment.data.replace(/\n$/, "")
         });
     });
     const result = JSON.stringify(output);

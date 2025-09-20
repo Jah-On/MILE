@@ -1,22 +1,22 @@
 import { asciimath } from "./ASCIIMathML";
-import { fragmentMap } from "../problem/ui";
+import { fragmentMap } from "../storage/util";
 
 export function render(id, data) {
-	let resNode = fragmentMap.get(id);
-	let lines = data.split(/\n/);
+	const resNode = fragmentMap.get(id);
+	const lines = data.split(/\n/);
 
-	resNode.replaceChildren();
-	lines.forEach((line) => {
-		resNode.append(asciimath.parseMath(line));
-	});
+	const results = lines.map(asciimath.parseMath);
+
+	resNode.replaceChildren(...results);
 }
 
 export function renderProblem(data) {
-	let input = document.getElementById("inputArea");
+	const queryString = window.location.search;
+	const urlParams   = new URLSearchParams(queryString);
+	const problemID   = urlParams.get("id");
+
+	render(problemID, data);
+
 	let output = document.getElementById("output");
-	let id = input.getAttribute("uuid");
-
-	render(id, data);
-
-	output.replaceChildren(fragmentMap.get(id).cloneNode(true));
+	output.replaceChildren(fragmentMap.get(problemID).cloneNode(true));
 }

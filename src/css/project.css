@@ -1,4 +1,7 @@
+
 #project {
+	display: flex;
+
 	div.sideBar {
 		display: inline-flex;
 		flex-direction: column;

@@ -1,139 +1,184 @@
-import * as problem     from "../problem/ui.js";
-import * as problemUtil from "../problem/util.js";
-import * as storage     from "../storage/util.js";
+// import { exportToJSON } from "../../helper.js";
+import { generateDisplayName } from "./util.js";
+import * as storage from "../storage/util.js";
+import * as output from "../output/ui.js";
 
-const eventFunctions = [
-    edit, remove, copy, showRevisions
-]
+const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
+const eventArray = ["input", "click", "click", "click", "click", "click"];
 
-export function add(){
-    let id = storage.create("");
-    fromTemplate(id, "");
+const queryString = window.location.search;
+const urlParams   = new URLSearchParams(queryString);
+const projectID   = urlParams.get("id");
+
+let fragmentMap = storage.fragmentMap;
+
+function addProblemListeners(problemRow) {
+	for (let index = 0; index < eventArray.length; ++index) {
+		problemRow.children[index].addEventListener(
+			eventArray[index],
+			functionArray[index],
+		);
+	}
 }
 
-function rename(event) {
-    let target = event.target;
-    let parent = target.parentElement;
-
-    storage.rename(parent.id, target.value);
+function move(node, direction) {
+	let parent = node.parentElement;
+	switch (direction) {
+		case -1:
+			parent.insertBefore(node.nextSibling || node, node);
+			break;
+		default:
+			if (node == parent.firstElementChild) {
+				break;
+			}
+			parent.insertBefore(node, node.previousSibling);
+			break;
+	}
+	updateBaseOutput();
 }
 
-function remove(event) {
-    let temp   = event.target.parentElement;
-    let parent = temp.parentElement;
-    const name = storage.getName(parent.id);
-    if (window.confirm(`Delete ${name}?`)) {
-        storage.remove(parent.id);
-        parent.remove();
-    }
+function moveDown(event) {
+	let parent = event.target.parentElement;
+	move(parent, -1);
+}
+
+function moveUp(event) {
+	let parent = event.target.parentElement;
+	move(parent, 1);
 }
 
 function copy(event) {
-    let temp   = event.target.parentElement;
-    let parent = temp.parentElement;
-    
-    const id      = parent.id;
-    const newName = `${storage.getName(id)}(1)`;
-
-    fromTemplate(storage.copy(id, newName), newName);
+	let parent = event.target.parentElement;
+	let newUUID = crypto.randomUUID();
+	fragmentMap.set(newUUID, fragmentMap.get(parent.id).cloneNode(true));
+	let cloned = parent.cloneNode(true);
+	let firstChild = cloned.firstElementChild;
+	cloned.id = newUUID;
+	cloned.data = parent.data;
+	firstChild.value = generateDisplayName(firstChild.value);
+	addProblemListeners(cloned);
+	parent.insertAdjacentElement("afterend", cloned);
+	cloned.scrollIntoView();
+	updateBaseOutput();
 }
 
-function showRevisions(event) {
-    let   temp   = event.target.parentElement;
-    let   parent = temp.parentElement;
-    let   dialog = document.getElementById("revisions");
-    let   list   = document.getElementById("revisionList");
-    const id     = parent.id;
-
-    dialog.showModal();
-
-    let   timestamps = storage.getCommits(id);
-    for (const timestamp of timestamps) {
-        list.append(document.createElement("input"));
-        list.lastElementChild.id    = id;
-        list.lastElementChild.type  = "button";
-        list.lastElementChild.value = new Date(timestamp).toLocaleString();
-        list.lastElementChild.addEventListener(
-            "click",
-            revisionClick
-        );
-    }
-}
-
-function revisionClick(event) {
-    if (!window.confirm("Are you sure you want to revert to this revision?")) {
-        return;
-    }
-    let   target = event.target;
-    let   parent = target.parentElement;
-    const id     = target.id;
-    
-    storage.rebaseTo(id, [...parent.children].indexOf(target));
-
-    closeRevisions();
-}
-
-export function closeRevisions() {
-    let dialog = document.getElementById("revisions");
-
-    let list = document.getElementById("revisionList");
-    list.replaceChildren();
-
-    dialog.close();
-}
-
-
-export function fromTemplate(id, name){
-    let list     = document.getElementById("list");
-    let template = document.getElementById("projectTemplate");
-    let clonedElement = template.content.cloneNode(true).children[0];
-    clonedElement.id = id;
-    clonedElement.style.display = "flex";
-    let firstChild = clonedElement.firstElementChild;
-    firstChild.innerText = name;
-    firstChild.addEventListener(
-        "focusout",
-        rename
-    );
-    for (let i = 0; i < eventFunctions.length; i += 1) {
-        clonedElement.children[1].children[i].addEventListener(
-            "click",
-            eventFunctions[i]
-        );
-    }
-    list.append(clonedElement);
-    if (name == "") {
-        clonedElement.children[0].focus();
-    }
+function remove(event) {
+	let parent = event.target.parentElement;
+	if (!window.confirm(`Are you sure you want to delete this problem?`)) {
+		return;
+	}
+	parent.remove();
+	fragmentMap.delete(parent.id);
+	updateBaseOutput();
 }
 
 function edit(event) {
-    let projects  = document.getElementById("projects");
-    let project   = document.getElementById("project");
-    let target    = event.target;
-    let temp      = target.parentElement;
-    let parent    = temp.parentElement;
-    const id      = parent.id;
+	let parent = event.target.parentElement;
+	
+	sessionStorage.setItem(
+		"problemData",
+		fragmentMap.get(parent.id).data
+	);
 
-    projects.style.display = "none";
+	// let inputArea = document.getElementById("inputArea");
+	// let cmView = inputArea.data;
 
-    project.style.display  = "flex";
-    project.setAttribute("data-id", id);
+	// cmView.dispatch({
+	// 	changes: { from: 0, to: cmView.state.doc.length, insert: parent.data },
+	// });
 
-    problem.loadAll(storage.load(id));
+	// inputArea.children[0].focus();
 
-    window.autoSave = setInterval(
-        problemUtil.autoSaveCallback, 
-        10000//storage.autoSaveInterval
-    );
+	// output.renderProblem(parent.data);
+
+	window.location.href = `./problem?id=${parent.id}`;
 }
 
-export function loadAll() {    
-    document.getElementById("list").replaceChildren(
-        document.getElementById("addProject")
-    );
+export function saveRowData(data) {
+	let input = document.getElementById("inputArea");
+	let UUID = input.getAttribute("UUID");
+	let row = document.getElementById(UUID);
 
-    for (const id of storage.getIDsByLastSave()) {
-        fromTemplate(id, storage.getName(id));
-    }
+	row.data = data;
+}
+
+export function newProblemRow(UUID, displayName) {
+	let rowTemplate = document.getElementById("rowTemplate");
+	let clone = rowTemplate.content.firstElementChild.cloneNode(true);
+	clone.id = UUID;
+	clone.children[0].value = displayName;
+
+	addProblemListeners(clone);
+	return clone;
+}
+
+export function add(displayName, data = "") {
+	let UUID = crypto.randomUUID();
+	let problems = document.getElementById("problems").firstElementChild;
+	let newRow = newProblemRow(UUID, displayName);
+
+	const fragment = document.createDocumentFragment();
+	fragment.name  = displayName;
+	fragment.data  = data;
+
+	fragmentMap.set(UUID, fragment);
+
+	(async () => {
+		problems.append(newRow);
+	})();
+
+	if (displayName.length == 0){
+		newRow.firstElementChild.focus();
+	}
+
+	return newRow;
+}
+
+export function updateBaseOutput() {
+	let output = document.getElementById("output");
+	let problems = document.getElementById("problems");
+	let firstChild = problems.firstElementChild;
+	let temp = document.createDocumentFragment();
+
+	for (const item of firstChild.children) {
+		let UUID = item.id;
+		temp.append(document.createElement("div"));
+		let divRef = temp.lastChild;
+		divRef.className = "baseOutput";
+		divRef.append(document.createElement("span"));
+		const name = document.getElementById(UUID).children[0].value;
+		if (name) {
+			divRef.lastChild.innerText = name + ".";
+		}
+		divRef.lastChild.className = "baseOutputLabel";
+		divRef.append(document.createElement("div"));
+		divRef.lastChild.append(fragmentMap.get(UUID).cloneNode(true));
+		divRef.lastChild.className = "baseOutputContents";
+	}
+	output.replaceChildren(temp);
+}
+
+export function goBack() {
+	storage.save(projectID);
+
+	clearInterval(window.autoSave);
+	
+	window.location.href = "./";
+}
+
+export function loadAll(data) {
+	let decodedJSON = JSON.parse(data);
+	
+	for (const importedInput of decodedJSON) {
+		const name = importedInput.name;
+		const data = importedInput.data;
+
+		let newRow = add(name, data);
+
+		(async () => {
+			output.render(newRow.id, data)
+		})();
+	}
+
+	updateBaseOutput();
 }
