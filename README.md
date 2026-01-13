@@ -1,5 +1,7 @@
 # Math Inclusive Live Editor (MILE)
 
+❕Hey there! If you use this tool, please take a moment to fill out this survey: [https://forms.gle/JEqoZiKQFuFXCs4WA](https://forms.gle/JEqoZiKQFuFXCs4WA). Thank you! ❕
+
 Try it out [here](https://jah-on.github.io/MILE/)!
 
 ## Documentation
