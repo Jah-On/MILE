@@ -3,13 +3,30 @@ div.page#projects {
     flex-direction: column;
 
     #header {
-        font-size: xx-large;
-        font-weight: bolder;
+        display: flex;
+        flex-direction: row;
         width: 100%;
+        color: whitesmoke;
+        gap: 20px;
 
-        * {
+        > a {
+            color: whitesmoke;
+            font-size: xx-large;
             text-decoration: none;
-            color:           whitesmoke;
+            font-weight: bolder;
+        }
+
+        p {
+            margin-top: auto;
+            margin-bottom: auto;
+
+            a:link {
+                color: rgb(0, 255, 255);
+            }
+
+            a:visited {
+                color: rgb(0, 150, 150);
+            }
         }
     }
 

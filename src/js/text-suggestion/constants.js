@@ -1,7 +1,7 @@
 import { snippetCompletion } from "@codemirror/autocomplete";
 
 export const autoCompleteList = new /* FOR AUTOGEN */ Array(
-	snippetCompletion( "abs{}" , { label:"abs" } ), 
+	snippetCompletion( "abs{#{expression}}" , { label:"abs" } ), 
 	snippetCompletion( "alpha" , { label:"alpha" } ), 
 	snippetCompletion( "bar{#{var}}" , { label:"bar" } ), 
 	snippetCompletion( ":'" , { label:"because" } ), 
@@ -50,7 +50,7 @@ export const autoCompleteList = new /* FOR AUTOGEN */ Array(
 	snippetCompletion( "Phi" , { label:"Phi" } ), 
 	snippetCompletion( "pi" , { label:"pi" } ), 
 	snippetCompletion( "Pi" , { label:"Pi" } ), 
-	snippetCompletion( "^{exponent}" , { label:"power" } ), 
+	snippetCompletion( "^{#{exponent}}" , { label:"power" } ), 
 	snippetCompletion( "prod_{#{lowerBound}}^{#{upperBound}}" , { label:"prodboth" } ), 
 	snippetCompletion( "prod^{#{upperBound}}" , { label:"prodover" } ), 
 	snippetCompletion( "prod_{#{lowerBound}}" , { label:"produnder" } ), 

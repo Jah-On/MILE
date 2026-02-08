@@ -1,4 +1,5 @@
 import diff_match_patch from "diff-match-patch";
+import { loadAll } from "../projects/ui";
 
 const storage = window.localStorage;
 const dmp     = new diff_match_patch();
@@ -16,40 +17,86 @@ export function exists(id) {
 
 export function create(name) {
     let id      = crypto.randomUUID();
-    let current = exportProblems();
-    let struct = {
+    let struct  = {
         name:       name,
+        version:    "0.1",
         timestamps: [],
         ids:        [],
         patches:    [],
-        initial:    current,
-        current:    "",
+        current:    "{}",
         lastSave:   new Date().toUTCString(),
         lastDelta:  new Date().toUTCString()
     };
+
     storage.setItem(id, JSON.stringify(struct));
+    
     return id;
 }
 
 export function save(id) {
-    let struct     = JSON.parse(getRaw(id));
-    let lastDelta  = Date.parse(struct.lastDelta);
+    let project    = JSON.parse(getRaw(id));
+
+    // console.log(project);
+
+    let lastDelta  = Date.parse(project.lastDelta);
     let time       = new Date();
-    let oldData    = load(id);
+    let oldData    = JSON.stringify(project.current);
+
+    // let timeNow    = performance.now();
+
     let newData    = exportProblems();
 
-    if (oldData === newData) { return; }
+    if (((time.getTime() - lastDelta) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
+        let patch = dmp.patch_make(
+            newData, oldData
+        )
+
+        let patchesAsText = dmp.patch_toText(patch);
+
+        if (patchesAsText.length == 0) return;
+
+        project.timestamps.push(time.toUTCString());
+        project.ids.push(crypto.randomUUID());
+        project.patches.push(patchesAsText);
+        project.lastDelta = time.toUTCString();
+    }
+    project.lastSave = time.toUTCString();
+    project.current  = newData;
+
+    let res = JSON.stringify(project);
+
+    storage.setItem(id, res);
+}
+
+export function saveFromStruct(id, struct) {
+    let project    = JSON.parse(getRaw(id));
+
+    let lastDelta  = Date.parse(project.lastDelta);
+    let time       = new Date();
+    let oldData    = JSON.stringify(project.current);
+
+    // let timeNow    = performance.now();
+
+    let newData    = JSON.stringify(struct);
 
     if (((time.getTime() - lastDelta) >= 36e5) /* 1 hour */) { // 6e4 - 1 minute (for testing)
-        struct.timestamps.push(time.toUTCString());
-        struct.ids.push(crypto.randomUUID());
-        struct.patches.push(struct.current);
-        struct.lastDelta = time.toUTCString();
+        let patch = dmp.patch_make(
+            newData, oldData
+        )
+
+        let patchesAsText = dmp.patch_toText(patch);
+
+        if (patchesAsText.length == 0) return;
+
+        project.timestamps.push(time.toUTCString());
+        project.ids.push(crypto.randomUUID());
+        project.patches.push(patchesAsText);
+        project.lastDelta = time.toUTCString();
     }
-    struct.lastSave = time.toUTCString();
-    struct.current  = dmp.patch_toText(extendPatches(struct.current, oldData, newData));
-    
-    let res = JSON.stringify(struct);
+    project.lastSave = time.toUTCString();
+    project.current  = newData;
+
+    let res = JSON.stringify(project);
 
     storage.setItem(id, res);
 }
@@ -60,43 +107,34 @@ function getRaw(id) {
 
 export function load(id) {
     const stored = getRaw(id);
-    const struct = JSON.parse(stored);
+    let   struct = JSON.parse(stored);
 
-    // console.log(struct);
+    if (struct.version == undefined){
+        console.log("Caught old save system!");
+        struct = translateFromMajs_0_0(struct);
 
-    let   data    = struct.initial;
-    let   patches = [];
+        let res = JSON.stringify(struct);
 
-    for (const patchesText of struct.patches) {
-        patches = dmp.patch_fromText(patchesText);
-        data = dmp.patch_apply(patches, data)[0];
-        // patches.unshift(...dmp.patch_fromText(patchesText));
+        storage.setItem(id, res);
     }
-    // patches.unshift(...dmp.patch_fromText(struct.current));
-    // data = dmp.patch_apply(patches, data)[0];
-    patches = dmp.patch_fromText(struct.current);
-    data = dmp.patch_apply(patches, data)[0];
-    // console.log(data);
-    return data;
-}
 
-function extendPatches(patchesText, oldData, newData) {
-    const diffs = dmp.diff_main(oldData, newData);
-    dmp.diff_cleanupEfficiency(diffs);
-    let patches = dmp.patch_fromText(patchesText);
-    patches.push(...dmp.patch_make(oldData, diffs));
-    return patches;
+    return struct.current;
 }
 
 function exportProblems(){
-    let   output   = [];
+    let output = {};
 
     fragmentMap.forEach((fragment) => {
-        output.push({
-            name: fragment.name, 
-            data: fragment.data.replace(/\n$/, "")
-        });
+        const id   = fragment.id;
+        const name = fragment.name;
+        const data = fragment.data.replace(/\n$/, "");
+
+        output[id] = {
+            name: name, 
+            data: data
+        };
     });
+
     const result = JSON.stringify(output);
     return result;
 }
@@ -197,13 +235,21 @@ export function getIDsByLastSave() {
 
 export function rebaseTo(id, index) {
     let saved   = JSON.parse(getRaw(id));
-    saved.current    = saved.patches[index];
-    saved.patches    = saved.patches.slice(0, index);
+
+    let patchIndex = saved.patches.length - 1 - index;
+    let selected   = saved.patches.slice(0, patchIndex);
+
+    for (const patchText of selected){
+        saved.current    = dmp.patch_apply(
+            dmp.patch_fromText(patchText), saved.current
+        )[0];
+    }
+    saved.patches    = saved.patches.slice(patchIndex);
     saved.timestamps = saved.timestamps.slice(0, index);
     saved.ids        = saved.ids.slice(0, index);
 
     storage.setItem(id, JSON.stringify(saved));
-}
+}1
 
 export async function upload(){
     let picker = document.createElement("input");
@@ -215,7 +261,10 @@ export async function upload(){
 }
 
 export function download(){
-    let id = document.getElementById("project").getAttribute("data-id");
+    const queryString = window.location.search;
+    const urlParams   = new URLSearchParams(queryString);
+    const id          = urlParams.get("id");
+
     let data = getRaw(id);
     let name = JSON.parse(data).name;
     let link = document.createElement("a");
@@ -225,6 +274,63 @@ export function download(){
     link.href = downloadURL;
     link.click();
     link.remove();
+}
+
+function translateFromMajs_0_0(old){
+    let patches = [];
+    let data    = [old.initial];
+    let current = "";
+
+    for (const patchesText of old.patches) {
+        patches = dmp.patch_fromText(patchesText);
+        data.push(
+            dmp.patch_apply(
+                patches,
+                data.at(data.lastIndexOf())
+            )[0]
+        );
+    }
+    patches = dmp.patch_fromText(old.current);
+    data.push(
+        dmp.patch_apply(
+            patches, 
+            data.at(data.lastIndexOf())
+        )[0]
+    );
+
+    current = data.at(-1);
+
+    let newMajs = old;
+    delete newMajs.initial;
+
+    newMajs.version = "0.1";
+    newMajs.current = current;
+
+    newMajs.patches = [];
+    for (const text of data.slice(0, -1).reverse()) {
+        if (current === text) console.log("Text same!");
+        newMajs.patches.push(
+            dmp.patch_toText(dmp.patch_make(current, text))
+        );
+        current = text;
+    }
+
+    let currentAsArray = JSON.parse(newMajs.current);
+    let currentAsStruct = {};
+
+    for (const problem of currentAsArray){
+        currentAsStruct[crypto.randomUUID()] = {
+            name: problem.name, 
+            data: problem.data
+        };
+    }
+
+    newMajs.current = JSON.stringify(currentAsStruct)
+
+    // console.log(newMajs.patches.length);
+    // console.log(newMajs.patches);
+
+    return newMajs;
 }
 
 function handleSelectedFile(event){
@@ -246,5 +352,5 @@ function importToLocal(event){ // TODO: update
         crypto.randomUUID(), 
         JSON.stringify(struct)
     );
-    project.loadAll();
+    loadAll();
 }

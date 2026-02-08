@@ -3,7 +3,7 @@ import { generateDisplayName } from "./util.js";
 import * as storage from "../storage/util.js";
 import * as output from "../output/ui.js";
 
-const functionArray = [updateBaseOutput, moveUp, moveDown, copy, remove, edit];
+const functionArray = [updateName, moveUp, moveDown, copy, remove, edit];
 const eventArray = ["input", "click", "click", "click", "click", "click"];
 
 const queryString = window.location.search;
@@ -19,6 +19,16 @@ function addProblemListeners(problemRow) {
 			functionArray[index],
 		);
 	}
+}
+
+function updateName(event) {
+	let input  = event.target;
+	let parent = input.parentElement;
+	let id     = parent.id;
+
+	fragmentMap.get(id).name = input.value;
+
+	updateBaseOutput();
 }
 
 function move(node, direction) {
@@ -75,10 +85,10 @@ function remove(event) {
 function edit(event) {
 	let parent = event.target.parentElement;
 	
-	sessionStorage.setItem(
-		"problemData",
-		fragmentMap.get(parent.id).data
-	);
+	// sessionStorage.setItem(
+	// 	"problemData",
+	// 	fragmentMap.get(parent.id).data
+	// );
 
 	// let inputArea = document.getElementById("inputArea");
 	// let cmView = inputArea.data;
@@ -91,7 +101,7 @@ function edit(event) {
 
 	// output.renderProblem(parent.data);
 
-	window.location.href = `./problem?id=${parent.id}`;
+	window.location.href = `/problem?project=${projectID}&id=${parent.id}`;
 }
 
 export function saveRowData(data) {
@@ -112,14 +122,15 @@ export function newProblemRow(UUID, displayName) {
 	return clone;
 }
 
-export function add(displayName, data = "") {
-	let UUID = crypto.randomUUID();
+export function add(id, displayName, data = "") {
+	let UUID = id;
 	let problems = document.getElementById("problems").firstElementChild;
 	let newRow = newProblemRow(UUID, displayName);
 
 	const fragment = document.createDocumentFragment();
 	fragment.name  = displayName;
 	fragment.data  = data;
+	fragment.id    = UUID;
 
 	fragmentMap.set(UUID, fragment);
 
@@ -159,21 +170,17 @@ export function updateBaseOutput() {
 }
 
 export function goBack() {
-	storage.save(projectID);
-
 	clearInterval(window.autoSave);
 	
-	window.location.href = "./";
+	window.location.href = "/";
 }
 
-export function loadAll(data) {
-	let decodedJSON = JSON.parse(data);
-	
-	for (const importedInput of decodedJSON) {
-		const name = importedInput.name;
-		const data = importedInput.data;
+export function loadAll(problems) {
+	for (const id in problems) {
+		const name = problems[id].name;
+		const data = problems[id].data;
 
-		let newRow = add(name, data);
+		let newRow = add(id, name, data);
 
 		(async () => {
 			output.render(newRow.id, data)

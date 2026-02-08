@@ -14,4 +14,6 @@ window.addEventListener("load", () => {
 	document
 		.getElementById("importButton")
 		.addEventListener("click", storage.upload);
+
+	window.name = 1;
 });

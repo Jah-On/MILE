@@ -8,14 +8,17 @@ import {
 } from "@codemirror/autocomplete";
 import { autoCompleteList } from "../text-suggestion/constants.js";
 import { handleInput } from "../input/key.js";
-import { fragmentMap } from "../storage/util.js";
+import { fragmentMap, load, saveFromStruct } from "../storage/util.js";
 
 const queryString = window.location.search;
 const urlParams   = new URLSearchParams(queryString);
+const projectID   = urlParams.get("project");
 const problemID   = urlParams.get("id");
 
 window.addEventListener("load", () => {
     fragmentMap.set(problemID, document.createDocumentFragment());
+
+    let problem = JSON.parse(load(projectID))[problemID]
 
     const inputElement = document.getElementById("inputArea");
     
@@ -46,9 +49,28 @@ window.addEventListener("load", () => {
         }),
     });
 
-    let data = sessionStorage.getItem("problemData");
+    let data = problem.data;
 
     inputElement.data.dispatch({
 		changes: { from: 0, to: inputElement.data.state.doc.length, insert: data },
 	});
+
+    document
+        .getElementById("backButton")
+        .addEventListener("click", 
+            () => {
+                window.location.href = `/project?id=${projectID}`
+            }
+        );
 });
+
+window.addEventListener("beforeunload", () => {
+        let inputElement = document.getElementById("inputArea")
+
+        let project = JSON.parse(load(projectID))
+
+        project[problemID].data = inputElement.data.state.doc.text.join("\n")
+
+        saveFromStruct(projectID, project)
+    }
+)

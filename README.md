@@ -1,7 +1,5 @@
 # Math Inclusive Live Editor (MILE)
 
-❕Hey there! If you use this tool, please take a moment to fill out this survey: [https://forms.gle/JEqoZiKQFuFXCs4WA](https://forms.gle/JEqoZiKQFuFXCs4WA). Thank you! ❕
-
 Try it out [here](https://jah-on.github.io/MILE/)!
 
 ## Documentation
@@ -41,7 +39,7 @@ Suggestions are completed when the `Tab` key is pressed or the suggestion is cli
 <!-- FOR DOC GEN -->
 | Name | ASCIIMath Equivalent |
 | ---- | -------------------- |
-| abs | abs{} |
+| abs | abs{#{expression}} |
 | alpha | alpha |
 | bar | bar{#{var}} |
 | because | :' |
@@ -90,7 +88,7 @@ Suggestions are completed when the `Tab` key is pressed or the suggestion is cli
 | Phi | Phi |
 | pi | pi |
 | Pi | Pi |
-| power | ^{exponent} |
+| power | ^{#{exponent}} |
 | prodboth | prod_{#{lowerBound}}^{#{upperBound}} |
 | prodover | prod^{#{upperBound}} |
 | produnder | prod_{#{lowerBound}} |

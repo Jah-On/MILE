@@ -17,7 +17,6 @@
 		"codemirror": "^6.0",
 		"diff-match-patch": "1.0.5",
 		"gh-pages": "^6.2.0",
-		"mathup": "1.0.0-rc.2",
 		"typescript": "^5.8",
 		"vite": "^7.1",
 		"vite-plugin-singlefile": "^2.3"

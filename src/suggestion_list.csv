@@ -1,4 +1,4 @@
-abs,abs{}
+abs,abs{#{expression}}
 alpha,alpha
 bar,bar{#{var}}
 because,:'
@@ -47,7 +47,7 @@ phi,phi
 Phi,Phi
 pi,pi
 Pi,Pi
-power,^{exponent}
+power,^{#{exponent}}
 prodboth,prod_{#{lowerBound}}^{#{upperBound}}
 prodover,prod^{#{upperBound}}
 produnder,prod_{#{lowerBound}}
