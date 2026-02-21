@@ -16,9 +16,7 @@
 		"@codemirror/view": "^6.34",
 		"codemirror": "^6.0",
 		"diff-match-patch": "1.0.5",
-		"gh-pages": "^6.2.0",
 		"typescript": "^5.8",
-		"vite": "^7.1",
-		"vite-plugin-singlefile": "^2.3"
+		"vite": "^7.1"
 	}
 }
