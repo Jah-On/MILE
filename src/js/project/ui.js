@@ -101,7 +101,7 @@ function edit(event) {
 
 	// output.renderProblem(parent.data);
 
-	window.location.href = `/problem?project=${projectID}&id=${parent.id}`;
+	window.location.href = `./problem?project=${projectID}&id=${parent.id}`;
 }
 
 export function saveRowData(data) {
@@ -172,7 +172,7 @@ export function updateBaseOutput() {
 export function goBack() {
 	clearInterval(window.autoSave);
 	
-	window.location.href = "/";
+	window.location.href = "./";
 }
 
 export function loadAll(problems) {

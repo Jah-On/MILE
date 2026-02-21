@@ -59,7 +59,7 @@ window.addEventListener("load", () => {
         .getElementById("backButton")
         .addEventListener("click", 
             () => {
-                window.location.href = `/project?id=${projectID}`
+                window.location.href = `./project?id=${projectID}`
             }
         );
 
