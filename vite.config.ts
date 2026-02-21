@@ -17,6 +17,7 @@ import path from 'path';
 
 export default defineConfig({
   root: "src",
+  base: "/MILE/",
   build: {
     outDir: "../dist",
     rollupOptions:{
