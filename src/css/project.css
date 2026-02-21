@@ -3,6 +3,10 @@
 	display: flex;
 
 	div.sideBar {
+		@media print {
+			visibility: collapse;
+		}
+
 		display: inline-flex;
 		flex-direction: column;
 		padding: 10px;
@@ -25,10 +29,6 @@
 			bottom: 0px;
 			position: absolute;
 			width: calc(100% - 25px);
-
-			@media print {
-				visibility: collapse;
-			}
 		}
 	}
 
@@ -38,6 +38,13 @@
 		margin: 10px;
 		margin-left: 0px;
 		width: calc(97.5% - 20px);
+
+		@media print {
+			padding: 0;
+			margin: 0;
+			width: 100vw;
+			height: 100vh;
+		}
 
 		#problemList {
 			font-size: 32px;
@@ -64,6 +71,10 @@
 		}
 
 		#inputs {
+			@media print {
+				visibility: collapse;
+			}
+
 			width: 50%;
 			height: calc(100% - 2px);
 			background-color: rgb(20, 20, 20);
@@ -122,15 +133,16 @@
 			text-align: center;
 
 			@media print {
-				height: fit-content !important;
-				left: 0px;
-				min-width: calc(100% - 8px);
-				position: absolute;
-				top: 0px;
+				width: 100vw;
+				height: 100vh;
 			}
 		}
 
 		#inputArea {
+			@media print {
+				visibility: collapse;
+			}
+
 			width: 100%;
 			height: 100%;
 			font-size: 20px;
@@ -149,10 +161,6 @@
 
 			* {
 				caret-color: whitesmoke;
-			}
-
-			@media print {
-				visibility: collapse;
 			}
 		}
 

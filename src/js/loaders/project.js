@@ -17,6 +17,13 @@ window.addEventListener("load", () => {
         .getElementById("backButton")
         .addEventListener("click", ui.goBack);
     document
+        .getElementById("printButton")
+        .addEventListener("click", 
+            () => {
+                window.print()
+            }
+        );
+    document
         .getElementById("exportButton")
         .addEventListener("click", storage.download);
     document.getElementById("addNew").addEventListener("click", () => {

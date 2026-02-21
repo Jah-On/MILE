@@ -62,6 +62,14 @@ window.addEventListener("load", () => {
                 window.location.href = `/project?id=${projectID}`
             }
         );
+
+    document
+        .getElementById("printButton")
+        .addEventListener("click", 
+            () => {
+                window.print()
+            }
+        );
 });
 
 window.addEventListener("beforeunload", () => {
