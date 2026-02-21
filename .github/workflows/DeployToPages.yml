@@ -1,4 +1,4 @@
-name: CI
+name: Deploy To Pages
 
 on:
   workflow_dispatch:
